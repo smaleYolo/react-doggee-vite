@@ -1,0 +1,79 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 43px;
+
+  background: var(--color-accent);
+  box-shadow: 0 2px 10px 0 var(--color-shadow);
+  border-radius: 5px;
+  /*padding: 14.5px 80.5px;*/
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  transition: all 0.2s ease-in-out;
+  font-size: 12px;
+  font-weight: bold;
+  font-style: normal;
+}
+
+.button:hover {
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+}
+
+.button:active {
+  background: var(--color-accent7);
+}
+
+
+.dot-flashing {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  border-radius: 5px;
+  background-color: var(--color-white);
+  color: var(--color-white);
+  animation: dotFlashing 1s infinite linear alternate;
+  animation-delay: .5s;
+}
+
+.dot-flashing::before, .dot-flashing::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+
+.dot-flashing::before {
+  left: -10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 5px;
+  background-color: var(--color-white);
+  color: var(--color-white);
+  animation: dotFlashing 1s infinite alternate;
+  animation-delay: 0s;
+}
+
+.dot-flashing::after {
+  left: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 5px;
+  background-color: var(--color-white);
+  color: var(--color-white);
+  animation: dotFlashing 1s infinite alternate;
+  animation-delay: 1s;
+}
+
+@keyframes dotFlashing {
+  0% {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  50%,
+  100% {
+    background-color: var(--color-white);
+  }
+}

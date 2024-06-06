@@ -1,0 +1,44 @@
+:root {
+  /* colors */
+  --color-accent: #f5c678;
+  --color-accent7: rgba(245, 198, 120, 0.7);
+  --color-additional: #93b1ff;
+  --color-white: #fff;
+  --color-black: #000;
+  --color-shadow: rgba(0, 0, 0, 0.25);
+  --color-additional7: rgba(147, 177, 255, 0.7);
+  --color-text-validation: #e36464;
+  --color-text-validation7: rgba(219, 57, 57, 0.3);
+
+  --background-color-field-validation: rgba(219, 57, 57, 0.3);
+
+  --transition: all 0.3s;
+
+  /* images */
+  --images-cross: url('../images/cross.svg');
+  --images-plus-additional: url('../images/plus_additional.svg');
+  --images-arrow-additional: url('../images/arrow_additional.svg');
+  --images-checkmark-additional: url('../images/checkmark_additional.svg');
+  --images-checkmark: url('../images/checkmark.svg');
+  --images-dogge-background-light: url('../theme/light/dogge_background.svg');
+  --images-warning: url('../images/warning.svg');
+  --images-pen-additional: url('../images/pen_additional.svg');
+
+  /* fonts */
+  --font-family-baloo: 'Baloo';
+  --font-family-open-sans: 'Open Sans', sans-serif;
+  --font-weight800: 800;
+  --font-weight600: 600;
+}
+
+@media only screen and (min-width: 1023px) {
+  :root {
+    font-size: 1rem;
+  }
+}
+
+@media only screen and (min-width: 421px) and (max-width: 1023px) {
+  :root {
+    font-size: 1.26vw;
+  }
+}

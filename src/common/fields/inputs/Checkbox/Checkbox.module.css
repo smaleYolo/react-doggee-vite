@@ -1,0 +1,57 @@
+.checkbox_container {
+    display: flex;
+    cursor: pointer;
+    justify-content: flex-start;
+    vertical-align: sub;
+    gap: 5px;
+
+    color: rgb(45, 45, 45); /* Текст чекбокса */
+    font-family: var(--font-family-open-sans);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    text-align: left;
+}
+
+.real_checkbox {
+    display: none;
+}
+
+.custom_checkbox {
+    position: relative;
+
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    box-sizing: border-box;
+    background-color: var(--color-accent7);
+    border-radius: 5px;
+}
+
+.custom_checkbox::before {
+    content: '';
+
+    display: inline-block;
+    width: 9px;
+    height: 6px;
+
+    background-image: var(--images-checkmark);
+    background-size: contain;
+    background-repeat: no-repeat;
+
+
+    position: absolute;
+    top: 30%;
+    left: 20%;
+
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.real_checkbox:checked ~.custom_checkbox::before {
+    opacity: 1;
+}
+
+
+
+

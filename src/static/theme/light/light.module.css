@@ -1,0 +1,23 @@
+.container {
+  /* colors */
+  --color-text: #434141;
+  --color-placeholder: rgba(0, 0, 0, 0.5);
+  --background-color-field-focused: #ededed;
+  --background-color-field: rgba(237, 237, 237, 0.7);
+  --background-color: #ffffff;
+
+  /* shadows */
+  --shadow-container: 0 4px 3.57rem 0.14rem rgba(0, 0, 0, 0.15);
+  --shadow-button: 0 0.14rem 0.71rem rgba(0, 0, 0, 0.15);
+  --shadow-button-bottom: 0 0.14rem 0.71rem -0.07rem rgba(0, 0, 0, 0.15);
+  --shadow-button-hover: 0 0.14rem 0.71rem rgba(0, 0, 0, 0.05);
+
+  /* images */
+  --images-dogge-background: url('./dogge_background.svg');
+  --images-hide-password: url('./icons/hide_password.svg');
+  --images-show-password: url('./icons/show_password.svg');
+  --images-calendar: url('./icons/calendar.svg');
+  --images-arrow: url('./icons/arrow.svg');
+  /* spacing */
+  /* text */
+}
