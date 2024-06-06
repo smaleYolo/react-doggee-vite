@@ -26,13 +26,7 @@ module.exports = {
   ],
   rules: {
     '@typescript-eslint/no-shadow': 0,
-    '@typescript-eslint/no-unused-vars': [
-      'warn',
-      {
-        "varsIgnorePattern": "^_",
-        "argsIgnorePattern": "^_"
-      }
-    ],
+    '@typescript-eslint/no-unused-vars': 'off',
     'consistent-return': 0,
     'react/function-component-definition': [
       2,

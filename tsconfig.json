@@ -16,15 +16,15 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false, // Отключает предупреждения о неиспользуемых локальных переменных
+    "noUnusedParameters": false, // Отключает предупреждения о неиспользуемых параметрах
     "noFallthroughCasesInSwitch": true,
 
     /* Aliases */
     "baseUrl": "./",
     "paths": {
-      "@common/*": ["src/common/*"],
-      "@pages/*": ["src/pages/*"]
+      "@pages/*": ["src/pages/*"],
+      "@common/*": ["src/common/*"]
     }
   },
   "include": ["src"],

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@common/buttons';
 import { LoginInput } from '@common/fields';
 import { Checkbox } from '@common/fields/inputs/Checkbox/Checkbox';
 import { PasswordInput } from '@common/fields/inputs/Input/PasswordInput/PasswordInput';
-import axios from 'axios';
+import axios from '../../../axiosConfig';
 
 import styles from './LoginPage.module.css';
 
@@ -36,25 +36,33 @@ interface FormErrors {
 }
 
 
-
 export const LoginPage = () => {
   const [formValues, setFormValues] = React.useState({ username: '', password: '' });
   const [formErrors, setFormErrors] = React.useState<FormErrors>({
     username: '',
     password: ''
   });
+  const [registerLoading, setRegisterLoading] = useState(false)
 
   const navigate = useNavigate();
 
-  const registerHandler = async (event:  React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const registerHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     if (formValues.username && formValues.password && !formErrors.password && !formErrors.username) {
-      const {data} = await axios.post('http://localhost:3001/auth/login', formValues);
+      setRegisterLoading(true)
+      try {
+        const { data } = await axios.post('/auth/login', formValues);
 
-      console.log(data);
+        alert('Successfully logged in');
+      } catch (error) {
+        setRegisterLoading(false)
+        alert(`Error: ${error}`);
+      } finally {
+        setRegisterLoading(false)
+      }
     }
-  }
+  };
 
   return (
     <div className={styles.page}>
@@ -62,7 +70,7 @@ export const LoginPage = () => {
         <div className={styles.container_header}>DOGGEE</div>
 
         <form className={styles.form_container}
-          onSubmit={(event) => registerHandler(event)}
+              onSubmit={(event) => registerHandler(event)}
         >
           <div className={styles.input_container}>
             <LoginInput
@@ -105,12 +113,13 @@ export const LoginPage = () => {
           </div>
 
           <div className={styles.input_container}>
-            <Checkbox/>
+            <Checkbox />
           </div>
 
           <div>
             <Button
-              // isLoading
+              isLoading={registerLoading}
+              type="submit"
             >
               Sign In
             </Button>
