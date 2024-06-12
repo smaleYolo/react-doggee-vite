@@ -16,15 +16,17 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": false, // Отключает предупреждения о неиспользуемых локальных переменных
-    "noUnusedParameters": false, // Отключает предупреждения о неиспользуемых параметрах
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
 
     /* Aliases */
     "baseUrl": "./",
     "paths": {
       "@pages/*": ["src/pages/*"],
-      "@common/*": ["src/common/*"]
+      "@common/*": ["src/common/*"],
+      "@hooks/*": ["src/hooks/*"],  // Добавляем алиас для хуков
+      "@utils/*": ["src/utils/*"]   // Добавляем алиас для утилит
     }
   },
   "include": ["src"],

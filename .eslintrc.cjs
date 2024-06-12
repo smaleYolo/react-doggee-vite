@@ -62,8 +62,6 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 'off',
     'jsx-a11y/no-static-element-interactions': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
-
-    // Добавляем правило для использования React 17+ JSX трансформации
     'react/react-in-jsx-scope': 'off'
   },
   settings: {
