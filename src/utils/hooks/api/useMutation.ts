@@ -1,6 +1,10 @@
 import { useState, useCallback } from 'react';
 
-export const useMutation = <T, K = unknown>(request: (body: K) => Promise<T>) => {
+interface Options<T, K> {
+  request: (body: K) => Promise<T>;
+}
+
+export const useMutation = <T, K>({ request }: Options<T, K>) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState<string | null>(null);
 

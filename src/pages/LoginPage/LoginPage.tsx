@@ -1,39 +1,47 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import axios from '../../../axiosConfig';
+import Cookies from 'js-cookie';
 
 import { Button } from '@common/buttons';
 import { LoginInput } from '@common/fields';
 import { Checkbox } from '@common/fields/inputs/Checkbox/Checkbox';
 import { PasswordInput } from '@common/fields/inputs/Input/PasswordInput/PasswordInput';
+
 import { useMutation } from '@utils/hooks/api/useMutation';
-import { FormErrors, validateLoginForm } from '@utils/validations';
+import { FormErrors, validateLoginForm } from '@utils/hooks/helpers/validations';
+import { api } from '@utils/api';
 
 import styles from './LoginPage.module.css';
+import { useAuth } from '@utils/contexts/AuthContext/AuthContext.ts';
 
+interface LoginRequest {
+  username: string;
+  password: string;
+  isNotMyDevice?: boolean;
+}
 
 interface LoginResponse {
   access_token: string;
   userId: number;
 }
 
-const login = async (userData: { username: string; password: string }): Promise<LoginResponse> => {
-  const response = await axios.post('http://localhost:3001/auth/login', userData);
-  return response.data;
-};
 
 export const LoginPage = () => {
-  const [formValues, setFormValues] = useState({ username: '', password: '' });
+  const [formValues, setFormValues] = useState<LoginRequest>({
+    username: '',
+    password: '',
+    isNotMyDevice: false
+  });
   const [formErrors, setFormErrors] = useState<FormErrors>({
     username: null,
     password: null
   });
+  const { AuthHandler } = useAuth();
 
-  const { mutation: loginUser, isLoading, isError } = useMutation<LoginResponse, {
-    username: string;
-    password: string
-  }>(login);
+  const { mutation: authMutation, isLoading: authLoading } = useMutation<LoginResponse, LoginRequest>({
+    request: (userData: LoginRequest) => api.post<LoginResponse, LoginRequest>('/auth/login', userData)
+  });
 
   const navigate = useNavigate();
 
@@ -49,13 +57,20 @@ export const LoginPage = () => {
 
     if (!usernameError && !passwordError) {
       try {
-        const data = await loginUser({ username: formValues.username, password: formValues.password });
-        if (data && data.access_token) {
-          localStorage.setItem('access_token', data.access_token);
+        const data = await authMutation(formValues);
+        if (data?.access_token) {
+          Cookies.set('access_token', data.access_token);
+          Cookies.set('userId', String(data.userId));
+          if (formValues.isNotMyDevice) {
+            Cookies.set('NotUserDevice', `true_${data.userId}`);
+          } else {
+            Cookies.remove('NotUserDevice');
+          }
+          AuthHandler(true);
           navigate('/');
         }
       } catch (error) {
-        toast.error(`Login failed. Please check your credentials. ${isError}`);
+        toast.error('Login failed. Please check your credentials.');
       }
     } else {
       toast.error('Please fill in all required fields.');
@@ -69,7 +84,7 @@ export const LoginPage = () => {
         <form className={styles.form_container} onSubmit={loginHandler}>
           <div className={styles.input_container}>
             <LoginInput
-              disabled={isLoading}
+              disabled={authLoading}
               type="text"
               label="username"
               value={formValues.username}
@@ -85,7 +100,7 @@ export const LoginPage = () => {
           </div>
           <div className={styles.input_container}>
             <PasswordInput
-              disabled={isLoading}
+              disabled={authLoading}
               type="password"
               label="password"
               value={formValues.password}
@@ -100,10 +115,15 @@ export const LoginPage = () => {
             />
           </div>
           <div className={styles.input_container}>
-            <Checkbox />
+            <Checkbox
+              disabled={authLoading}
+              isChecked={formValues.isNotMyDevice}
+              onChange={() => setFormValues((prev) => ({ ...prev, isNotMyDevice: !prev.isNotMyDevice }))}
+              label="This is not my device"
+            />
           </div>
           <div>
-            <Button isLoading={isLoading} type="submit">
+            <Button isLoading={authLoading} type="submit">
               Sign In
             </Button>
           </div>

@@ -1,5 +1,7 @@
 import React from 'react';
 
 export const NotFoundPage: React.FC = () => {
-  return <div>Я ушел хавать</div>;
+  return <div>
+    <h1>Main Routes</h1>
+  </div>;
 };

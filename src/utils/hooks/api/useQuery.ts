@@ -37,7 +37,7 @@ export const useQuery = <T, K>({ request, initialValue, dependencies = [] }: Opt
     return () => {
       isMounted = false;
     };
-  }, [request, ...dependencies]);
+  }, dependencies);
 
   return { data, isLoading, isError };
 };
