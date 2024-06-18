@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { IDog } from '@utils/models/models';
-import { useMutation, useQuery, useQueryLazy } from '@utils/hooks/api';
-import { api } from '@utils/api/instance';
 import Cookies from 'js-cookie';
+import { useQuery, useQueryLazy } from '@utils/hooks';
+import { api } from '@utils/api';
+import { IDog } from '@utils/models';
 
 export const TestPage = () => {
   const userId = Cookies.get("userId");

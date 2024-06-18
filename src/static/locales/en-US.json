@@ -18,7 +18,7 @@
   "button.next": "Next",
   "button.goNextStep": "Go to the previous step",
 
-  "page.login.createNewAccont": "Create new account",
+  "page.login.createNewAccount": "Create new account",
   "page.registration.skipAndFillInLater": "Skip and fill in later",
   "page.registration.step.fillLoginDataStep.title": "Fill your login data",
   "page.registration.step.fillLoginDataStep.iAlreadyHaveAnAccount": "I already have an account",
@@ -43,6 +43,9 @@
   "page.registration.step.checkDataStep.card.profile": "Profile",
   "page.registration.step.checkDataStep.card.pets": "Pets",
   "page.registration.step.checkDataStep.hint.dontWorry": "Don't worry, you can change your details later",
+
+  "login.failed": "Login failed. Please check your credentials.",
+  "login.fillRequiredFields": "Please fill in all required fields.",
 
   "validations.required": "field required"
 }

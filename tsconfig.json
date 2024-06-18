@@ -25,8 +25,17 @@
     "paths": {
       "@pages/*": ["src/pages/*"],
       "@common/*": ["src/common/*"],
-      "@hooks/*": ["src/hooks/*"],  // Добавляем алиас для хуков
-      "@utils/*": ["src/utils/*"]   // Добавляем алиас для утилит
+      "@buttons/*": ["src/common/buttons/*"],
+      "@fields/*": ["src/common/fields/*"],
+      "@inputs/*": ["src/common/fields/inputs/*"],
+      "@static/*": ["src/static/*"],
+      "@utils/*": ["src/utils/*"],
+      "@contexts/*": ["src/utils/contexts/*"],
+      "@helpers/*": ["src/utils/helpers/*"],
+      "@api/*": ["src/utils/api/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@models/*": ["src/models/*"],
+      "@features/*": ["src/features/*"],
     }
   },
   "include": ["src"],

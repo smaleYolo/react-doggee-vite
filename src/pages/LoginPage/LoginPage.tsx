@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
 
 import { Button } from '@common/buttons';
-import { LoginInput } from '@common/fields';
-import { Checkbox } from '@common/fields/inputs/Checkbox/Checkbox';
-import { PasswordInput } from '@common/fields/inputs/Input/PasswordInput/PasswordInput';
+import { Input } from '@inputs/Inputs/Input/Input';
+import { Checkbox } from '@fields/inputs/Checkbox/Checkbox';
+import { PasswordInput } from '@fields/inputs/Inputs/PasswordInput/PasswordInput';
 
-import { useMutation } from '@utils/hooks/api/useMutation';
-import { FormErrors, validateLoginForm } from '@utils/hooks/helpers/validations';
 import { api } from '@utils/api';
+import { FormErrors, validateLoginForm } from '@helpers/validations';
+import { useMutation } from '@utils/hooks';
+import { useAuth } from '@utils/contexts';
+import { useIntl } from '@features/intl/hooks';
 
 import styles from './LoginPage.module.css';
-import { useAuth } from '@utils/contexts/AuthContext/AuthContext.ts';
 
 interface LoginRequest {
   username: string;
@@ -26,7 +26,6 @@ interface LoginResponse {
   userId: number;
 }
 
-
 export const LoginPage = () => {
   const [formValues, setFormValues] = useState<LoginRequest>({
     username: '',
@@ -37,7 +36,8 @@ export const LoginPage = () => {
     username: null,
     password: null
   });
-  const { AuthHandler } = useAuth();
+  const { login } = useAuth();
+  const { messages } = useIntl(); // Используем контекст для локализованных сообщений
 
   const { mutation: authMutation, isLoading: authLoading } = useMutation<LoginResponse, LoginRequest>({
     request: (userData: LoginRequest) => api.post<LoginResponse, LoginRequest>('/auth/login', userData)
@@ -57,23 +57,14 @@ export const LoginPage = () => {
 
     if (!usernameError && !passwordError) {
       try {
-        const data = await authMutation(formValues);
-        if (data?.access_token) {
-          Cookies.set('access_token', data.access_token);
-          Cookies.set('userId', String(data.userId));
-          if (formValues.isNotMyDevice) {
-            Cookies.set('NotUserDevice', `true_${data.userId}`);
-          } else {
-            Cookies.remove('NotUserDevice');
-          }
-          AuthHandler(true);
-          navigate('/');
-        }
+        const data = await authMutation(formValues); //Тут проверяем данные пользователя
+        login(data.access_token, data.userId, formValues.isNotMyDevice) //Здесь сохраняем данные в куках
+        navigate('/');
       } catch (error) {
-        toast.error('Login failed. Please check your credentials.');
+        toast.error(messages['login.failed']);
       }
     } else {
-      toast.error('Please fill in all required fields.');
+      toast.error(messages['login.fillRequiredFields']);
     }
   };
 
@@ -83,10 +74,10 @@ export const LoginPage = () => {
         <div className={styles.container_header}>DOGGEE</div>
         <form className={styles.form_container} onSubmit={loginHandler}>
           <div className={styles.input_container}>
-            <LoginInput
+            <Input
               disabled={authLoading}
               type="text"
-              label="username"
+              label={messages['field.input.username.label']}
               value={formValues.username}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const username = event.target.value;
@@ -102,7 +93,7 @@ export const LoginPage = () => {
             <PasswordInput
               disabled={authLoading}
               type="password"
-              label="password"
+              label={messages['field.input.password.label']}
               value={formValues.password}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const password = event.target.value;
@@ -119,17 +110,17 @@ export const LoginPage = () => {
               disabled={authLoading}
               isChecked={formValues.isNotMyDevice}
               onChange={() => setFormValues((prev) => ({ ...prev, isNotMyDevice: !prev.isNotMyDevice }))}
-              label="This is not my device"
+              label={messages['field.checkbox.isNotMyDevice.label']}
             />
           </div>
           <div>
             <Button isLoading={authLoading} type="submit">
-              Sign In
+              {messages['button.signIn']}
             </Button>
           </div>
         </form>
         <div onClick={() => navigate('/register')} className={styles.sign_up_container}>
-          Create new account
+          {messages['page.login.createNewAccont']}
         </div>
       </div>
     </div>
