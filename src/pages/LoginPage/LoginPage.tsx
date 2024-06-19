@@ -27,6 +27,8 @@ interface LoginResponse {
 }
 
 export const LoginPage = () => {
+  const navigate = useNavigate();
+
   const [formValues, setFormValues] = useState<LoginRequest>({
     username: '',
     password: '',
@@ -36,14 +38,14 @@ export const LoginPage = () => {
     username: null,
     password: null
   });
+
   const { login } = useAuth();
-  const { messages } = useIntl(); // Используем контекст для локализованных сообщений
+  const { translateMessage } = useIntl();
+
 
   const { mutation: authMutation, isLoading: authLoading } = useMutation<LoginResponse, LoginRequest>({
     request: (userData: LoginRequest) => api.post<LoginResponse, LoginRequest>('/auth/login', userData)
   });
-
-  const navigate = useNavigate();
 
   const loginHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -58,13 +60,14 @@ export const LoginPage = () => {
     if (!usernameError && !passwordError) {
       try {
         const data = await authMutation(formValues); //Тут проверяем данные пользователя
-        login(data.access_token, data.userId, formValues.isNotMyDevice) //Здесь сохраняем данные в куках
+        console.log(data);
+        login(data.access_token, data.userId, formValues.isNotMyDevice); //Здесь сохраняем данные в куках
         navigate('/');
       } catch (error) {
-        toast.error(messages['login.failed']);
+        toast.error(translateMessage('login.failed'));
       }
     } else {
-      toast.error(messages['login.fillRequiredFields']);
+      toast.error(translateMessage('login.fillRequiredFields'));
     }
   };
 
@@ -77,7 +80,7 @@ export const LoginPage = () => {
             <Input
               disabled={authLoading}
               type="text"
-              label={messages['field.input.username.label']}
+              label={translateMessage('field.input.username.label')}
               value={formValues.username}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const username = event.target.value;
@@ -93,7 +96,7 @@ export const LoginPage = () => {
             <PasswordInput
               disabled={authLoading}
               type="password"
-              label={messages['field.input.password.label']}
+              label={translateMessage('field.input.password.label')}
               value={formValues.password}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 const password = event.target.value;
@@ -110,17 +113,17 @@ export const LoginPage = () => {
               disabled={authLoading}
               isChecked={formValues.isNotMyDevice}
               onChange={() => setFormValues((prev) => ({ ...prev, isNotMyDevice: !prev.isNotMyDevice }))}
-              label={messages['field.checkbox.isNotMyDevice.label']}
+              label={translateMessage('field.checkbox.isNotMyDevice.label')}
             />
           </div>
           <div>
             <Button isLoading={authLoading} type="submit">
-              {messages['button.signIn']}
+              {translateMessage('button.signIn')}
             </Button>
           </div>
         </form>
         <div onClick={() => navigate('/register')} className={styles.sign_up_container}>
-          {messages['page.login.createNewAccont']}
+          {translateMessage('page.login.createNewAccount')}
         </div>
       </div>
     </div>

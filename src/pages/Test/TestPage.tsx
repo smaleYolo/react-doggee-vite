@@ -3,6 +3,8 @@ import Cookies from 'js-cookie';
 import { useQuery, useQueryLazy } from '@utils/hooks';
 import { api } from '@utils/api';
 import { IDog } from '@utils/models';
+import { useIntl } from '@features/intl/hooks';
+import { IntlText } from '@features/intl/components/IntlText';
 
 export const TestPage = () => {
   const userId = Cookies.get("userId");
@@ -27,11 +29,13 @@ export const TestPage = () => {
     }
   };
 
+  const { translateMessage } = useIntl();
+
   return (
     <div>
-      <h1>Dogs List:</h1>
-      {isLoading && <div>Loading...</div>}
-      {isError && <div style={{ color: 'red' }}>Error: {isError}</div>}
+      <h1><IntlText path='page.test.dogsListTitle' /></h1>
+      {isLoading && <div><IntlText path='loading' /></div>}
+      {isError && <div style={{ color: 'red' }}><IntlText path='error' values={{ error: isError.toString() }} /></div>}
       {dogs && (
         <ul>
           {dogs.map((dog) => (
@@ -40,12 +44,12 @@ export const TestPage = () => {
         </ul>
       )}
 
-      <h2>Fetch Dogs on Demand</h2>
+      <h2><IntlText path='page.test.fetchDogsOnDemand' /></h2>
       <button onClick={handleFetchDogs} disabled={isLazyLoading}>
-        {isLazyLoading ? 'Fetching...' : 'Fetch Dogs'}
+        {isLazyLoading ? translateMessage('fetching') : translateMessage('fetchDogs')}
       </button>
-      {isLazyLoading && <div>Loading...</div>}
-      {isLazyError && <div style={{ color: 'red' }}>Error: {isLazyError}</div>}
+      {isLazyLoading && <div><IntlText path='loading' /></div>}
+      {isLazyError && <div style={{ color: 'red' }}><IntlText path='error' values={{ error: isLazyError.toString() }} /></div>}
       {lazyDogs && (
         <ul>
           {lazyDogs.map((dog) => (
@@ -53,6 +57,15 @@ export const TestPage = () => {
           ))}
         </ul>
       )}
+
+      <div>
+        <h2><IntlText path='intlTest.title' /></h2>
+        <p>
+          <IntlText path='intlTest.dynamicMessage' values={{ seconds: 5, item: translateMessage('intlTest.ball') }}>
+            {(txt) => <span>{txt}</span>}
+          </IntlText>
+        </p>
+      </div>
     </div>
   );
 };

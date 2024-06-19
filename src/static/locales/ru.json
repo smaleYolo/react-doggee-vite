@@ -47,5 +47,15 @@
   "login.failed": "Ошибка входа. Пожалуйста, проверьте свои учетные данные.",
   "login.fillRequiredFields": "Пожалуйста, заполните все обязательные поля.",
 
-  "validations.required": "поле обязательно"
+  "validations.required": "поле обязательно",
+
+  "page.test.dogsListTitle": "Список собак",
+  "loading": "Загрузка...",
+  "error": "Ошибка: {error}",
+  "page.test.fetchDogsOnDemand": "Запросить собак по требованию",
+  "fetching": "Запрос...",
+  "fetchDogs": "Запросить собак",
+  "intlTest.title": "Тест локализации",
+  "intlTest.dynamicMessage": "Подождите {seconds} секунд и возьмите {item}",
+  "intlTest.ball": "мяч"
 }

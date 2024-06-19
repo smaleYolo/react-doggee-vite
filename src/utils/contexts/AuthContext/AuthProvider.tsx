@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback, useEffect, useState } from 'react';
-import { AuthContext } from '@contexts/AuthContext/AuthContext.ts';
+import { AuthContext } from '@contexts/AuthContext/AuthContext';
 import Cookies from 'js-cookie';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {

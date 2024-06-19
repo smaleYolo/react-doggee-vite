@@ -47,5 +47,15 @@
   "login.failed": "Login failed. Please check your credentials.",
   "login.fillRequiredFields": "Please fill in all required fields.",
 
-  "validations.required": "field required"
+  "validations.required": "field required",
+
+  "page.test.dogsListTitle": "Dogs List",
+  "loading": "Loading...",
+  "error": "Error: {error}",
+  "page.test.fetchDogsOnDemand": "Fetch Dogs on Demand",
+  "fetching": "Fetching...",
+  "fetchDogs": "Fetch Dogs",
+  "intlTest.title": "Intl Test",
+  "intlTest.dynamicMessage": "Wait {seconds} seconds and take the {item}",
+  "intlTest.ball": "ball"
 }

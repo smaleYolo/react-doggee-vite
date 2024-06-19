@@ -31,7 +31,7 @@
       "@static/*": ["src/static/*"],
       "@utils/*": ["src/utils/*"],
       "@contexts/*": ["src/utils/contexts/*"],
-      "@helpers/*": ["src/utils/helpers/*"],
+      "@helpers/*": ["src/utils/helpers"],
       "@api/*": ["src/utils/api/*"],
       "@hooks/*": ["src/hooks/*"],
       "@models/*": ["src/models/*"],
