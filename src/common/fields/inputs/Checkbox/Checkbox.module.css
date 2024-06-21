@@ -1,12 +1,12 @@
 .checkbox_container {
-    margin-top: -10px;
+    box-sizing: border-box;
+    margin-top: -8px;
     display: flex;
     cursor: pointer;
     justify-content: flex-start;
     vertical-align: sub;
     gap: 5px;
-
-    color: rgb(45, 45, 45); /* Текст чекбокса */
+    color: var(--color-text);
     font-family: var(--font-family-open-sans);
     font-size: 12px;
     font-weight: 400;
@@ -20,14 +20,12 @@
 
 .custom_checkbox {
     position: relative;
-
     display: inline-block;
     width: 15px;
     height: 15px;
     box-sizing: border-box;
     background-color: var(--color-accent7);
     border-radius: 5px;
-
     transition: background-color 0.2s;
 }
 
@@ -37,28 +35,19 @@
 
 .custom_checkbox::before {
     content: '';
-
     display: inline-block;
     width: 12px;
     height: 7px;
-
     background-image: var(--images-checkmark);
     background-size: contain;
     background-repeat: no-repeat;
-
-
     position: absolute;
     top: 26%;
     left: 17%;
-
     opacity: 0;
     transition: opacity 0.25s ease-in-out;
 }
 
-.real_checkbox:checked ~.custom_checkbox::before {
+.real_checkbox:checked ~ .custom_checkbox::before {
     opacity: 1;
 }
-
-
-
-

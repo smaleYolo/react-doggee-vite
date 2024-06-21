@@ -4,13 +4,15 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { LoginPage } from '@pages/LoginPage/LoginPage';
 import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
 import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
-import { TestPage } from '@pages/Test/TestPage';
+
+import { TestPage } from '@pages/Test/TestPage/TestPage.tsx';
+import { TestHeader } from '@pages/Test/TestHeader/TestHeader.tsx';
+import { ThemeToggle } from '@common/themeToggle/ThemeToggle.tsx';
 
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useAuth } from '@utils/contexts';
-import { useIntl } from '@features/intl/hooks';
 
 const AuthRoutes = () => (
   <Routes>
@@ -28,26 +30,12 @@ const MainRoutes = () => (
 );
 
 const App = () => {
-  const { isAuth, logout } = useAuth();
-  const { setLanguage } = useIntl();
+  const { isAuth } = useAuth();
 
   return (
     <BrowserRouter>
-      <header style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        width: 400,
-        alignItems: 'center',
-        margin: '0 auto'
-      }}>
-        <div>
-          <button onClick={() => setLanguage('ru')}>Русский</button>
-          <button onClick={() => setLanguage('en')}>English</button>
-        </div>
-        <div>
-          <button onClick={logout}>Выйти</button>
-        </div>
-      </header>
+      <TestHeader />
+      <ThemeToggle/>
       {isAuth ? <MainRoutes /> : <AuthRoutes />}
       <ToastContainer />
     </BrowserRouter>

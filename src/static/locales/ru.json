@@ -14,6 +14,7 @@
   "field.select.noOption": "нет опций",
 
   "button.signIn": "Войти",
+  "button.signOut": "Выйти",
   "button.done": "Готово",
   "button.next": "Далее",
   "button.goNextStep": "Перейти к следующему шагу",

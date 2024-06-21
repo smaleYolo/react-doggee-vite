@@ -1,9 +1,11 @@
+
 .container {
   /* colors */
   --color-text: #434141;
+  --color-b-text: #fff;
   --color-placeholder: rgba(0, 0, 0, 0.5);
-  --background-color-field-focused: #ededed;
-  --background-color-field: rgba(237, 237, 237, 0.7);
+  --background-color-field-focused:  rgba(204, 204, 204, 0.7);
+  --background-color-field: #ededed;
   --background-color: #ffffff;
 
   /* shadows */

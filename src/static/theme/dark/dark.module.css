@@ -1,6 +1,8 @@
+
 .container {
   /* colors */
   --color-text: #ffffff;
+  --color-b-text: #434141;
   --color-placeholder: rgba(255, 255, 255, 0.5);
   --background-color-field-focused: #3a3e42;
   --background-color-field: rgba(58, 62, 66, 0.7);

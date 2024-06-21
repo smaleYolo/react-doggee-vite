@@ -2,8 +2,8 @@ import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'rea
 import { IntlContext, IntlContextProps } from '@features/intl';
 import Cookies from 'js-cookie';
 
-import { getLocale, getMessages } from '@utils/helpers/intl';
-import { Locale, Messages } from '@utils/helpers/intl/localesConfig';
+import { getLocale, getMessages } from '@features/intl/helpers';
+import { Locale, Messages } from '@features/intl/helpers/IntlConfig.ts';
 
 
 interface IntlProviderProps {

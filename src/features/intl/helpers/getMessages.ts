@@ -1,4 +1,4 @@
-import { defaultMessages, Locale, Messages } from '@utils/helpers/intl/localesConfig.ts';
+import { defaultMessages, Locale, Messages } from '@features/intl/helpers/IntlConfig.ts';
 
 /**
  * Функция для получения сообщений на текущем языке.

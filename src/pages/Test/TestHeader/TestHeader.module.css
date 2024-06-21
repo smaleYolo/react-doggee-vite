@@ -1,0 +1,46 @@
+.header {
+    width: 100%;
+    background-color: var(--background-color);
+    color: var(--color-text);
+    padding: 10px 0; /* Добавляем вертикальный отступ для хедера */
+}
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.languageButtons {
+    display: flex;
+    gap: 10px;
+}
+
+.logoutButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.themeButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    background: var(--color-accent);
+    color: var(--color-b-text);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: var(--color-accent7);
+}

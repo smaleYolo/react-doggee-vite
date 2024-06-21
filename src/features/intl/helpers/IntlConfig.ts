@@ -1,5 +1,5 @@
-import EN from 'src/static/locales/en-US.json';
-import RU from 'src/static/locales/ru.json';
+import EN from '@static/locales/en-US.json';
+import RU from '@static/locales/ru.json';
 
 // Тип для поддерживаемых локалей
 export type Locale = 'en' | 'ru';

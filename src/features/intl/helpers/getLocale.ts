@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { Locale } from './localesConfig.ts';
+import { Locale } from './IntlConfig.ts';
 
 /**
  * Функция для получения текущей локали.

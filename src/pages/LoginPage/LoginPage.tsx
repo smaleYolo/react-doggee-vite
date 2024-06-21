@@ -73,7 +73,7 @@ export const LoginPage = () => {
 
   return (
     <div className={styles.page}>
-      <div className={styles.container}>
+      <section className={styles.container}>
         <div className={styles.container_header}>DOGGEE</div>
         <form className={styles.form_container} onSubmit={loginHandler}>
           <div className={styles.input_container}>
@@ -125,7 +125,7 @@ export const LoginPage = () => {
         <div onClick={() => navigate('/register')} className={styles.sign_up_container}>
           {translateMessage('page.login.createNewAccount')}
         </div>
-      </div>
+      </section>
     </div>
   );
 };

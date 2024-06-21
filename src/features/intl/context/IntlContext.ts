@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { Locale, Messages } from '@utils/helpers/intl/localesConfig.ts';
+import { Locale, Messages } from '@features/intl/helpers/IntlConfig.ts';
 
 export interface IntlContextProps {
   locale: Locale;

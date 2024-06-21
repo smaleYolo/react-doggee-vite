@@ -14,6 +14,7 @@
   "field.select.noOption": "no option",
 
   "button.signIn": "Sign in",
+  "button.signOut": "Sign Out",
   "button.done": "Done",
   "button.next": "Next",
   "button.goNextStep": "Go to the previous step",

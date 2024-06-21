@@ -1,2 +1,2 @@
 export * from "./Inputs";
-export * from "./Checkbox";
+export * from './Checkbox'

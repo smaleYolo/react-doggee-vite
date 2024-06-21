@@ -2,17 +2,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   width: 100%;
   height: 43px;
-
   background: var(--color-accent);
-  box-shadow: 0 2px 10px 0 var(--color-shadow);
+  box-shadow: var(--shadow-button);
   border-radius: 5px;
-  /*padding: 14.5px 80.5px;*/
   border: none;
   cursor: pointer;
-  color: #fff;
+  color: var(--color-b-text);
   transition: all 0.2s ease-in-out;
   font-size: 12px;
   font-weight: bold;
@@ -20,13 +17,12 @@
 }
 
 .button:hover {
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-button-hover);
 }
 
 .button:active {
   background: var(--color-accent7);
 }
-
 
 .dot-flashing {
   position: relative;
