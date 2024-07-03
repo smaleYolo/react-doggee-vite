@@ -1,3 +1,4 @@
+// IUser & IDog
 export interface IUser {
   id: number;
   username: string;
@@ -6,7 +7,6 @@ export interface IUser {
   birthdate: Date;
   dogs: IDog[];
 }
-
 export interface IDog {
   id: number;
   name: string;
@@ -15,4 +15,6 @@ export interface IDog {
   createdAt: Date;
   updatedAt: Date;
 }
+
+
 

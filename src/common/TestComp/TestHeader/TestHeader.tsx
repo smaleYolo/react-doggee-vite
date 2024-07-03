@@ -1,7 +1,8 @@
-import React from 'react';
-import { useAuth } from '@utils/contexts';
 import { useIntl } from '@features/intl';
 import { useTheme } from '@features/theming';
+import { useAuth } from '@utils/contexts';
+import React from 'react';
+
 import styles from './TestHeader.module.css';
 
 export const TestHeader: React.FC = () => {
@@ -26,7 +27,9 @@ export const TestHeader: React.FC = () => {
             </div>
           )
         }
-        <button onClick={toggleTheme} aria-label="Toggle theme">
+        <button
+aria-label="Toggle theme"
+onClick={toggleTheme}>
           {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
         </button>
       </div>

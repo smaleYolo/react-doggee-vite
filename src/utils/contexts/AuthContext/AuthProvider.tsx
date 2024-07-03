@@ -1,4 +1,6 @@
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import type { AuthContextProps } from '@contexts/AuthContext/AuthContext';
 import { AuthContext } from '@contexts/AuthContext/AuthContext';
 import Cookies from 'js-cookie';
 
@@ -14,14 +16,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = useCallback((access_token: string, userId: number, isNotUserDevice?: boolean) => {
-      Cookies.set('access_token', access_token);
-      Cookies.set('userId', String(userId));
-      if (isNotUserDevice) {
-        Cookies.set('NotUserDevice', `true_${userId}`);
-      } else {
-        Cookies.remove('NotUserDevice');
-      }
-      setIsAuth(true);
+    Cookies.set('access_token', access_token);
+    Cookies.set('userId', String(userId));
+    if (isNotUserDevice) {
+      Cookies.set('NotUserDevice', `true_${userId}`);
+    } else {
+      Cookies.remove('NotUserDevice');
+    }
+    setIsAuth(true);
   }, []);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const notUserDeviceCookie = Cookies.get('NotUserDevice');
 
     if (authCookie && notUserDeviceCookie) {
-      const [notUserDeviceFlag, notUserDeviceUserId] = notUserDeviceCookie.split('_'); //`true_${userId} = true_666`
+      const [notUserDeviceFlag, notUserDeviceUserId] = notUserDeviceCookie.split('_'); // `true_${userId} = true_666`
 
       if (notUserDeviceFlag === 'true' && notUserDeviceUserId === userIdCookie) {
         logout();
@@ -45,15 +47,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
   }, [logout]);
 
-  if (isLoading) return null;
-
-  const value = {
+  const value: AuthContextProps = useMemo(() => ({
     isAuth,
     setIsAuth,
     isLoading,
     logout,
     login
-  };
+  }), [isAuth, setIsAuth, isLoading, logout, login]);
+
+  if (isLoading) return null;
 
   return (
     <AuthContext.Provider value={value}>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTheme } from '@features/theming';
-
 import DarkSvg from 'src/static/images/icons/dark.svg';
 import LightSvg from 'src/static/images/icons/light.svg';
 
@@ -10,16 +9,18 @@ export const ThemeToggle = () => {
   const { toggleTheme, theme } = useTheme();
 
   return (
-    <div className={styles.container} onClick={toggleTheme}>
+    <div
+className={styles.container}
+onClick={toggleTheme}>
       <img
+        alt="dark"
         className={`${styles.img} ${theme === 'dark' ? styles.show : styles.hide}`}
         src={DarkSvg}
-        alt="dark"
       />
       <img
+        alt="light"
         className={`${styles.img} ${theme === 'light' ? styles.show : styles.hide}`}
         src={LightSvg}
-        alt="light"
       />
     </div>
   );

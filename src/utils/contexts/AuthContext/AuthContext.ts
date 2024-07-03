@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 
-interface AuthContextProps {
+export interface AuthContextProps {
   isAuth: boolean;
   setIsAuth: (isAuth: boolean) => void;
   isLoading: boolean;

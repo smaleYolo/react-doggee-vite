@@ -15,14 +15,16 @@ export const Input: React.FC<InputProps> = ({ isError = false, helperText = '', 
 
   return (
     <div className={`${styles.input_container} ${focused || props.value ? styles.focused : ''}`}>
-      <label htmlFor="input" className={styles.label}>
+      <label
+className={styles.label}
+htmlFor="input">
         {label}
       </label>
       <input
-        id="input"
         className={`${styles.input} ${isError ? styles.error : ''}`}
-        onFocus={handleFocus}
+        id="input"
         onBlur={handleBlur}
+        onFocus={handleFocus}
         {...props}
       />
       {isError && helperText && <span className={styles.helper_text}>{helperText}</span>}

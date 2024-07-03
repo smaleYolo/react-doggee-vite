@@ -1,9 +1,10 @@
-import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
-import { IntlContext, IntlContextProps } from '@features/intl';
-import Cookies from 'js-cookie';
-
+import type { IntlContextProps } from '@features/intl';
+import { IntlContext } from '@features/intl';
 import { getLocale, getMessages } from '@features/intl/helpers';
-import { Locale, Messages } from '@features/intl/helpers/IntlConfig.ts';
+import { Locale, Messages } from '@features/intl/helpers/IntlConfig';
+import Cookies from 'js-cookie';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import type { ReactNode} from 'react';
 
 
 interface IntlProviderProps {
