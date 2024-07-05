@@ -24,6 +24,10 @@
   background: var(--color-accent7);
 }
 
+.button:disabled {
+  cursor: not-allowed;
+}
+
 .dot-flashing {
   position: relative;
   width: 6px;

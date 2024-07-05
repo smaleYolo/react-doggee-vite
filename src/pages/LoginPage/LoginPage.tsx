@@ -5,20 +5,20 @@ import { Button } from '@common/buttons';
 import { useIntl } from '@features/intl/hooks';
 import { Checkbox } from '@fields/inputs/Checkbox/Checkbox';
 import { PasswordInput } from '@fields/inputs/Inputs/PasswordInput/PasswordInput';
-import type { FormErrors } from '@helpers/validations';
-import { validateLoginForm } from '@helpers/validations';
+import { validatePassword, validateUsername } from '@helpers/validations';
 import { Input } from '@inputs/Inputs/Input/Input';
 import { api } from '@utils/api';
 import { useAuth } from '@utils/contexts';
-import { useMutation } from '@utils/hooks';
+import { useForm, useMutation } from '@utils/hooks';
 
 import styles from './LoginPage.module.css';
 
-export interface FormValues {
+export interface LoginFormValues {
   username: string;
   password: string;
   isNotMyDevice?: boolean;
 }
+
 export interface LoginResponse {
   access_token: string;
   userId: number;
@@ -27,48 +27,36 @@ export interface LoginResponse {
 export const LoginPage = () => {
   const navigate = useNavigate();
 
-  const [formValues, setFormValues] = useState<FormValues>({
-    username: '',
-    password: '',
-    isNotMyDevice: false
-  });
-  const [formErrors, setFormErrors] = useState<FormErrors>({
-    username: null,
-    password: null
-  });
-
   const { login } = useAuth();
   const { translateMessage } = useIntl();
 
-  const { mutation: authMutation, isLoading: authLoading } = useMutation<LoginResponse, FormValues>({
-    request: (userData: FormValues) => api.post<LoginResponse, FormValues>('/auth/login', userData)
+  const { mutation: authMutation, isLoading: authLoading } = useMutation<LoginResponse, LoginFormValues>({
+    request: (userData: LoginFormValues) => api.post<LoginResponse, LoginFormValues>('/auth/login', userData)
   });
 
-
-  const loginHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const usernameError = validateLoginForm('username', formValues.username);
-    const passwordError = validateLoginForm('password', formValues.password);
-    setFormErrors({
-      username: usernameError,
-      password: passwordError
-    });
-
-    if (!usernameError && !passwordError) {
+  const { values, setFieldValue, errors, handleSubmit, isSubmitting } = useForm<LoginFormValues>({
+    initialValues: {
+      username: '',
+      password: '',
+      isNotMyDevice: false
+    },
+    validateSchema: {
+      username: validateUsername,
+      password: validatePassword
+    },
+    // validateOnChange: false,
+    onSubmit: async (values) => {
       try {
         // Тут проверяем данные пользователя
-        const data = await authMutation(formValues);
+        const data = await authMutation(values);
         // Здесь сохраняем данные в куках
-        login(data.access_token, data.userId, formValues.isNotMyDevice);
+        login(data.access_token, data.userId, values.isNotMyDevice);
         navigate('/');
       } catch (error) {
         toast.error(translateMessage('login.failed'));
       }
-    } else {
-      toast.error(translateMessage('login.fillRequiredFields'));
     }
-  };
+  });
 
   return (
     <div className={styles.page}>
@@ -76,50 +64,45 @@ export const LoginPage = () => {
         <div className={styles.container_header}>DOGGEE</div>
         <form
           className={styles.form_container}
-          onSubmit={loginHandler}>
+          onSubmit={(event) => handleSubmit(event)}>
           <div className={styles.input_container}>
             <Input
               disabled={authLoading}
-              helperText={formErrors.username}
-              isError={!!formErrors.username}
+              helperText={errors?.username || ''}
+              isError={!!errors?.username || false}
               label={translateMessage('field.input.username.label')}
               type="text"
-              value={formValues.username}
+              value={values.username}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                const username = event.target.value;
-                setFormValues({ ...formValues, username });
-                const error = validateLoginForm('username', username);
-                setFormErrors({ ...formErrors, username: error });
+                setFieldValue('username', event.target.value);
               }}
             />
           </div>
           <div className={styles.input_container}>
             <PasswordInput
-              disabled={authLoading}
-              helperText={formErrors.password}
-              isError={!!formErrors.password}
+              disabled={isSubmitting}
+              helperText={errors?.password || ' '}
+              isError={!!errors?.password || false}
               label={translateMessage('field.input.password.label')}
               type="password"
-              value={formValues.password}
+              value={values.password}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                const password = event.target.value;
-                setFormValues({ ...formValues, password });
-                const error = validateLoginForm('password', password);
-                setFormErrors({ ...formErrors, password: error });
+                setFieldValue('password', event.target.value);
               }}
             />
           </div>
           <div className={styles.input_container}>
             <Checkbox
-              disabled={authLoading}
-              isChecked={formValues.isNotMyDevice}
+              disabled={isSubmitting}
+              isChecked={values.isNotMyDevice}
               label={translateMessage('field.checkbox.isNotMyDevice.label')}
-              onChange={() => setFormValues((prev) => ({ ...prev, isNotMyDevice: !prev.isNotMyDevice }))}
+              onChange={() => setFieldValue('isNotMyDevice', !values.isNotMyDevice)}
             />
           </div>
           <div>
             <Button
-              isLoading={authLoading}
+              isLoading={isSubmitting}
+              disabled={isSubmitting}
               type="submit">
               {translateMessage('button.signIn')}
             </Button>

@@ -16,8 +16,8 @@ export const Input: React.FC<InputProps> = ({ isError = false, helperText = '', 
   return (
     <div className={`${styles.input_container} ${focused || props.value ? styles.focused : ''}`}>
       <label
-className={styles.label}
-htmlFor="input">
+        className={styles.label}
+        htmlFor="input">
         {label}
       </label>
       <input

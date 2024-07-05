@@ -7,7 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button: React.FC<ButtonProps> = ({ children, isLoading,  ...props }) => {
-  return <button className={styles.button}>
+  return <button className={styles.button} disabled={isLoading}>
     {!isLoading && children}
     {isLoading && <div className={styles['dot-flashing']} />}
   </button>;
