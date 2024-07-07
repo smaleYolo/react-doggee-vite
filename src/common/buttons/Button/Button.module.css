@@ -11,9 +11,11 @@
   cursor: pointer;
   color: var(--color-b-text);
   transition: all 0.2s ease-in-out;
+
   font-size: 12px;
   font-weight: bold;
   font-style: normal;
+  font-family: var(--font-family-nunito);
 }
 
 .button:hover {

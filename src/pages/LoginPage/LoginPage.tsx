@@ -16,6 +16,7 @@ import styles from './LoginPage.module.css';
 export interface LoginFormValues {
   username: string;
   password: string;
+  passwordRepeat?: string;
   isNotMyDevice?: boolean;
 }
 
@@ -30,7 +31,7 @@ export const LoginPage = () => {
   const { login } = useAuth();
   const { translateMessage } = useIntl();
 
-  const { mutation: authMutation, isLoading: authLoading } = useMutation<LoginResponse, LoginFormValues>({
+  const { mutation: authMutation } = useMutation<LoginResponse, LoginFormValues>({
     request: (userData: LoginFormValues) => api.post<LoginResponse, LoginFormValues>('/auth/login', userData)
   });
 
@@ -67,8 +68,8 @@ export const LoginPage = () => {
           onSubmit={(event) => handleSubmit(event)}>
           <div className={styles.input_container}>
             <Input
-              disabled={authLoading}
-              helperText={errors?.username || ''}
+              disabled={isSubmitting}
+              helperText={translateMessage(errors?.username || 'errors?.username') || ''}
               isError={!!errors?.username || false}
               label={translateMessage('field.input.username.label')}
               type="text"
@@ -81,7 +82,7 @@ export const LoginPage = () => {
           <div className={styles.input_container}>
             <PasswordInput
               disabled={isSubmitting}
-              helperText={errors?.password || ' '}
+              helperText={translateMessage(errors?.password || 'errors?.password') || ''}
               isError={!!errors?.password || false}
               label={translateMessage('field.input.password.label')}
               type="password"

@@ -3,8 +3,9 @@ export interface FormErrors {
   password: string | null;
 }
 
+
 export const validateIsEmpty = (value: string) => {
-  if (!value) return 'Field Required!';
+  if (!value) return 'validations.required';
   return null;
 };
 

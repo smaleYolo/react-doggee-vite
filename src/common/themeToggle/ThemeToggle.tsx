@@ -1,7 +1,9 @@
 import React from 'react';
 import { useTheme } from '@features/theming';
 import DarkSvg from 'src/static/images/icons/dark.svg';
+import DarkSvg2 from 'src/static/images/icons/dark_2.svg';
 import LightSvg from 'src/static/images/icons/light.svg';
+import LightSvg2 from 'src/static/images/icons/light_2.svg';
 
 import styles from './ToggleTheme.module.css'
 
@@ -15,12 +17,12 @@ onClick={toggleTheme}>
       <img
         alt="dark"
         className={`${styles.img} ${theme === 'dark' ? styles.show : styles.hide}`}
-        src={DarkSvg}
+        src={DarkSvg2}
       />
       <img
         alt="light"
         className={`${styles.img} ${theme === 'light' ? styles.show : styles.hide}`}
-        src={LightSvg}
+        src={LightSvg2}
       />
     </div>
   );

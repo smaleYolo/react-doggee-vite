@@ -1,8 +1,8 @@
 import React from 'react';
 import { useIntl } from '@features/intl';
 
-export const flagStyles = { color: 'rgb(245, 198, 120)', fontWeight: 600 }
-export const unFlagStyles = { color: 'rgb(147, 177, 255)', fontWeight: 600 }
+export const unFlagStyles = { color: 'rgb(245, 198, 120)', fontWeight: 600 }
+export const flagStyles = { color: 'rgb(147, 177, 255)', fontWeight: 600 }
 
 interface IntlTextProps {
   path: string; // Путь к локализованному сообщению

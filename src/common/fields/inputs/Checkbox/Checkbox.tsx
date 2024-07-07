@@ -5,7 +5,7 @@ import styles from './Checkbox.module.css';
 interface CheckboxProps extends React.HTMLAttributes<HTMLInputElement> {
   onChange: () => void;
   isChecked?: boolean;
-  label: string;
+  label?: string;
   disabled?: boolean;
 }
 

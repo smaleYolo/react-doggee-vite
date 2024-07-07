@@ -4,6 +4,7 @@
   "field.input.registrationAddress.label": "Где вы живете?",
   "field.input.birthday.label": "Ваш день рождение?",
   "field.input.password.label": "Пароль",
+  "field.input.password.repeat.label": "Пароль еще раз",
   "field.input.birthDate.label": "Когда ваш день рождение?",
   "field.input.passwordAgain.label": "Повтор пароля",
   "field.input.dogName.label": "Имя собаки",
@@ -27,8 +28,9 @@
   "page.registration.step.fillLoginDataStep.passwordRules.containNumbers": "содержать <rule>цифры</rule>",
   "page.registration.step.fillLoginDataStep.passwordRules.containUppercase": "содержать <rule>заглавные</rule> буквы",
   "page.registration.step.fillLoginDataStep.passwordRules.containLowerCase": "содержать <rule>прописные</rule> буквы",
-  "page.registration.step.fillLoginDataStep.passwordRules.contain8Characters": "содержать не менее <rule>8</rule> символов",
+  "page.registration.step.fillLoginDataStep.passwordRules.contain5Characters": "содержать не менее <rule>5</rule> символов",
   "page.registration.step.fillLoginDataStep.passwordRules.mustMatch": "Пароль должен <rule>совпадать</rule>",
+  "page.registration.step.rule.checker": "Не выполнены все требования формирования пароля!",
 
   "page.registration.step.fillProfileData.label": "Ваш профиль",
   "page.registration.step.fillProfileData.title": "Давайте заполним ваш профиль!",
@@ -48,7 +50,10 @@
   "login.failed": "Ошибка входа. Пожалуйста, проверьте свои учетные данные.",
   "login.fillRequiredFields": "Пожалуйста, заполните все обязательные поля.",
 
-  "validations.required": "поле обязательно",
+  "validations.required": "Поле обязательно",
+  "validations.compare.passwords":  "Пароли должны совпадать",
+  "validations.username.at.least.5":  "Логин должен содержать не менее 5-ти символов",
+  "validations.success": "Успех: {msg}",
 
   "page.test.dogsListTitle": "Список собак",
   "loading": "Загрузка...",

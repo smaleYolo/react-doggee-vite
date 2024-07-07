@@ -74,6 +74,11 @@ export const useForm = <Values>({
     }
   };
 
+  const resetForm = () => {
+    setValues(initialValues);
+    setErrors(null);
+  };
 
-  return { values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldError, validate };
+
+  return { values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldError, validate, resetForm };
 };

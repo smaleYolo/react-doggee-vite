@@ -1,44 +1,30 @@
 .page {
+    background-color: var(--background-color);
     height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
 }
 
 .container {
-    background: var(--color-white);
-    box-shadow: 0 4px 50px 2px var(--color-shadow);
-    border-radius: 20px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-    gap: 53px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 50px;
+    margin-left: 25%;
 }
 
 .container_header {
-    display: flex;
-    justify-content: center;
-    align-items: end;
-
-    box-sizing: border-box;
-    width: 100%;
-    height: 150px;
-    padding: 16px;
-
-    border-radius: 15px 15px 0 0;
     text-align: center;
-    color: var(--color-white);
-    background-image: var(--images-dogge-background-light);
-
-    font-size: 40px;
+    color: var(--color-accent);
+    font-family: var(--font-family-nunito);
+    font-size: 22px;
+    font-weight: var(--font-weight800);
+    margin-bottom: 72px;
 }
 
 .form_container {
-    padding: 0 100px;
+    display: flex;
+    flex-direction: column;
 }
 
 .input_container {
@@ -47,11 +33,99 @@
     margin-bottom: 10px;
 }
 
-.sign_up_container {
-    font-weight: 600;
-    font-size: 12px;
-    color: var(--color-accent);
+section {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 300px;
+    height: 100vh;
+}
+
+section:first-child {
+    grid-column: 1;
+}
+
+section:last-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.section_header {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    font-family: var(--font-family-baloo);
+    font-weight: var(--font-weight800);
+    font-size: 40px;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 140px;
+    padding: 16px;
+    text-align: center;
+    color: var(--color-white);
+    background-image: var(--images-dogge-background);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.section_color {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-password-rules-block);
+}
+
+.section_color:last-child {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    padding-bottom: 30px;
+}
+
+.sign_in {
+    background: transparent;
+    border: none;
+    font-size: 14px;
+    font-family: var(--font-family-nunito);
+    color: var(--color-white);
+    font-weight: var(--font-weight600);
     align-items: center;
     margin-bottom: 15px;
     cursor: pointer;
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.sign_in::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-white);
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+}
+
+.sign_in:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.section_rules {
+    height: 120%;
+    padding: 40px 30px;
+    font-size: 14px;
+    font-family: var(--font-family-nunito);
+    color: var(--color-text);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.section_rules_item {
+    display: flex;
+    gap: 5px;
 }

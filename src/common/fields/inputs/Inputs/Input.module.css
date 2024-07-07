@@ -12,11 +12,11 @@
     border-radius: 5px;
     border: none;
     padding: 10px 40px 10px 10px;
-    width: 250px;
+    width: 100%;
     height: 48px;
     color: var(--color-text);
-    font-weight: var(--font-weight800);
-    font-family: var(--font-family-open-sans);
+    font-weight: var(--font-weight600);
+    font-family: var(--font-family-nunito);
     font-size: 14px;
     transition: all 0.3s ease;
 }
@@ -32,6 +32,7 @@
 
 .input:focus,
 .input_container.focused .input {
+    outline: none;
     background-color: var(--background-color-field);
 }
 
@@ -58,6 +59,7 @@
     top: -17px;
     font-size: 12px;
     color: var(--color-text);
+    /*color: #d2d2d2;*/
 }
 
 .error {

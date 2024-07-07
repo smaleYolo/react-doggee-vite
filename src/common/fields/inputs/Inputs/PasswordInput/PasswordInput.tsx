@@ -64,13 +64,13 @@ export const PasswordInput: React.FC<InputProps> = ({
   return (
     <div className={`${styles.input_container} ${focused || value ? styles.focused : ''}`}>
       <label
-className={styles.label}
-htmlFor="password-input">
+        className={styles.label}
+        htmlFor={props.id || 'password-input'}>
         {label}
       </label>
       <input
         className={`${styles.input} ${isError ? styles.error : ''}`}
-        id="password-input"
+        id={props.id || 'password-input'}
         type={showPassword ? 'text' : type}
         value={value}
         onBlur={handleBlur}
@@ -80,9 +80,9 @@ htmlFor="password-input">
       {isError && helperText && <span className={styles.helper_text}>{helperText}</span>}
       {type === 'password' && value && (
         <div
-className={styles.password_toggle_container}
-onClick={togglePasswordVisibility}>
-          {showPassword ? <HideSvg />  : <ShowSvg />}
+          className={styles.password_toggle_container}
+          onClick={togglePasswordVisibility}>
+          {showPassword ? <HideSvg /> : <ShowSvg />}
         </div>
       )}
     </div>
