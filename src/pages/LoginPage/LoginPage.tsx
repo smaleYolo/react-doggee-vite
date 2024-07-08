@@ -12,11 +12,11 @@ import { useAuth } from '@utils/contexts';
 import { useForm, useMutation } from '@utils/hooks';
 
 import styles from './LoginPage.module.css';
+import { ROUTES } from '@utils/constants';
 
 export interface LoginFormValues {
   username: string;
   password: string;
-  passwordRepeat?: string;
   isNotMyDevice?: boolean;
 }
 
@@ -52,7 +52,7 @@ export const LoginPage = () => {
         const data = await authMutation(values);
         // Здесь сохраняем данные в куках
         login(data.access_token, data.userId, values.isNotMyDevice);
-        navigate('/');
+        navigate(ROUTES.MAIN);
       } catch (error) {
         toast.error(translateMessage('login.failed'));
       }
@@ -100,18 +100,16 @@ export const LoginPage = () => {
               onChange={() => setFieldValue('isNotMyDevice', !values.isNotMyDevice)}
             />
           </div>
-          <div>
             <Button
               isLoading={isSubmitting}
               disabled={isSubmitting}
               type="submit">
               {translateMessage('button.signIn')}
             </Button>
-          </div>
         </form>
         <div
           className={styles.sign_up_container}
-          onClick={() => navigate('/register')}>
+          onClick={() => navigate(ROUTES.REGISTER)}>
           {translateMessage('page.login.createNewAccount')}
         </div>
       </section>

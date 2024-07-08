@@ -1,27 +1,32 @@
-import { ThemeToggle } from '@common/themeToggle/ThemeToggle';
-import { LoginPage } from '@pages/LoginPage/LoginPage';
-import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
-import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
-import { TestHeader } from '@common/TestComp/TestHeader/TestHeader';
-import { TestPage } from '@pages/Test/TestPage/TestPage';
-import { useAuth } from '@utils/contexts';
 import React from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import 'react-toastify/dist/ReactToastify.css';
+import { useAuth } from '@utils/contexts';
+import { ROUTES } from '@utils/constants';
+
+import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
+import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
+import { LoginPage } from '@pages/LoginPage/LoginPage';
+import { TestPage } from '@pages/Test/TestPage/TestPage';
+
+import { ThemeToggle } from '@common/themeToggle/ThemeToggle';
+import { TestHeader } from '@common/TestComp/TestHeader/TestHeader';
+
 
 const AuthRoutes = () => (
   <Routes>
     <Route
       element={<LoginPage />}
-      path="/auth" />
+      path={ROUTES.AUTH} />
     <Route
       element={<RegisterPage />}
-      path="/register" />
+      path={ROUTES.REGISTER} />
     <Route
-      element={<Navigate to="/auth" />}
-      path="*" />
+      element={<Navigate to={ROUTES.AUTH} />}
+      path={ROUTES.ANY} />
   </Routes>
 );
 
@@ -29,10 +34,10 @@ const MainRoutes = () => (
   <Routes>
     <Route
       element={<TestPage />}
-      path="/" />
+      path={ROUTES.MAIN} />
     <Route
       element={<NotFoundPage />}
-      path="*" />
+      path={ROUTES.ANY} />
   </Routes>
 );
 

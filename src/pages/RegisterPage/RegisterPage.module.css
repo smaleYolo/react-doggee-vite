@@ -89,8 +89,6 @@ section:last-child {
     font-family: var(--font-family-nunito);
     color: var(--color-white);
     font-weight: var(--font-weight600);
-    align-items: center;
-    margin-bottom: 15px;
     cursor: pointer;
     position: relative;
     padding-bottom: 2px;
@@ -115,13 +113,15 @@ section:last-child {
 }
 
 .section_rules {
-    height: 120%;
-    padding: 40px 30px;
+    height: 100%;
+    padding: 25px 30px;
     font-size: 14px;
     font-family: var(--font-family-nunito);
     color: var(--color-text);
+
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 10px;
 }
 

@@ -5,6 +5,7 @@
   /* colors */
   --color-accent: #f5c678;
   --color-accent7: rgba(245, 198, 120, 0.7);
+  --color-accent-disabled: rgba(176, 161, 146, 0.7);
   --color-additional: #93b1ff;
   --color-white: #fff;
   --color-black: #000;

@@ -28,6 +28,7 @@
 
 .button:disabled {
   cursor: not-allowed;
+  background: var(--color-accent-disabled);
 }
 
 .dot-flashing {
