@@ -12,7 +12,7 @@ interface PasswordRuleProps {
 
 export const PasswordRule = ({isCorrect, intlPath}: PasswordRuleProps) => {
   return (
-    <div className={styles.section_rules_item}>
+    <div className={styles.rules_container_main_item}>
       {isCorrect ? <CheckMarkSvg /> : <WarningSvg />}
       <IntlText
         path={intlPath}

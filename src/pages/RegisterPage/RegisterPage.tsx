@@ -73,7 +73,7 @@ export const RegisterPage = () => {
     <div className={styles.page}>
       <div className={styles.container}>
 
-        <section>
+        <section className={styles.form_container}>
           <h1
             className={styles.container_header}
           >
@@ -93,13 +93,12 @@ export const RegisterPage = () => {
 
         </section>
 
-        <section>
-          <div className={styles.section_header}>
+        <section className={styles.rules_container}>
+          <div className={styles.rules_container_header}>
             DOGGEE
           </div>
-          <div className={styles.section_color} />
 
-          <div className={styles.section_rules}>
+          <div className={styles.rules_container_main}>
             <b>{translateMessage('page.registration.step.fillLoginDataStep.passwordRules.must')}</b>
 
             {
@@ -115,7 +114,7 @@ export const RegisterPage = () => {
           </div>
 
           <div
-            className={styles.section_color}
+            className={styles.rules_container_bottom}
           >
             <span
               className={styles.sign_in}
