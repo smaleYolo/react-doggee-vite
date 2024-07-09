@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 interface usePasswordRulesProps {
   password: string;
@@ -24,6 +24,29 @@ const usePasswordRules = ({passwordRepeat, password}: usePasswordRulesProps) => 
     contain_5_characters: password.length >= 5
   }), []);
 
+  const rules = React.useMemo(() => [
+    {
+      intlPath: "page.registration.step.fillLoginDataStep.passwordRules.containNumbers",
+      isCorrect: passwordRuleChecker.contain_number
+    },
+    {
+      intlPath: "page.registration.step.fillLoginDataStep.passwordRules.containUppercase",
+      isCorrect: passwordRuleChecker.contain_uppercase
+    },
+    {
+      intlPath: "page.registration.step.fillLoginDataStep.passwordRules.containLowerCase",
+      isCorrect: passwordRuleChecker.contain_lowercase
+    },
+    {
+      intlPath: "page.registration.step.fillLoginDataStep.passwordRules.contain5Characters",
+      isCorrect: passwordRuleChecker.contain_5_characters
+    },
+    {
+      intlPath: "page.registration.step.fillLoginDataStep.passwordRules.mustMatch",
+      isCorrect: passwordRuleChecker.passwords_match
+    },
+  ],[passwordRuleChecker])
+
   useEffect(() => {
     setPasswordRuleChecker(validatePasswordRules({password, passwordRepeat}));
   }, [password, passwordRepeat]);
@@ -32,7 +55,7 @@ const usePasswordRules = ({passwordRepeat, password}: usePasswordRulesProps) => 
     setIsRulesCompleted(!Object.values(passwordRuleChecker).includes(false))
   }, [passwordRuleChecker]);
 
-  return { passwordRuleChecker, isRulesCompleted };
+  return { passwordRuleChecker, isRulesCompleted, rules };
 };
 
 export default usePasswordRules;
