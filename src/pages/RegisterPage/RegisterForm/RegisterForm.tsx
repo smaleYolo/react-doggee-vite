@@ -6,7 +6,6 @@ import { Input, PasswordInput } from '@common/fields';
 import { Button } from '@common/buttons';
 
 import styles from '@pages/RegisterPage/RegisterPage.module.css';
-import { HideSvg, ShowSvg } from '@utils/svg';
 
 interface RegisterFormProps {
   handleSubmit: (event: React.FormEvent) => void;
@@ -41,7 +40,6 @@ export const RegisterForm = ({
       onSubmit={(event) => handleSubmit(event)}>
       <div className={styles.input_container}>
         <Input
-          id={'register-form-username-input'}
           disabled={isSubmitting}
           helperText={translateMessage(errors?.username || 'errors?.username') || ''}
           isError={!!errors?.username || false}
@@ -56,7 +54,6 @@ export const RegisterForm = ({
 
       <div className={styles.input_container}>
         <PasswordInput
-          id={'register-form-password-input'}
           disabled={isSubmitting}
           helperText={translateMessage(errors?.password || 'errors?.password') || ''}
           isError={!!errors?.password || false}
@@ -71,7 +68,6 @@ export const RegisterForm = ({
 
       <div className={styles.input_container}>
         <PasswordInput
-          id={'register-form-repeat-password-input'}
           disabled={isSubmitting}
           helperText={!passwordRuleChecker.passwords_match ? translateMessage('validations.compare.passwords') : ''}
           isError={!values.password.length ? false : !passwordRuleChecker.passwords_match}

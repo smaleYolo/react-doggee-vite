@@ -73,9 +73,9 @@ export const RegisterPage = () => {
     <div className={styles.page}>
       <div className={styles.container}>
 
-        <section className={styles.form_container}>
+        <section className={styles.section_left}>
           <h1
-            className={styles.container_header}
+            className={styles.section_header}
           >
             {translateMessage('page.registration.step.fillLoginDataStep.title')}
           </h1>
@@ -93,12 +93,12 @@ export const RegisterPage = () => {
 
         </section>
 
-        <section className={styles.rules_container}>
-          <div className={styles.rules_container_header}>
+        <section className={styles.section_right}>
+          <div className={styles.section_right_header}>
             DOGGEE
           </div>
 
-          <div className={styles.rules_container_main}>
+          <div className={styles.section_right_content}>
             <b>{translateMessage('page.registration.step.fillLoginDataStep.passwordRules.must')}</b>
 
             {
@@ -114,10 +114,10 @@ export const RegisterPage = () => {
           </div>
 
           <div
-            className={styles.rules_container_bottom}
+            className={styles.section_right_bottom}
           >
             <span
-              className={styles.sign_in}
+              className={styles.section_right_sign_in}
               onClick={() => navigate(ROUTES.AUTH)}
             >
               {translateMessage('page.registration.step.fillLoginDataStep.iAlreadyHaveAnAccount')}
@@ -125,6 +125,7 @@ export const RegisterPage = () => {
           </div>
 
         </section>
+
       </div>
     </div>
   );

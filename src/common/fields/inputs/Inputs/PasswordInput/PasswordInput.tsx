@@ -9,7 +9,6 @@ interface PasswordInputProps extends InputProps {
 }
 
 export const PasswordInput: React.FC<PasswordInputProps> = ({
-                                                              id,
                                                               isError = false,
                                                               helperText = '',
                                                               label = 'Password Input',
@@ -22,7 +21,6 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 
   return (
     <Input
-      id={id}
       type={showPassword ? 'text' : type}
       value={value}
       label={label}
