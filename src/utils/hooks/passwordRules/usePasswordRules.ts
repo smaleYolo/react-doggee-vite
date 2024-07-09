@@ -14,15 +14,6 @@ const usePasswordRules = ({passwordRepeat, password}: usePasswordRulesProps) => 
     contain_lowercase: false,
     contain_5_characters: false,
   });
-  const [isRulesCompleted, setIsRulesCompleted] = useState<boolean>(!Object.values(passwordRuleChecker).includes(false))
-
-  const validatePasswordRules = useCallback(({ password, passwordRepeat }: usePasswordRulesProps) => ({
-    passwords_match: password.length > 0 && password === passwordRepeat,
-    contain_number: /\d/.test(password),
-    contain_uppercase: /[A-Z]/.test(password),
-    contain_lowercase: /[a-z]/.test(password),
-    contain_5_characters: password.length >= 5
-  }), []);
 
   const rules = React.useMemo(() => [
     {
@@ -47,8 +38,18 @@ const usePasswordRules = ({passwordRepeat, password}: usePasswordRulesProps) => 
     },
   ],[passwordRuleChecker])
 
+  const [isRulesCompleted, setIsRulesCompleted] = useState<boolean>(false)
+
+  const validatePasswordRules = useCallback((password: string, passwordRepeat?: string ) => ({
+    passwords_match: password.length > 0 && password === passwordRepeat,
+    contain_number: /\d/.test(password),
+    contain_uppercase: /[A-Z]/.test(password),
+    contain_lowercase: /[a-z]/.test(password),
+    contain_5_characters: password.length >= 5
+  }), []);
+
   useEffect(() => {
-    setPasswordRuleChecker(validatePasswordRules({password, passwordRepeat}));
+    setPasswordRuleChecker(validatePasswordRules(password, passwordRepeat));
   }, [password, passwordRepeat]);
 
   useEffect(() => {

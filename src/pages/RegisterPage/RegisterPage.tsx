@@ -7,7 +7,7 @@ import { useIntl } from '@features/intl';
 import { useForm, useMutation } from '@utils/hooks';
 
 import { validatePassword, validateUsername } from '@helpers/*';
-import usePasswordRules from '@utils/hooks/passwordRules/usePasswordValidation';
+import usePasswordRules from '@utils/hooks/passwordRules/usePasswordRules.ts';
 
 import { PasswordRule } from '@pages/RegisterPage/PasswordRule';
 import { RegisterForm } from '@pages/RegisterPage/RegisterForm';
@@ -47,20 +47,20 @@ export const RegisterPage = () => {
     },
     // validateOnChange: false,
     onSubmit: async (values) => {
-      try {
-        if (isRulesCompleted) {
+      if (isRulesCompleted) {
+        try {
           const data = await registerMutation(values);
-          toast.success(translateMessage(data?.message || 'data?.message'));
+          toast.success(translateMessage(data?.message || 'Registration successful!'));
           resetForm();
-
           navigate(ROUTES.AUTH);
-        } else {
-          toast.error(translateMessage('page.registration.step.rule.checker'));
+        } catch (error) {
+          toast.error(translateMessage('login.failed'));
         }
-      } catch (error) {
-        toast.error(translateMessage('login.failed'));
+      } else {
+        toast.error(translateMessage('page.registration.step.rule.checker'));
       }
     }
+
   });
 
   const { passwordRuleChecker, isRulesCompleted, rules } = usePasswordRules({
