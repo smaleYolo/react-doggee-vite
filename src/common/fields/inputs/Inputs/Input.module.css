@@ -76,12 +76,13 @@
     color: var(--color-text-validation);
 }
 
-.password_toggle_container {
+.indicator {
     position: absolute;
     top: 17px;
     right: 10px;
-    cursor: pointer;
     opacity: 0.8;
+
+    cursor: pointer;
 }
 
 .input:disabled {

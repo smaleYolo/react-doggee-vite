@@ -1,53 +1,44 @@
 import React, { useState } from 'react';
 
-import styles from '../Input.module.css';
 import { HideSvg, ShowSvg } from '@utils/svg';
+import { Input, InputProps } from '@common/fields';
 
-interface InputProps extends Omit<React.HTMLProps<HTMLInputElement>, 'placeholder'> {
-  isError?: boolean;
-  helperText?: string | null;
+
+interface PasswordInputProps extends InputProps {
+
 }
 
-export const PasswordInput: React.FC<InputProps> = ({
-                                                      isError = false,
-                                                      helperText = '',
-                                                      label,
-                                                      type = 'text',
-                                                      value,
-                                                      ...props
-                                                    }) => {
-  const [focused, setFocused] = useState(false);
+export const PasswordInput: React.FC<PasswordInputProps> = ({
+                                                              id,
+                                                              isError = false,
+                                                              helperText = '',
+                                                              label = 'Password Input',
+                                                              type = 'password',
+                                                              value,
+                                                              ...props
+                                                            }) => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleFocus = () => setFocused(true);
-  const handleBlur = () => setFocused(false);
-
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   return (
-    <div className={`${styles.input_container} ${focused || value ? styles.focused : ''}`}>
-      <label
-        className={styles.label}
-        htmlFor={props.id || 'password-input'}>
-        {label}
-      </label>
-      <input
-        className={`${styles.input} ${isError ? styles.error : ''}`}
-        id={props.id || 'password-input'}
-        type={showPassword ? 'text' : type}
-        value={value}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        {...props}
-      />
-      {isError && helperText && <span className={styles.helper_text}>{helperText}</span>}
-      {type === 'password' && value && (
-        <div
-          className={styles.password_toggle_container}
-          onClick={togglePasswordVisibility}>
-          {showPassword ? <HideSvg /> : <ShowSvg />}
-        </div>
-      )}
-    </div>
+    <Input
+      id={id}
+      type={showPassword ? 'text' : type}
+      value={value}
+      label={label}
+      isError={isError}
+      helperText={helperText}
+      {...props}
+
+      components={{
+        indicator: value ? () => (
+          <div
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? <HideSvg /> : <ShowSvg />}
+          </div>
+        ) : undefined
+      }}
+    />
   );
 };

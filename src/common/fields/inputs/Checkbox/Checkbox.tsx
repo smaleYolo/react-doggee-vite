@@ -1,13 +1,9 @@
 import React from 'react';
 
 import styles from './Checkbox.module.css';
+import { InputProps } from '@common/fields';
 
-interface CheckboxProps extends React.HTMLAttributes<HTMLInputElement> {
-  onChange: () => void;
-  isChecked?: boolean;
-  label?: string;
-  disabled?: boolean;
-}
+type CheckboxProps = InputProps
 
 export const Checkbox = ({ onChange, isChecked, label, disabled }: CheckboxProps) => {
   return (

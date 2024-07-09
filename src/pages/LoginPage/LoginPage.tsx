@@ -68,11 +68,11 @@ export const LoginPage = () => {
           onSubmit={(event) => handleSubmit(event)}>
           <div className={styles.input_container}>
             <Input
+              id={'loginpage-username-input'}
               disabled={isSubmitting}
               helperText={translateMessage(errors?.username || 'errors?.username') || ''}
               isError={!!errors?.username || false}
               label={translateMessage('field.input.username.label')}
-              type="text"
               value={values.username}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setFieldValue('username', event.target.value);
@@ -81,11 +81,11 @@ export const LoginPage = () => {
           </div>
           <div className={styles.input_container}>
             <PasswordInput
+              id={'loginpage-password-input'}
               disabled={isSubmitting}
               helperText={translateMessage(errors?.password || 'errors?.password') || ''}
               isError={!!errors?.password || false}
               label={translateMessage('field.input.password.label')}
-              type="password"
               value={values.password}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 setFieldValue('password', event.target.value);
@@ -94,6 +94,7 @@ export const LoginPage = () => {
           </div>
           <div className={styles.input_container}>
             <Checkbox
+              id={'loginpage-isnotmydevice-checkbox'}
               disabled={isSubmitting}
               isChecked={values.isNotMyDevice}
               label={translateMessage('field.checkbox.isNotMyDevice.label')}
