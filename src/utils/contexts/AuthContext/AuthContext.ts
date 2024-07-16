@@ -5,7 +5,13 @@ export interface AuthContextProps {
   setIsAuth: (isAuth: boolean) => void;
   isLoading: boolean;
   logout: () => void;
-  login: (access_token: string, userId: number, isNotUserDevice?: boolean | undefined) => void;
+  login: (access_token: string, refresh_token: string, userId: number, isNotUserDevice?: boolean | undefined) => void;
+  refreshToken: () => Promise<void>;
+}
+
+export interface RefreshResponse {
+  access_token: string;
+  refresh_token: string;
 }
 
 export const AuthContext = createContext<AuthContextProps | undefined>(undefined);

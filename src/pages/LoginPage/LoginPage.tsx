@@ -22,6 +22,7 @@ export interface LoginFormValues {
 
 export interface LoginResponse {
   access_token: string;
+  refresh_token: string;
   userId: number;
 }
 
@@ -48,10 +49,8 @@ export const LoginPage = () => {
     // validateOnChange: false,
     onSubmit: async (values) => {
       try {
-        // Тут проверяем данные пользователя
         const data = await authMutation(values);
-        // Здесь сохраняем данные в куках
-        login(data.access_token, data.userId, values.isNotMyDevice);
+        login(data.access_token, data.refresh_token, data.userId, values.isNotMyDevice);
         navigate(ROUTES.MAIN);
       } catch (error) {
         toast.error(translateMessage('login.failed'));
@@ -63,9 +62,7 @@ export const LoginPage = () => {
     <div className={styles.page}>
       <section className={styles.container}>
         <div className={styles.container_header}>DOGGEE</div>
-        <form
-          className={styles.form_container}
-          onSubmit={(event) => handleSubmit(event)}>
+        <form className={styles.form_container} onSubmit={(event) => handleSubmit(event)}>
           <div className={styles.input_container}>
             <Input
               disabled={isSubmitting}
@@ -98,16 +95,11 @@ export const LoginPage = () => {
               onChange={() => setFieldValue('isNotMyDevice', !values.isNotMyDevice)}
             />
           </div>
-            <Button
-              isLoading={isSubmitting}
-              disabled={isSubmitting}
-              type="submit">
-              {translateMessage('button.signIn')}
-            </Button>
+          <Button isLoading={isSubmitting} disabled={isSubmitting} type="submit">
+            {translateMessage('button.signIn')}
+          </Button>
         </form>
-        <div
-          className={styles.sign_up_container}
-          onClick={() => navigate(ROUTES.REGISTER)}>
+        <div className={styles.sign_up_container} onClick={() => navigate(ROUTES.REGISTER)}>
           {translateMessage('page.login.createNewAccount')}
         </div>
       </section>

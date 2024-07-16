@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import { RefreshResponse } from '@utils/contexts';
 
 type BaseUrl = string;
 const baseUrl: BaseUrl = 'http://localhost:3001';
@@ -13,7 +14,7 @@ export class API {
   async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
     const token = Cookies.get('access_token');
 
-    const response = await fetch(this.baseUrl + endpoint, {
+    let response = await fetch(this.baseUrl + endpoint, {
       credentials: 'include',
       ...options,
       headers: {
@@ -23,7 +24,47 @@ export class API {
       },
     });
 
-    if (!response.ok) throw new Error(response.statusText);
+    if (response.status === 401) {
+      const refreshToken = Cookies.get('refresh_token');
+      if (refreshToken) {
+        try {
+          const refreshResponse = await fetch(`${this.baseUrl}/auth/refresh-token`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ refresh_token: refreshToken }),
+          });
+
+          if (!refreshResponse.ok) {
+            throw new Error('Failed to refresh token');
+          }
+
+          const refreshData = (await refreshResponse.json()) as RefreshResponse;
+          const { access_token, refresh_token: newRefreshToken } = refreshData;
+          Cookies.set('access_token', access_token);
+          Cookies.set('refresh_token', newRefreshToken);
+
+          // Повторный запрос с новым токеном
+          response = await fetch(this.baseUrl + endpoint, {
+            credentials: 'include',
+            ...options,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${access_token}`,
+              ...(options.headers && options.headers),
+            },
+          });
+        } catch (err) {
+          throw new Error('Failed to refresh token and retry request');
+        }
+      }
+    }
+
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
 
     const responseData = (await response.json()) as T;
     return responseData;
