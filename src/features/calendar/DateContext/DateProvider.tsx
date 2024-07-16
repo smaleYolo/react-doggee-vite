@@ -1,6 +1,7 @@
-import { ReactNode, useContext } from 'react';
-import { useIntl } from '@features/intl';
 import { DateContext, useCalendar } from '@features/calendar';
+import type { ReactNode} from 'react';
+import { useContext } from 'react';
+import { useIntl } from '@features/intl';
 
 interface DateProviderProps {
   children: ReactNode;

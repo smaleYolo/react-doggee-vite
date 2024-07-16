@@ -1,1 +1,1 @@
-export * from './usePasswordRules.ts'
+export * from './usePasswordRules';

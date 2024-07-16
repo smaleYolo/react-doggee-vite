@@ -1,10 +1,10 @@
+import darkTheme from '@static/theme/dark/dark.module.css';
 import Cookies from 'js-cookie';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { ThemeContext, type ThemeContextProps, type ThemesType } from '../../theming';
+import { ThemeContext, type ThemeContextProps, type ThemesType } from "..";
 import { getTheme } from '../helpers/getTheme';
 
-import darkTheme from '@static/theme/dark/dark.module.css';
 import lightTheme from '@static/theme/light/light.module.css';
 
 

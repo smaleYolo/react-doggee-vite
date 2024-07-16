@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-
+import type { InputProps } from '@common/fields';
+import { Input } from '@common/fields';
 import { HideSvg, ShowSvg } from '@utils/svg';
-import { Input, InputProps } from '@common/fields';
+import React, { useState } from 'react';
 
 
 interface PasswordInputProps extends InputProps {
@@ -21,11 +21,11 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({
 
   return (
     <Input
+      helperText={helperText}
+      isError={isError}
+      label={label}
       type={showPassword ? 'text' : type}
       value={value}
-      label={label}
-      isError={isError}
-      helperText={helperText}
       {...props}
 
       components={{

@@ -1,19 +1,18 @@
-import React from 'react';
-import 'react-toastify/dist/ReactToastify.css';
-
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-
-import { useAuth } from '@utils/contexts';
-import { ROUTES } from '@utils/constants';
-
+import { TestHeader } from '@common/TestComp/TestHeader/TestHeader';
+import { ThemeToggle } from '@common/themeToggle/ThemeToggle';
+import { LoginPage } from '@pages/LoginPage/LoginPage';
 import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
 import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
-import { LoginPage } from '@pages/LoginPage/LoginPage';
 import { TestPage } from '@pages/Test/TestPage/TestPage';
+import { ROUTES } from '@utils/constants';
+import React from 'react';
 
-import { ThemeToggle } from '@common/themeToggle/ThemeToggle';
-import { TestHeader } from '@common/TestComp/TestHeader/TestHeader';
+import 'react-toastify/dist/ReactToastify.css';
+import { FillProfile } from '@pages/FillProfile/FillProfile.tsx';
+import { useUser } from '@utils/contexts';
+import { TestFooter } from '@common/TestComp/TestFooter/TestFooter.tsx';
 
 
 const AuthRoutes = () => (
@@ -33,8 +32,11 @@ const AuthRoutes = () => (
 const MainRoutes = () => (
   <Routes>
     <Route
-      element={<TestPage />}
+      element={<FillProfile />}
       path={ROUTES.MAIN} />
+    <Route
+      element={<TestPage />}
+      path={ROUTES.TEST} />
     <Route
       element={<NotFoundPage />}
       path={ROUTES.ANY} />
@@ -42,13 +44,14 @@ const MainRoutes = () => (
 );
 
 const App = () => {
-  const { isAuth } = useAuth();
+  const { isAuth } = useUser();
 
   return (
     <BrowserRouter>
       <TestHeader />
       <ThemeToggle />
       {isAuth ? <MainRoutes /> : <AuthRoutes />}
+      <TestFooter/>
       <ToastContainer />
     </BrowserRouter>
   );

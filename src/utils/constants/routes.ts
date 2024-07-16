@@ -3,4 +3,5 @@ export const ROUTES = {
   ANY: '*',
   AUTH: '/auth',
   REGISTER: '/register',
+  TEST: '/test',
 }

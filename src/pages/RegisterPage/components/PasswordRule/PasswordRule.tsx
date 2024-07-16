@@ -1,9 +1,8 @@
-import React from 'react';
-
-import { CheckMarkSvg, WarningSvg } from '@utils/svg';
 import { IntlText } from '@features/intl/components';
+import { CheckMarkSvg, WarningSvg } from '@utils/svg';
 
 import styles from '@pages/RegisterPage/RegisterPage.module.css';
+import React from 'react';
 
 interface PasswordRuleProps {
   isCorrect: boolean;

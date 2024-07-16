@@ -29,14 +29,16 @@ export const IntlText: React.FC<IntlTextProps> = ({ path, values, ruleCheck, chi
     if (index % 2 === 0) {
       // Если индекс четный, это обычный текст
       return part;
-    } else {
+    } 
       // Если индекс нечетный, это текст внутри тега <rule>
       return (
-        <span style={ruleCheck ? flagStyles : unFlagStyles} key={index}>
+        <span
+key={index}
+style={ruleCheck ? flagStyles : unFlagStyles}>
           {part}
         </span>
       );
-    }
+    
   });
 
   // Объединение частей сообщения

@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
-import styles from './Calendar.module.css';
 import { checkIsToday, useDate } from '@features/calendar';
+import React, { useEffect, useRef } from 'react';
+
+import styles from './Calendar.module.css';
 
 export const Calendar: React.FC = () => {
   const {
@@ -46,14 +47,16 @@ export const Calendar: React.FC = () => {
   }, []);
 
   return (
-    <div className={`${styles.container} ${isCalendar ? styles.visible : ''}`} ref={calendarRef}>
+    <div
+      ref={calendarRef}
+      className={`${styles.container} ${isCalendar ? styles.visible : ''}`}>
       {calendarType === 'basic' && (
         <>
           <div className={styles.header}>
             <img
+              alt="arrow_minus"
               className={styles.arrowBtn}
               src="src/static/images/arrow_additional.svg"
-              alt="arrow_minus"
               onClick={() => handleMonth('prev')}
             />
             <span className={styles.header_title}>
@@ -63,16 +66,18 @@ export const Calendar: React.FC = () => {
               </div>
             </span>
             <img
+              alt="arrow_plus"
               className={styles.arrowBtn}
               src="src/static/images/arrow_additional.svg"
-              alt="arrow_plus"
               onClick={() => handleMonth('next')}
             />
           </div>
           <div className={styles.body}>
             <div className={styles.daysOfTheWeek}>
               {weekDays.map((weekDay) => (
-                <span key={weekDay.day} className={styles.dayOfWeek}>
+                <span
+                  key={weekDay.day}
+                  className={styles.dayOfWeek}>
                   {weekDay.dayShort}
                 </span>
               ))}
@@ -103,18 +108,18 @@ export const Calendar: React.FC = () => {
         <>
           <div className={styles.header}>
             <img
+              alt="arrow_minus"
               className={styles.arrowBtn}
               src="src/static/images/arrow_additional.svg"
-              alt="arrow_minus"
               onClick={() => handleYear('prev')}
             />
             <span className={styles.header_title}>
               <span onClick={() => setCalendarType('years')}>{year}</span>
             </span>
             <img
+              alt="arrow_plus"
               className={styles.arrowBtn}
               src="src/static/images/arrow_additional.svg"
-              alt="arrow_plus"
               onClick={() => handleYear('next')}
             />
           </div>
@@ -145,18 +150,18 @@ export const Calendar: React.FC = () => {
         <>
           <div className={styles.header}>
             <img
+              alt="arrow_minus"
               className={styles.arrowBtn}
               src="src/static/images/arrow_additional.svg"
-              alt="arrow_minus"
               onClick={() => handleDecade('prev')}
             />
             <span className={styles.header_title}>
               <span>{`${years[0]} - ${years[years.length - 1]}`}</span>
             </span>
             <img
+              alt="arrow_plus"
               className={styles.arrowBtn}
               src="src/static/images/arrow_additional.svg"
-              alt="arrow_plus"
               onClick={() => handleDecade('next')}
             />
           </div>
@@ -169,7 +174,11 @@ export const Calendar: React.FC = () => {
                     ${styles.year}
                     ${year === String(currentDate.getFullYear()) ? styles.selected : ''}
                   `}
-                  onClick={() => handleYearClick(year)}
+                  onClick={() => {
+                    i === 0 && handleDecade('prev');
+                    i === 11 && handleDecade('next');
+                    i !== 0 && i !== 11 && handleYearClick(year)
+                  }}
                 >
                   {year}
                 </span>

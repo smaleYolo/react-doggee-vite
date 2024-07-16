@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button } from '@common/buttons';
@@ -8,11 +7,12 @@ import { PasswordInput } from '@fields/inputs/Inputs/PasswordInput/PasswordInput
 import { validatePassword, validateUsername } from '@helpers/validations';
 import { Input } from '@inputs/Inputs/Input/Input';
 import { api } from '@utils/api';
-import { useAuth } from '@utils/contexts';
+import { ROUTES } from '@utils/constants';
 import { useForm, useMutation } from '@utils/hooks';
+import React, { useState } from 'react';
 
 import styles from './LoginPage.module.css';
-import { ROUTES } from '@utils/constants';
+import { useUser } from '@contexts/UserContext';
 
 export interface LoginFormValues {
   username: string;
@@ -29,7 +29,7 @@ export interface LoginResponse {
 export const LoginPage = () => {
   const navigate = useNavigate();
 
-  const { login } = useAuth();
+  const { login } = useUser();
   const { translateMessage } = useIntl();
 
   const { mutation: authMutation } = useMutation<LoginResponse, LoginFormValues>({
@@ -62,7 +62,9 @@ export const LoginPage = () => {
     <div className={styles.page}>
       <section className={styles.container}>
         <div className={styles.container_header}>DOGGEE</div>
-        <form className={styles.form_container} onSubmit={(event) => handleSubmit(event)}>
+        <form
+className={styles.form_container}
+onSubmit={(event) => handleSubmit(event)}>
           <div className={styles.input_container}>
             <Input
               disabled={isSubmitting}
@@ -95,11 +97,16 @@ export const LoginPage = () => {
               onChange={() => setFieldValue('isNotMyDevice', !values.isNotMyDevice)}
             />
           </div>
-          <Button isLoading={isSubmitting} disabled={isSubmitting} type="submit">
+          <Button
+disabled={isSubmitting}
+isLoading={isSubmitting}
+type="submit">
             {translateMessage('button.signIn')}
           </Button>
         </form>
-        <div className={styles.sign_up_container} onClick={() => navigate(ROUTES.REGISTER)}>
+        <div
+className={styles.sign_up_container}
+onClick={() => navigate(ROUTES.REGISTER)}>
           {translateMessage('page.login.createNewAccount')}
         </div>
       </section>

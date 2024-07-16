@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useCallback } from 'react';
 
 interface useFormProps<Values> {
   initialValues: Values;
@@ -14,7 +15,7 @@ export const useForm = <Values>({
                                   validateSchema,
                                   onSubmit,
                                   validateOnChange = true
- }: useFormProps<Values>) => {
+                                }: useFormProps<Values>) => {
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState<{ [Key in keyof Values]?: string } | null>(null); // { username: 'error_message' } | null
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,18 +30,22 @@ export const useForm = <Values>({
   const setFieldError = <T extends keyof Values>(field: T, error: string | null | undefined) => {
     setErrors({ ...errors, [field]: error });
   };
-  const setFieldValue = <T extends keyof Values>(field: T, value: Values[T]) => {
-    setValues({ ...values, [field]: value });
 
-    if (validateOnChange) {
-      const error = validateField(field, value)
-      setFieldError(field, error);
-    }
-
-  };
+  const setFieldValue = useCallback(<T extends keyof Values>(field: T, value: Values[T]) => {
+    setValues((prevValues) => {
+      if (prevValues[field] !== value) {  // Проверка, изменилось ли значение
+        const newValues = { ...prevValues, [field]: value };
+        if (validateOnChange) {
+          const error = validateField(field, value);
+          setFieldError(field, error);
+        }
+        return newValues;
+      }
+      return prevValues;
+    });
+  }, [validateOnChange]);
 
   const validate = () => {
-
     const validateErrors: typeof errors = {};
     let isValid = true;
 
@@ -73,11 +78,10 @@ export const useForm = <Values>({
     }
   };
 
-  const resetForm = () => {
+  const resetForm = useCallback(() => {
     setValues(initialValues);
     setErrors(null);
-  };
-
+  }, [initialValues]);
 
   return { values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldError, validate, resetForm };
 };

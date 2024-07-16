@@ -1,13 +1,27 @@
-import type { ReactNode } from 'react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import type { AuthContextProps, RefreshResponse } from '@contexts/AuthContext/AuthContext';
-import { AuthContext } from '@contexts/AuthContext/AuthContext';
+import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import Cookies from 'js-cookie';
 import { api } from '@utils/api';
+import { RefreshResponse, Steps, UserContext, UserContextProps } from '@contexts/UserContext/UserContext.ts';
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  const getUserId = useCallback(() => {
+    return Cookies.get('userId');
+  }, []);
+
+  const getInitialStep = useCallback((): Steps => {
+    const step = Cookies.get(`profile_step_${getUserId()}`) as Steps | undefined;
+    return step ?? 'user';
+  }, [getUserId]);
+
+  const [currentStep, setCurrentStep] = useState<Steps>(getInitialStep);
+
+  const toggleStep = useCallback((step: Steps) => {
+    setCurrentStep(step);
+    Cookies.set(`profile_step_${getUserId()}`, step);
+  }, [getUserId]);
 
   const logout = useCallback(() => {
     Cookies.remove('access_token');
@@ -27,6 +41,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       Cookies.remove('NotUserDevice');
     }
     setIsAuth(true);
+
+    const step = Cookies.get(`profile_step_${userId}`) as Steps | undefined;
+    if(step) {
+      setCurrentStep(step);
+    } else {
+      setCurrentStep('user');
+    }
   }, []);
 
   const refreshToken = useCallback(async () => {
@@ -53,7 +74,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     if (authCookie && notUserDeviceCookie) {
       const [notUserDeviceFlag, notUserDeviceUserId] = notUserDeviceCookie.split('_');
-
       if (notUserDeviceFlag === 'true' && notUserDeviceUserId === userIdCookie) {
         logout();
       } else {
@@ -65,24 +85,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } else {
       refreshToken();
     }
-
     setIsLoading(false);
   }, [logout, refreshToken]);
 
-  const value: AuthContextProps = useMemo(() => ({
+  const value: UserContextProps = useMemo(() => ({
     isAuth,
     setIsAuth,
     isLoading,
     logout,
     login,
-    refreshToken
-  }), [isAuth, setIsAuth, isLoading, logout, login, refreshToken]);
+    refreshToken,
+    currentStep,
+    toggleStep,
+    getUserId,
+  }), [isAuth, isLoading, logout, login, refreshToken, currentStep, toggleStep, getUserId]);
 
   if (isLoading) return null;
 
   return (
-    <AuthContext.Provider value={value}>
+    <UserContext.Provider value={value}>
       {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 };
+

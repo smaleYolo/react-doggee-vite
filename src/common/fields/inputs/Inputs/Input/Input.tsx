@@ -1,4 +1,5 @@
 import React, { useEffect, useId, useState } from 'react';
+
 import styles from '../Input.module.css';
 
 export interface InputProps extends Omit<React.HTMLProps<HTMLInputElement>, 'placeholder'> {
@@ -31,7 +32,7 @@ export const Input: React.FC<InputProps> = ({
   const handleBlur = () => setFocused(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
+    const {value} = event.target;
     if (/^[a-zA-Z0-9]*$/.test(value)) {
       setInputValue(value);
       onChange(event);
@@ -45,17 +46,19 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <div className={`${styles.input_container} ${focused || inputValue ? styles.focused : ''}`}>
-      <label className={styles.label} htmlFor={id}>
+      <label
+className={styles.label}
+htmlFor={id}>
         {label}
       </label>
       <input
         className={`${styles.input} ${isError ? styles.error : ''}`}
         id={id}
         type={type}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
         value={inputValue}
+        onBlur={handleBlur}
         onChange={handleChange}
+        onFocus={handleFocus}
         {...props}
       />
       {isError && helperText && <span className={styles.helper_text}>{helperText}</span>}

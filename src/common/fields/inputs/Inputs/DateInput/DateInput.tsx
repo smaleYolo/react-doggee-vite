@@ -1,6 +1,6 @@
 import React from 'react';
-
-import { Input, InputProps } from '@common/fields';
+import type { InputProps } from '@common/fields';
+import { Input } from '@common/fields';
 
 
 interface DateInputProps extends InputProps {
@@ -15,18 +15,16 @@ export const DateInput: React.FC<DateInputProps> = ({
                                                         }) => {
 
   return (
-    <>
-      <Input
-        style={{cursor: 'text'}}
-        value={value}
-        label={label}
-        isError={isError}
+    <Input
         readOnly
         helperText={helperText}
+        isError={isError}
+        label={label}
+        style={{cursor: 'text'}}
+        value={value}
         {...props}
 
         components={props.components}
       />
-    </>
   );
 };

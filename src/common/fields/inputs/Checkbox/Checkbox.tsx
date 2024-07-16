@@ -1,7 +1,7 @@
+import { InputProps } from '@common/fields';
 import React from 'react';
 
 import styles from './Checkbox.module.css';
-import { InputProps } from '@common/fields';
 
 type CheckboxProps = InputProps
 

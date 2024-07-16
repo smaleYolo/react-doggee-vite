@@ -1,11 +1,9 @@
-import React from 'react';
-
-
-import { Input, PasswordInput } from '@common/fields';
 import { Button } from '@common/buttons';
-import { RegisterFormValues } from '@pages/RegisterPage/wizard/steps';
+import { Input, PasswordInput } from '@common/fields';
+import { RegisterFormValues } from '@pages/RegisterPage/RegisterPage.tsx';
 
 import styles from '@pages/RegisterPage/RegisterPage.module.css';
+import React from 'react';
 
 interface RegisterFormProps {
   handleSubmit: (event: React.FormEvent) => void;
@@ -81,8 +79,8 @@ export const RegisterForm = ({
       </div>
 
       <Button
-        isLoading={isSubmitting}
         disabled={!isRulesCompleted}
+        isLoading={isSubmitting}
         type="submit">
         {translateMessage('button.done')}
       </Button>

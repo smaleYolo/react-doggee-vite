@@ -1,17 +1,15 @@
 import { useIntl } from '@features/intl';
 import { useTheme } from '@features/theming';
-import { useAuth } from '@utils/contexts';
 import React from 'react';
 
-import styles from './TestHeader.module.css';
-import { useProfileSteps } from '@contexts/ProfileSteps';
+import styles from './TestHeader.module.css'
+import { useUser } from '@utils/contexts';
 
 export const TestHeader: React.FC = () => {
-  const { isAuth, logout } = useAuth();
+  const { isAuth, logout } = useUser();
   const { setLanguage, translateMessage } = useIntl();
   const { theme, toggleTheme } = useTheme();
 
-  const {currentStep, toggleStep} = useProfileSteps();
 
   return (
     <header className={styles.header}>
@@ -19,9 +17,6 @@ export const TestHeader: React.FC = () => {
         <div className={styles.languageButtons}>
           <button onClick={() => setLanguage('ru')}>Русский</button>
           <button onClick={() => setLanguage('en')}>English</button>
-        </div>
-        <div className={styles.languageButtons}>
-          <button onClick={() => toggleStep(currentStep)}>Step toggle</button>
         </div>
         {
           isAuth &&
