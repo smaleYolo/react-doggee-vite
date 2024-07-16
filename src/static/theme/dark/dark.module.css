@@ -8,12 +8,20 @@
   --background-color-field: rgba(58, 62, 66, 0.7);
   --background-color: #575c63;
 
+  --color-neutral-100: #575C63;
+  --color-neutral-200: #3A3E42;
+  --color-neutral-300: rgba(58 62 66 / 70%);
+  --color-neutral-400: rgba(255 255 255 / 50%);
+  --color-neutral-450: rgba(255 255 255 / 40%);
+  --color-neutral-500: #FFF;
+
   --shadow-container: 0 4px 3.57rem 0.14rem rgba(0, 0, 0, 0.25);
   --shadow-button: 0 0.14rem 0.71rem rgba(0, 0, 0, 0.2);
   --shadow-button-bottom: 0 0.14rem 0.71rem -0.07rem rgba(0, 0, 0, 0.2);
   --shadow-button-hover: 0 0.14rem 0.71rem rgba(0, 0, 0, 0.1);
 
   --background-password-rules-block: #3a3e42;
+  --background-calendar: #3A3E42;
 
   /* images */
   --images-dogge-background: url('./dogge_background.svg');

@@ -1,0 +1,162 @@
+.container {
+    position: absolute;
+    bottom: 140px;
+    right: 340px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    border: 1px solid var(--background-color-field-focused);
+    border-radius: 5px;
+    color: var(--color-text);
+    box-shadow: var(--shadow-container);
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.container.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 10px;
+    width: 100%;
+    background-color: var(--color-neutral-100);
+    border-radius: 5px 5px 0 0;
+    box-shadow: var(--shadow-container);
+}
+
+.header_title {
+    font-size: 13px;
+    font-weight: var(--font-weight600);
+    cursor: pointer;
+}
+
+.header_title::first-letter {
+    text-transform: uppercase;
+}
+
+.arrowBtn {
+    cursor: pointer;
+    width: 16px;
+    height: 13px;
+    transition: 0.2s ease-in-out;
+}
+
+.arrowBtn:last-child {
+    rotate: 180deg;
+}
+
+.arrowBtn:hover {
+    scale: 1.15;
+}
+
+.arrowBtn:active {
+    scale: 1.6;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto 0;
+    background-color: var(--color-neutral-200);
+}
+
+.daysOfTheWeek, .days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-column-gap: 2px;
+    grid-row-gap: 1px;
+    text-align: center;
+}
+
+.days {
+    padding-bottom: 5px;
+}
+
+.daysOfTheWeek {
+    font-size: 9px;
+    font-weight: var(--font-weight800);
+    color: var(--color-additional);
+}
+
+.dayOfWeek, .day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+
+    width: 24px;
+    height: 24px;
+    cursor: grab;
+    transition: all 0.2s ease-in-out;
+}
+
+.day:hover, .month:hover, .year:hover {
+    cursor: pointer;
+    font-weight: var(--font-weight800);
+    background-color: var(--color-additional);
+}
+
+.days {
+    font-size: 11px;
+    color: var(--color-text);
+}
+
+.otherMonthDay {
+    color: var(--color-neutral-450);
+}
+
+.day.today {
+    font-weight: var(--font-weight800);
+    background-color: var(--color-neutral-100);
+}
+
+.day.selected {
+    font-weight: var(--font-weight800);
+    background-color: var(--color-additional7);
+}
+
+.months, .years {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 3px;
+    grid-row-gap: 5px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.month, .year {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+
+    width: 56.67px;
+    height: 33.75px;
+    cursor: grab;
+    transition: all 0.2s ease-in-out;
+}
+
+.month.today, .year.today {
+    font-weight: var(--font-weight800);
+    background-color: var(--color-neutral-100);
+}
+
+.month.selected, .year.selected {
+    font-weight: var(--font-weight800);
+    background-color: var(--color-additional7);
+}
+
+.year:last-child, .year:first-child {
+    color: var(--color-neutral-450);
+}

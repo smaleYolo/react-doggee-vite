@@ -1,2 +1,2 @@
-export * from './PasswordRule'
-export * from './RegisterForm'
+export * from './components/PasswordRule'
+export * from './components/RegisterForm'

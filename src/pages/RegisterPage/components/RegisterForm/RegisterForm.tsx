@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { RegisterFormValues } from '@pages/RegisterPage/RegisterPage';
 
 import { Input, PasswordInput } from '@common/fields';
 import { Button } from '@common/buttons';
+import { RegisterFormValues } from '@pages/RegisterPage/wizard/steps';
 
 import styles from '@pages/RegisterPage/RegisterPage.module.css';
 

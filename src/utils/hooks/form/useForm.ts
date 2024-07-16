@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 interface useFormProps<Values> {
   initialValues: Values;
@@ -29,7 +29,6 @@ export const useForm = <Values>({
   const setFieldError = <T extends keyof Values>(field: T, error: string | null | undefined) => {
     setErrors({ ...errors, [field]: error });
   };
-
   const setFieldValue = <T extends keyof Values>(field: T, value: Values[T]) => {
     setValues({ ...values, [field]: value });
 

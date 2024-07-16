@@ -1,9 +1,12 @@
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
 import { IntlProvider } from '@features/intl';
 import { ThemeProvider } from '@features/theming/context/ThemeProvider';
 import { AuthProvider } from '@utils/contexts';
-import ReactDOM from 'react-dom/client';
+import { DateProvider } from '@utils/contexts';
+import { ProfileStepsProvider } from '@contexts/ProfileSteps';
 
-import App from './App';
 
 import './static/css/fonts.css';
 import './static/css/global.css';
@@ -15,7 +18,11 @@ root.render(
   <ThemeProvider>
     <IntlProvider>
       <AuthProvider>
-        <App />
+        <DateProvider>
+        <ProfileStepsProvider>
+          <App />
+        </ProfileStepsProvider>
+        </DateProvider>
       </AuthProvider>
     </IntlProvider>
   </ThemeProvider>
