@@ -1,27 +1,29 @@
-export interface FormErrors {
-  username: string | null;
-  password: string | null;
-}
-
-
-export const validateIsEmpty = (value: string) => {
-  if (!value) return 'validations.required';
+export const validateIsEmpty = (value: string | number | readonly string[] | undefined) => {
+  if (typeof value === 'string' && !value) return 'validations.required';
+  if (typeof value === 'number' && value === 0) return 'validations.required';
+  if (Array.isArray(value) && value.length === 0) return 'validations.required';
+  if (value === undefined) return 'validations.required';
   return null;
 };
 
-export const validateUsername = (value: string) => {
+export const validateField = (value: string | number | readonly string[] | undefined) => {
   return validateIsEmpty(value);
 };
 
-export const validatePassword = (value: string) => {
+export const validateUsername = (value: string | number | readonly string[] | undefined) => {
+  return validateIsEmpty(value);
+};
+
+export const validatePassword = (value: string | number | readonly string[] | undefined) => {
   return validateIsEmpty(value);
 };
 
 export const loginValidateSchema = {
   username: validateUsername,
-  password: validatePassword
+  password: validatePassword,
+  field: validateField,
 };
 
-export const validateLoginForm = (name: keyof typeof loginValidateSchema, value: string) => {
+export const validateLoginForm = (name: keyof typeof loginValidateSchema, value: string | number | readonly string[] | undefined) => {
   return loginValidateSchema[name](value);
 };

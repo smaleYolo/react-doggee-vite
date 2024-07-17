@@ -17,8 +17,13 @@
   "button.signIn": "Войти",
   "button.signOut": "Выйти",
   "button.done": "Готово",
+  "button.update": "Обновить данные!",
   "button.next": "Далее",
   "button.goNextStep": "Перейти к следующему шагу",
+
+  "step.title.user": "Данные",
+  "step.title.pets": "Питомцы",
+  "step.title.profile": "Гаф!",
 
   "page.login.createNewAccount": "Создать новый аккаунт",
   "page.registration.skipAndFillInLater": "Пропустить и заполнить позже",

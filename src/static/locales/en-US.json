@@ -18,7 +18,12 @@
   "button.signOut": "Sign Out",
   "button.done": "Done",
   "button.next": "Next",
+  "button.update": "Update profile!",
   "button.goNextStep": "Go to the previous step",
+
+  "step.title.user": "Your profile",
+  "step.title.pets": "Your pets",
+  "step.title.profile": "Woof!",
 
   "page.login.createNewAccount": "Create new account",
   "page.registration.skipAndFillInLater": "Skip and fill in later",

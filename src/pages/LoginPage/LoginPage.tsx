@@ -9,7 +9,7 @@ import { Input } from '@inputs/Inputs/Input/Input';
 import { api } from '@utils/api';
 import { ROUTES } from '@utils/constants';
 import { useForm, useMutation } from '@utils/hooks';
-import React, { useState } from 'react';
+import React from 'react';
 
 import styles from './LoginPage.module.css';
 import { useUser } from '@contexts/UserContext';
@@ -63,8 +63,8 @@ export const LoginPage = () => {
       <section className={styles.container}>
         <div className={styles.container_header}>DOGGEE</div>
         <form
-className={styles.form_container}
-onSubmit={(event) => handleSubmit(event)}>
+          className={styles.form_container}
+          onSubmit={(event) => handleSubmit(event)}>
           <div className={styles.input_container}>
             <Input
               disabled={isSubmitting}
@@ -98,15 +98,15 @@ onSubmit={(event) => handleSubmit(event)}>
             />
           </div>
           <Button
-disabled={isSubmitting}
-isLoading={isSubmitting}
-type="submit">
+            disabled={isSubmitting}
+            isLoading={isSubmitting}
+            type="submit">
             {translateMessage('button.signIn')}
           </Button>
         </form>
         <div
-className={styles.sign_up_container}
-onClick={() => navigate(ROUTES.REGISTER)}>
+          className={styles.sign_up_container}
+          onClick={() => navigate(ROUTES.REGISTER)}>
           {translateMessage('page.login.createNewAccount')}
         </div>
       </section>

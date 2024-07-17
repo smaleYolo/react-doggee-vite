@@ -12,6 +12,7 @@ export const useCalendar = (locale: string) => {
   const [years, setYears] = useState<string[]>([]);
   const [yearRange, setYearRange] = useState<{ start: number; end: number }>({ start: 2019, end: 2030 });
   const [calendarType, setCalendarType] = useState<'basic' | 'months' | 'years'>('basic');
+
   const { monthName, year } = createMonth({ date: currentDate, locale });
 
   useEffect(() => {

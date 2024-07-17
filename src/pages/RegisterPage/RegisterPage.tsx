@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 
 import styles from './RegisterPage.module.css';
 import { useUser } from '@contexts/UserContext';
+import { Wizard } from '@pages/FillProfile/wizard/Wizard.tsx';
 
 interface RegisterResponse extends LoginResponse {
   message: string;
@@ -73,11 +74,15 @@ export const RegisterPage = () => {
     <div className={styles.page}>
       <div className={styles.container}>
         <section className={styles.section_left}>
-          <h1
-            className={styles.section_header}
-          >
-            {translateMessage('page.registration.step.fillLoginDataStep.title')}
-          </h1>
+          <div className={styles.section_header}>
+            <h1 className={styles.section_header_title}>
+              {translateMessage('page.registration.step.fillLoginDataStep.title')}
+            </h1>
+
+            {/* TODO: Убрать фантомный блок, заменить на стиль. FillProfile конфликт по стилям.*/}
+            <div style={{marginBottom: 92}}/>
+          </div>
+
 
           <RegisterForm
             errors={errors}
@@ -98,7 +103,7 @@ export const RegisterPage = () => {
           </div>
 
           <div className={styles.section_right_content}>
-            <b>{translateMessage('page.registration.step.fillLoginDataStep.passwordRules.must')}</b>
+          <b>{translateMessage('page.registration.step.fillLoginDataStep.passwordRules.must')}</b>
 
             {
               rules.map((rule) => (

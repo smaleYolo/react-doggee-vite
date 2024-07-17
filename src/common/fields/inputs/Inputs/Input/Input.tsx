@@ -26,38 +26,28 @@ export const Input: React.FC<InputProps> = ({
                                             }) => {
   const id = useId();
   const [focused, setFocused] = useState(false);
-  const [inputValue, setInputValue] = useState(value || '');
+
 
   const handleFocus = () => setFocused(true);
   const handleBlur = () => setFocused(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const {value} = event.target;
-    if (/^[a-zA-Z0-9]*$/.test(value)) {
-      setInputValue(value);
-      onChange(event);
-    }
-  };
 
-  useEffect(() => {
-    setInputValue(value || '');
-  }, [value]);
 
 
   return (
-    <div className={`${styles.input_container} ${focused || inputValue ? styles.focused : ''}`}>
+    <div className={`${styles.input_container} ${focused || value ? styles.focused : ''}`}>
       <label
-className={styles.label}
-htmlFor={id}>
+        className={styles.label}
+        htmlFor={id}>
         {label}
       </label>
       <input
         className={`${styles.input} ${isError ? styles.error : ''}`}
         id={id}
         type={type}
-        value={inputValue}
+        value={value}
         onBlur={handleBlur}
-        onChange={handleChange}
+        onChange={onChange}
         onFocus={handleFocus}
         {...props}
       />

@@ -43,6 +43,7 @@ export const Calendar: React.FC = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      setSelectedDay(null)
     };
   }, []);
 

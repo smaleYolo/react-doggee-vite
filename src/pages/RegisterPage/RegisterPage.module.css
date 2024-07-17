@@ -22,12 +22,18 @@ section {
 }
 
 .section_header {
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    align-items: center;
+}
+
+.section_header_title {
     color: var(--color-accent);
     font-family: var(--font-family-nunito);
     font-size: 22px;
     font-weight: var(--font-weight800);
-    margin-bottom: 72px;
+    /*margin-bottom: 72px;*/
 }
 
 
