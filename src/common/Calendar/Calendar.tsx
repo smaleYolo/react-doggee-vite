@@ -173,7 +173,7 @@ export const Calendar: React.FC = () => {
                   key={i}
                   className={`
                     ${styles.year}
-                    ${year === String(currentDate.getFullYear()) ? styles.selected : ''}
+                    ${year === String(currentDate.getFullYear()) ? styles.today : ''}
                   `}
                   onClick={() => {
                     i === 0 && handleDecade('prev');
