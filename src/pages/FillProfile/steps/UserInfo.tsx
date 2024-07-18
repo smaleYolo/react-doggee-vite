@@ -27,7 +27,7 @@ export interface UpdateUserInfoValues {
 
 export const UserInfo = () => {
   const { translateMessage } = useIntl();
-  const { isCalendar, setIsCalendar, selectedDay, setSelectedDay } = useDate();
+  const { isCalendar, setIsCalendar, selectedDay, parseDateString, setSelectedDay } = useDate();
   const { currentStep, toggleStep, getUserId, completeStep, profileSteps } = useUser();
 
 
@@ -67,12 +67,24 @@ export const UserInfo = () => {
         localStorage.setItem(`birthday_${getUserId()}`, formattedDate);
       }
     }
-  }, [selectedDay, setFieldValue, values.birthday]);
+  }, [selectedDay]);
 
   useEffect(() => {
     localStorage.setItem(`name_${getUserId()}`, values.name);
     localStorage.setItem(`city_${getUserId()}`, values.city);
   }, [values.name, values.city]);
+
+  const handleBirthdayChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    if (/^\d{2}\.\d{2}\.\d{4}$/.test(newValue)) {  // Проверка на формат ДД.ММ.ГГГГ
+      const date = parseDateString(newValue);
+      setSelectedDay(date);
+      setFieldValue('birthday', newValue);
+      localStorage.setItem(`birthday_${getUserId()}`, newValue);
+    } else {
+      setFieldValue('birthday', newValue);  // Обновление значения в любом случае, чтобы пользователь видел введенные данные
+    }
+  };
 
 
   return (
@@ -114,8 +126,8 @@ export const UserInfo = () => {
                 </div>
               )
             }}
-            onChange={() => setIsCalendar(!isCalendar)}
-            onClick={() => setIsCalendar(!isCalendar)}
+            onChange={handleBirthdayChange}
+            // onClick={() => setIsCalendar(!isCalendar)}
           />
         </div>
 

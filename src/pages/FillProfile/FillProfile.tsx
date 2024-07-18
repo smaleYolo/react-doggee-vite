@@ -14,6 +14,7 @@ export const FillProfile = () => {
   return (
     <div className={styles.page}>
       <div className={styles.container}>
+
         <section className={styles.section_left}>
           <div className={styles.section_header}>
             <h1 className={styles.section_header_title}>

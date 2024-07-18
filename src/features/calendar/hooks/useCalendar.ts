@@ -1,10 +1,27 @@
 import { useState, useEffect } from 'react';
 import { createDate, createMonth, getMonthesNames, getMonthNumberOfDays, getWeekDaysNames } from '@features/calendar';
+import { useUser } from '@utils/contexts';
 
 export const useCalendar = (locale: string) => {
+  const {getUserId} = useUser()
+
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDay, setSelectedDay] = useState<ReturnType<typeof createDate> | null>(null);
+
+  // Инициализация selectedDay из куки или null
+  const initializeSelectedDay = (): ReturnType<typeof createDate> | null => {
+    const cookieDate = localStorage.getItem(`birthday_${getUserId()}`);
+
+    if (cookieDate) {
+      const [day, month, year] = cookieDate.split('.').map(Number);
+      return createDate({ date: new Date(year, month - 1, day) });
+    }
+    return null;
+  };
+
+  const [selectedDay, setSelectedDay] = useState<ReturnType<typeof createDate> | null>(initializeSelectedDay);
+
+
   const [selectedMonth, setSelectedMonth] = useState<{ monthShort: string; monthIndex: number; year: number } | null>(null);
   const [days, setDays] = useState<ReturnType<typeof createDate>[]>([]);
   const [weekDays, setWeekDays] = useState<{ day: string; dayShort: string }[]>([]);
@@ -28,12 +45,23 @@ export const useCalendar = (locale: string) => {
     setWeekDays(getWeekDaysNames(2, locale));
   }, [currentDate, locale, yearRange]);
 
+  useEffect(() => {
+    if (selectedDay && isCalendar) {
+      setCurrentDate(selectedDay.date);
+    }
+  }, [isCalendar, selectedDay]);
+
   const generateYears = (startYear: number, endYear: number) => {
     const yearsArray = [];
     for (let i = startYear; i <= endYear; i++) {
       yearsArray.push(i.toString());
     }
     setYears(yearsArray);
+  };
+
+  const parseDateString = (dateString: string) => {
+    const [day, month, year] = dateString.split('.').map(Number);
+    return createDate({ date: new Date(year, month - 1, day) });
   };
 
   const updateDays = (date: Date) => {
@@ -101,5 +129,6 @@ export const useCalendar = (locale: string) => {
     years,
     handleDecade,
     handleYear,
+    parseDateString
   };
 };

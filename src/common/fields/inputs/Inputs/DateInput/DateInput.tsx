@@ -2,29 +2,41 @@ import React from 'react';
 import type { InputProps } from '@common/fields';
 import { Input } from '@common/fields';
 
-
-interface DateInputProps extends InputProps {
-}
+interface DateInputProps extends InputProps {}
 
 export const DateInput: React.FC<DateInputProps> = ({
-                                                          isError = false,
-                                                          helperText = '',
-                                                          label = 'Date Input',
-                                                          value,
-                                                          ...props
-                                                        }) => {
+                                                      isError = false,
+                                                      helperText = '',
+                                                      label = 'Date Input',
+                                                      value,
+                                                      onChange,  // Добавляем пропс onChange
+                                                      ...props
+                                                    }) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let input = e.target.value.replace(/[^\d]/g, ''); // Удаляем все символы, кроме цифр
+    if (input.length > 2) {
+      input = input.slice(0, 2) + '.' + input.slice(2);
+    }
+    if (input.length > 5) {
+      input = input.slice(0, 5) + '.' + input.slice(5);
+    }
+    if (input.length > 10) {
+      input = input.slice(0, 10); // Ограничиваем длину строки до 10 символов
+    }
+    e.target.value = input;
+    if (onChange) onChange(e);
+  };
 
   return (
     <Input
-        readOnly
-        helperText={helperText}
-        isError={isError}
-        label={label}
-        style={{cursor: 'text'}}
-        value={value}
-        {...props}
-
-        components={props.components}
-      />
+      helperText={helperText}
+      isError={isError}
+      label={label}
+      style={{ cursor: 'text' }}
+      value={value}
+      onChange={handleInputChange}  // Используем локальный обработчик изменений
+      {...props}
+      components={props.components}
+    />
   );
 };
