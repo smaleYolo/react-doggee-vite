@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 
 import styles from './RegisterPage.module.css';
 import { useUser } from '@contexts/UserContext';
-import { Wizard } from '@pages/FillProfile/wizard/Wizard.tsx';
+import { Wizard } from '@pages/FillProfile/components/wizard/Wizard.tsx';
 
 interface RegisterResponse extends LoginResponse {
   message: string;

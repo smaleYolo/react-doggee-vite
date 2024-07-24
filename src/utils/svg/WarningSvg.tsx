@@ -5,10 +5,11 @@ interface WarningSvgProps {
   height?: number | string;
 }
 
-export const WarningSvg = ({width,height}: WarningSvgProps) => (
+export const WarningSvg = ({width, height}: WarningSvgProps) => (
   <svg
 fill="none"
 viewBox="0 0 18 17"
+height={height}
 width={width || "15.000"}
 xmlns="http://www.w3.org/2000/svg">
     <path

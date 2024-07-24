@@ -12,6 +12,7 @@ export interface InputProps extends Omit<React.HTMLProps<HTMLInputElement>, 'pla
     indicator?: () => React.ReactElement;
   };
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string | number | readonly string[] | undefined;
 }
 
 export const Input: React.FC<InputProps> = ({

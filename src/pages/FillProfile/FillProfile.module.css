@@ -126,11 +126,46 @@ section {
     transform-origin: bottom left;
 }
 
-.dont_worry {
-    color: var(--color-accent);
-    font-size: 14px;
-    font-weight: var(--font-weight800);
-    padding: 40px 30px;
 
+
+
+/*Pets Info*/
+
+.kg_indicator {
+    cursor: auto;
+    color: var(--color-placeholder);
+}
+
+.step_text {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 5px;
+    padding-bottom: 22px;
+    color: var(--color-additional);
+    font-weight: var(--font-weight800);
+    font-size: 12px;
+    position: relative; /* Добавляем для правильного позиционирования псевдоэлемента */
+    transition: all 0.3s ease-in-out; /* Анимация для цвета и масштаба */
+    cursor: pointer;
+}
+
+.step_text::before {
+    content: '';
+    background-image: url("../../static/images/arrow_additional.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 5px; /* Устанавливаем ширину стрелки */
+    height: 10px; /* Устанавливаем высоту стрелки */
+    transition: transform 0.3s ease-in-out; /* Добавляем анимацию для трансформации */
+}
+
+.step_text:hover {
+    opacity: 0.7;
+    transform: scale(1.03);
+}
+
+.step_text:hover::before {
+    transform: translateX(-3px); /* Анимация перемещения стрелки вправо */
 }
 

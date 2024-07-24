@@ -11,6 +11,7 @@ export const CheckMarkSvg = ({
   <svg
     fill="none"
     viewBox="0 0 17 12"
+    height={height}
     width={width || '15.0000'}
     xmlns="http://www.w3.org/2000/svg"
   >

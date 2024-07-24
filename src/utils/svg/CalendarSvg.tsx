@@ -12,8 +12,9 @@ export const CalendarSvg = ({ width, height, isOpen }: CalendarProps) => {
 
   return (
     <svg
+      style={{ display: 'flex'}}
       fill="none"
-      height={height || '16.154999'}
+      height={height || '17'}
       viewBox="0 0 19 19"
       width={width || '18.000000'}
       xmlns="http://www.w3.org/2000/svg"

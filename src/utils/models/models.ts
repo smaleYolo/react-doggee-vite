@@ -11,9 +11,9 @@ export interface IDog {
   id: number;
   name: string;
   breed: string;
+  birthdate: Date;
+  weight: number;
   ownerId: number;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 

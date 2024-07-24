@@ -10,7 +10,7 @@ export const useCalendar = (locale: string) => {
 
   // Инициализация selectedDay из куки или null
   const initializeSelectedDay = (): ReturnType<typeof createDate> | null => {
-    const cookieDate = localStorage.getItem(`birthday_${getUserId()}`);
+    const cookieDate = localStorage.getItem(`birthdate_${getUserId()}`);
 
     if (cookieDate) {
       const [day, month, year] = cookieDate.split('.').map(Number);
@@ -109,6 +109,14 @@ export const useCalendar = (locale: string) => {
     });
   };
 
+  const getFullYears = (birthdate: string | Date) => {
+    const birthdateObj = new Date(birthdate); // Преобразование строки в объект Date
+    const today = new Date();
+    const diffInMilliSeconds = today.getTime() - birthdateObj.getTime();
+    const diffInYears = diffInMilliSeconds / 1000 / 60 / 60 / 24 / 365.25;
+    return Math.abs(Math.round(diffInYears));
+  }
+
   return {
     currentDate,
     selectedDay,
@@ -129,6 +137,7 @@ export const useCalendar = (locale: string) => {
     years,
     handleDecade,
     handleYear,
-    parseDateString
+    parseDateString,
+    getFullYears
   };
 };

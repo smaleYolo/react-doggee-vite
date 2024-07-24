@@ -1,13 +1,9 @@
 import React from 'react';
 
 import styles from './TestFooter.module.css';
-import { useUser } from '@utils/contexts';
 import Cookies from 'js-cookie';
 
 export const TestFooter: React.FC = () => {
-  const { isAuth } = useUser();
-  const { toggleStep } = useUser();
-
 
   const clearAllCookiesAndLocalStorage = () => {
     const allCookies = Cookies.get();

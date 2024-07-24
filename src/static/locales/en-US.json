@@ -7,7 +7,11 @@
   "field.input.password.repeat.label": "Password again",
   "field.input.birthDate.label": "When's your birthday?",
   "field.input.passwordAgain.label": "Password again",
+
   "field.input.dogName.label": "Dog's name",
+  "field.input.userName.label": "Name",
+  "field.input.userLocation.label": "Location",
+  "field.input.userBirthday.label": "Birthdate",
   "field.input.breed.label": "Dog’s breed",
   "field.input.dogBirthday.label": "Dog’s birthday",
   "field.input.dogWeight.label": "Dog's weight",
