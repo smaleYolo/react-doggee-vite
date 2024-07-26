@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import { RefreshResponse } from '@utils/contexts';
+import { IRefreshResponse } from '@utils/contexts';
 
 type BaseUrl = string;
 const baseUrl: BaseUrl = 'http://localhost:3001';
@@ -41,7 +41,7 @@ export class API {
             throw new Error('Failed to refresh token');
           }
 
-          const refreshData = (await refreshResponse.json()) as RefreshResponse;
+          const refreshData = (await refreshResponse.json()) as IRefreshResponse;
           const { access_token, refresh_token: newRefreshToken } = refreshData;
           Cookies.set('access_token', access_token);
           Cookies.set('refresh_token', newRefreshToken);

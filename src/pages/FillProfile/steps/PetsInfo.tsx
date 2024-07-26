@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input, WeightInput } from '@common/fields';
 import { DateInput } from '@inputs/Inputs/DateInput';
 import { Calendar } from '@common/Calendar/Calendar.tsx';
@@ -8,7 +8,7 @@ import styles from '../FillProfile.module.css';
 
 import { useIntl } from '@features/intl';
 import { CalendarSvg } from '@utils/svg';
-import { useUser } from '@utils/contexts';
+import { PetInfoValues, IStep, Steps, UserInfoValues, useUser } from '@utils/contexts';
 import { useForm, useMutation } from '@utils/hooks';
 import { formatDate, validateField } from '@helpers/*';
 import { useDate } from '@features/calendar';
@@ -19,40 +19,57 @@ interface CreatePetResponse {
   message: string;
 }
 
-interface CreatePetValues {
-  name: string;
-  breed: string;
-  birthdate: string;
-  weight?: string;
-}
-
-interface CreatePetPayload extends Omit<CreatePetValues, 'birthdate' | 'weight'>{
+interface CreatePetPayload extends Omit<PetInfoValues, 'birthdate' | 'weight'>{
   birthdate: Date;
   weight?: number;
 }
 
 export const PetsInfo = () => {
   const { translateMessage } = useIntl();
-  const { toggleStep, getUserId, completeStep, currentStep } = useUser()
+  const { toggleStep, userId, completeStep, currentStepTitle, updateStepData } = useUser()
   const { isCalendar, setIsCalendar, parseDateString, setSelectedDay, selectedDay } = useDate()
 
-  const {mutation: addPetInfoMutation } = useMutation<CreatePetResponse, CreatePetValues>({
-    request: (petInfo: CreatePetValues) => {
+  const [petData] = useState<PetInfoValues>(() => {
+    const petData: IStep[] = JSON.parse(localStorage.getItem(`profileSteps_${userId}`) || '[]').filter((d: IStep) => d.step === 'pets');
+
+    if (petData.length > 0 && petData[0].step_data) {
+      return petData[0].step_data as PetInfoValues
+    } else {
+      return {
+        name: '',
+        breed: '',
+        birthdate: '',
+        weight: ''
+      }
+    }
+  })
+  const [isStepCompleted] = useState<boolean>(() => {
+    const petData: IStep[] = JSON.parse(localStorage.getItem(`profileSteps_${userId}`) || '[]').filter((d: IStep) => d.step === 'pets');
+
+    if (petData.length > 0 && petData[0].step_data) {
+      return petData[0].completed
+    } else {
+      return false
+    }
+  })
+
+  const {mutation: addPetInfoMutation } = useMutation<CreatePetResponse, PetInfoValues>({
+    request: (petInfo: PetInfoValues) => {
       const updatedPetInfo = {
         ...petInfo,
         birthdate: new Date(petInfo.birthdate.split('.').reverse().join('-')),
         weight: Number(petInfo.weight),
       };
-      return api.post<CreatePetResponse, CreatePetPayload>(`/users/${getUserId()}/dogs`, updatedPetInfo);
+      return api.post<CreatePetResponse, CreatePetPayload>(`/users/${userId}/dogs`, updatedPetInfo);
     }
   })
 
-  const { values, setFieldValue, errors, handleSubmit, isSubmitting, resetForm } = useForm<CreatePetValues>({
+  const { values, setFieldValue, errors, handleSubmit, resetForm } = useForm<PetInfoValues>({
     initialValues: {
-      name: '',
-      breed: '',
-      birthdate: '',
-      weight: ''
+      name: petData.name,
+      breed: petData.breed,
+      birthdate: petData.birthdate,
+      weight: petData.weight
     },
     validateSchema: {
       name: validateField,
@@ -63,9 +80,10 @@ export const PetsInfo = () => {
     onSubmit: async (values) => {
       try {
         const data = await addPetInfoMutation(values)
-        console.log(data);
         toast.success(translateMessage('validations.success', { msg: data.message}));
-        completeStep(currentStep);
+        updateStepData({name: '', weight: '', breed: '', birthdate: ''}, currentStepTitle as Steps);
+
+        completeStep(currentStepTitle as Steps);
         toggleStep('profile');
       } catch (error) {
         toast.error(translateMessage('error', {error: (error as Error).message}));
@@ -171,7 +189,13 @@ export const PetsInfo = () => {
         {isCalendar && <Calendar />}
 
         <Button type="submit">
-          {translateMessage('button.next')}
+          {
+            isStepCompleted ? (
+              translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')
+            ) : (
+              translateMessage('button.next')
+            )
+          }
         </Button>
       </form>
     </>

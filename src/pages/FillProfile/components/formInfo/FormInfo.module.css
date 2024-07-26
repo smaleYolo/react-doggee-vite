@@ -3,10 +3,10 @@
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 15px;
+}
 
-    &:last-child {
-        margin-bottom: 0;
-    }
+.container:last-child {
+    margin-bottom: 0;
 }
 
 .form_header {
@@ -14,10 +14,10 @@
     justify-content: space-between;
     color: var(--color-additional);
     font-size: 12px;
+}
 
-    & > h2 {
-        margin: 0 auto;
-    }
+.form_header > h2 {
+    margin: 0 auto;
 }
 
 .form_content {
@@ -32,18 +32,17 @@
     align-items: center;
     gap: 10px;
     border-bottom: 1px solid var(--background-color-field-focused);
-
     font-size: 14px;
+}
 
-    & > span {
-        width: 65px;
-        min-width: 65px;
-        font-weight: var(--font-weight800);
-    }
+.form_content_field > span {
+    width: 65px;
+    min-width: 65px;
+    font-weight: var(--font-weight800);
+}
 
-    &:last-child {
-        border-bottom: none;
-    }
+.form_content_field:last-child {
+    border-bottom: none;
 }
 
 .penSvg {
@@ -57,4 +56,26 @@
 
 .penSvg:active {
     scale: 1.2;
+}
+
+/* Добавляем стили для скроллбара */
+.scrollContainer {
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 10px; /* Отступ для скроллбара */
+}
+
+.scrollContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+    background: transparent;
+    padding: 2px; /* Отступ для скроллбара от контента */
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+    background-color: var(--color-placeholder); /* Задайте нужный цвет */
+    border-radius: 10px;
+    border: 2px solid transparent; /* Отступ от контента */
 }

@@ -12,15 +12,13 @@ import { IUser } from '@utils/models';
 
 export const Profile = () => {
   const {translateMessage} = useIntl()
-  const {toggleStep, getUserId} = useUser()
+  const {toggleStep, userId} = useUser()
 
   const {data , isError, isLoading} = useQuery<IUser | null, IUser>({
-    request: () => api.get<IUser>(`/users/${getUserId()}/profile`),
+    request: () => api.get<IUser>(`/users/${userId}/profile`),
     initialValue: null,
     dependencies: []
   })
-
-  console.log(data);
 
   return (
     <>
@@ -32,6 +30,8 @@ export const Profile = () => {
         </span>
       </div>
 
+      {/*TODO: Loader*/}
+      {isLoading && <h3>Loading...</h3>}
       {data && <FormInfo {...data} />}
 
       <Button >

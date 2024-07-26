@@ -11,7 +11,7 @@ import { Profile } from '@pages/FillProfile/steps/Profile.tsx';
 
 export const FillProfile = () => {
   const { translateMessage } = useIntl();
-  const { currentStep, toggleStep } = useUser();
+  const { toggleStep, currentStepTitle } = useUser();
 
   return (
     <div className={styles.page}>
@@ -24,15 +24,15 @@ export const FillProfile = () => {
             </h1>
             <Wizard />
           </div>
-          {currentStep === 'user' && (
+          {currentStepTitle === 'user' && (
             <UserInfo />
           )}
 
-          {currentStep === 'pets' && (
+          {currentStepTitle === 'pets' && (
             <PetsInfo />
           )}
 
-          {currentStep === 'profile' && (
+          {currentStepTitle === 'profile' && (
             <Profile />
           )}
         </section>
@@ -42,17 +42,17 @@ export const FillProfile = () => {
             DOGGEE
           </div>
 
-          {currentStep === 'user' && (
+          {currentStepTitle === 'user' && (
             <div className={styles.section_right_content}>
               <b>{translateMessage('page.registration.step.fillProfileData.hint.registrationAddressHint')}</b>
             </div>
           )}
 
-          {currentStep === 'pets' && (
+          {currentStepTitle === 'pets' && (
             <PetsList />
           )}
 
-          {currentStep === 'profile' && (
+          {currentStepTitle === 'profile' && (
             <p className={styles.dont_worry}>
               {translateMessage("page.registration.step.checkDataStep.hint.dontWorry")}
             </p>
@@ -60,7 +60,7 @@ export const FillProfile = () => {
 
           <div className={styles.section_right_bottom}>
 
-            {currentStep === 'user' && (
+            {currentStepTitle === 'user' && (
               <span
                 className={styles.section_right_sign_in}
                 onClick={() => toggleStep('pets')}
@@ -69,7 +69,7 @@ export const FillProfile = () => {
           </span>
             )}
 
-            {currentStep === 'pets' && (
+            {currentStepTitle === 'pets' && (
               <span
                 className={styles.section_right_sign_in}
                 onClick={() => toggleStep('profile')}

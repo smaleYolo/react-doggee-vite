@@ -45,17 +45,19 @@ export const FormInfo = ({ name, city, birthdate, dogs }: IUser) => {
             <h2>
               {translateMessage('page.registration.step.checkDataStep.card.pets')}
             </h2>
-            <PenSvg className={styles.penSvg} onClick={() => toggleStep('pets')}/>
+            <PenSvg className={styles.penSvg} onClick={() => toggleStep('pets')} />
           </div>
 
-          {dogs.map(dog => (
-            <div className={styles.form_content} key={dog.id}>
-              <div className={styles.form_content_field}>
-                <span>{dog.name}</span>
-                <p>{`${dog.name} - ${dog.breed}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}</p>
+          <div className={styles.scrollContainer}>
+            {dogs.map(dog => (
+              <div className={styles.form_content} key={dog.id}>
+                <div className={styles.form_content_field}>
+                  <span>{dog.name}</span>
+                  <p>{`${dog.name} - ${dog.breed}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       ) : null}
     </>

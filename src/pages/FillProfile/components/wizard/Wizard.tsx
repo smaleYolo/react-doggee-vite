@@ -5,7 +5,8 @@ import { useIntl } from '@features/intl';
 
 export const Wizard = () => {
   const { translateMessage } = useIntl()
-  const { toggleStep, currentStep, profileSteps } = useUser();
+  const { toggleStep, currentStepTitle, profileSteps } = useUser();
+
 
   return (
     <div className={styles.container}>
@@ -16,17 +17,17 @@ export const Wizard = () => {
             <div className={`
           ${styles.step}
           ${step.completed && styles.step_completed}
-          ${step.step === currentStep && styles.step_current}
+          ${step.step === currentStepTitle && styles.step_current}
           `}
                  key={step.step}
-                 onClick={() => toggleStep(step.step)}
+                 onClick={() => {toggleStep(step.step)}}
             >
 
               <div className={`
             ${styles.step_circle} 
             ${step.step === 'profile' && styles.step_circle_profile}
             ${step.completed && styles.step_circle_completed}
-            ${step.step === currentStep && styles.step_circle_current}
+            ${step.step === currentStepTitle && styles.step_circle_current}
             `}
               >
                 {step.step === 'user' && 1}

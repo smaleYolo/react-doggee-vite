@@ -12,7 +12,7 @@ export const PetsList = () => {
   const showCheckMark = true;
 
   const {translateMessage} = useIntl()
-  const { getUserId } = useUser();
+  const { userId } = useUser();
   const { getFullYears } = useDate();
 
   const [dogs, setDogs] = useState<IDog[]>([]);
@@ -23,7 +23,7 @@ export const PetsList = () => {
   };
 
   const { data: userDogs, isLoading, isError } = useQuery<IDog[], IDog[]>({
-    request: () => api.get(`/users/${getUserId()}/dogs`),
+    request: () => api.get(`/users/${userId}/dogs`),
     initialValue: [],
     dependencies: []
   });
@@ -36,7 +36,7 @@ export const PetsList = () => {
 
 
   const { mutation: DeleteUserDogMutation } = useMutation({
-    request: (DogId) => api.delete(`/users/${getUserId()}/dogs/${DogId}`)
+    request: (DogId) => api.delete(`/users/${userId}/dogs/${DogId}`)
   });
 
 
@@ -51,19 +51,24 @@ export const PetsList = () => {
           {isLoading ? (
             <h1>Loading...</h1>
           ) : (
-            dogs.map(dog => (
-              <div key={dog.id} className={styles.petList_item}>
-                {showCheckMark ? <CheckMarkSvg width={'22'} /> : <WarningSvg width={'22'} />}
-                <div className={styles.pet_item}>
-                  <span>{`${dog.name} - ${dog.breed}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}</span>
-                  <CrossSvg
-                    width={13}
-                    className={styles.cross}
-                    onClick={() => deleteDogHandler(dog.id)}
-                  />
+            dogs.length ? (
+              dogs.map(dog => (
+                <div key={dog.id} className={styles.petList_item}>
+                  {showCheckMark ? <CheckMarkSvg width={'22'} /> : <WarningSvg width={'22'} />}
+                  <div className={styles.pet_item}>
+                    <span>{`${dog.name} - ${dog.breed}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}</span>
+                    <CrossSvg
+                      width={13}
+                      className={styles.cross}
+                      onClick={() => deleteDogHandler(dog.id)}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))
+              ))
+            ) : (
+              //TODO: Нормальная визуализация
+              <h2>Добавьте собачек...</h2>
+            )
           )}
         </div>
 
@@ -72,12 +77,13 @@ export const PetsList = () => {
         >
           <div className={styles.add_pet_text}>
             {
-              dogs.length > 0 ? (
+              dogs.length ? (
                 <>
                   <PlusSvg className={styles.plus} />
                   <span>{translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')}</span>
                 </>
               ) : (
+                //TODO: Нормальная визуализация
                 <h3>{translateMessage("page.registration.step.addYourPetsStep.title")}</h3>
               )
             }

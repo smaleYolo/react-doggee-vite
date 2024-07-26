@@ -1,125 +1,108 @@
-import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { api } from '@utils/api';
 import { UserContext } from '@utils/contexts';
 
-export type Steps = 'user' | 'pets' | 'profile'
+export type Steps = 'user' | 'pets' | 'profile';
 
-export interface Step {
+export interface IStep {
   step: Steps;
   title: string;
   completed: boolean;
+  current: boolean;
+  step_data?: UserInfoValues | PetInfoValues;
 }
 
-export interface UserContextProps {
-  isAuth: boolean;
-  setIsAuth: (isAuth: boolean) => void;
-  isLoading: boolean;
-  logout: () => void;
-  login: (access_token: string, refresh_token: string, userId: number, isNotUserDevice?: boolean | undefined) => void;
-  refreshToken: () => Promise<void>;
-  currentStep: Steps;
-  toggleStep: (step: Steps) => void;
-  getUserId: () => string | undefined;
-  profileSteps: Step[];
-  completeStep: (step: Steps) => void;
+export interface UserInfoValues {
+  name: string;
+  city: string;
+  birthdate: string;
 }
 
-export interface RefreshResponse {
+export interface PetInfoValues {
+  name: string;
+  breed: string;
+  birthdate: string;
+  weight?: string;
+}
+
+export interface IRefreshResponse {
   access_token: string;
   refresh_token: string;
 }
 
+export interface IMessageResponse {
+  message: string;
+}
 
-// TODO: Разбить функционал на хуки (хук для работы с аутентификацией (useAuth)) и хук для работы с шагами профиля (useProfileSteps)
+export interface IUserContext {
+  userId: string | undefined;
+  isAuth: boolean;
+  setIsAuth: (isAuth: boolean) => void;
+  isAuthLoading: boolean;
+  login: (access_token: string, refresh_token: string, userId: number, isNotUserDevice?: boolean | undefined) => void;
+  logout: () => void;
+  refreshToken: () => Promise<void>;
+
+  currentStepTitle: string;
+  toggleStep: (step: Steps) => void;
+  profileSteps: IStep[];
+  setProfileSteps: (steps: IStep[]) => void;
+  completeStep: (step: Steps) => void;
+  updateStepData: (newStepData: UserInfoValues | PetInfoValues, step: Steps) => void;
+}
+
+
 export const UserProvider = ({ children }: { children: ReactNode }) => {
+
+  //Auth Context
+  const [userId, setUserId] = useState<string | undefined>(() => Cookies.get('userId'));
   const [isAuth, setIsAuth] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  const getUserId = useCallback(() => {
-    return Cookies.get('userId');
-  }, []);
+  const logout = () => {
 
-  const getInitialSteps = () => {
-    const steps = localStorage.getItem(`profileSteps_${getUserId()}`);
-    return steps ? JSON.parse(steps) : [
-      { 'step': 'user', 'title': "step.title.user", 'completed': false },
-      { 'step': 'pets', 'title': "step.title.pets", 'completed': false },
-      { 'step': 'profile', 'title': "step.title.profile", 'completed': false }
-    ];
-  };
-
-  const [profileSteps, setProfileSteps] = useState<Step[]>(() => getInitialSteps());
-
-  const completeStep = (step: Steps) => {
-    setProfileSteps((prevState) =>
-      prevState.map((s) =>
-        s.step === step ? { ...s, completed: true } : s
-      )
-    );
-  };
-
-  const getInitialStep = useCallback((): Steps => {
-    const step = Cookies.get(`profile_step_${getUserId()}`) as Steps | undefined;
-    return step ?? 'user';
-  }, [getUserId]);
-
-  const [currentStep, setCurrentStep] = useState<Steps>(getInitialStep);
-
-  const toggleStep = useCallback((step: Steps) => {
-    setCurrentStep(step);
-    Cookies.set(`profile_step_${getUserId()}`, step);
-  }, [getUserId]);
-
-  const logout = useCallback(() => {
+    //TODO: Clear all cookie fn
     Cookies.remove('access_token');
     Cookies.remove('refresh_token');
     Cookies.remove('userId');
     Cookies.remove('NotUserDevice');
     setIsAuth(false);
-  }, []);
+  };
 
-  const login = useCallback((access_token: string, refresh_token: string, userId: number, isNotUserDevice?: boolean) => {
+  const login = (access_token: string, refresh_token: string, userId: number, isNotUserDevice?: boolean) => {
     Cookies.set('access_token', access_token);
     Cookies.set('refresh_token', refresh_token);
     Cookies.set('userId', String(userId));
+    setUserId(String(userId));
+
     if (isNotUserDevice) {
       Cookies.set('NotUserDevice', `true_${userId}`);
     } else {
       Cookies.remove('NotUserDevice');
     }
     setIsAuth(true);
+  };
 
-    const step = Cookies.get(`profile_step_${userId}`) as Steps | undefined;
-    if (step) {
-      setCurrentStep(step);
-    } else {
-      setCurrentStep('user');
-    }
-
-    // Сбросить состояние шагов и установить новое значение
-    const initialSteps = getInitialSteps();
-    setProfileSteps(initialSteps);
-  }, [getInitialSteps]);
-
-  const refreshToken = useCallback(async () => {
+  const refreshToken = async () => {
     const refresh_token = Cookies.get('refresh_token');
     if (!refresh_token) {
       logout();
       return;
     }
     try {
-      const response = await api.post<RefreshResponse, {
+      const response = await api.post<IRefreshResponse, {
         refresh_token: string
       }>('/auth/refresh-token', { refresh_token });
       const { access_token, refresh_token: new_refresh_token } = response;
+
       Cookies.set('access_token', access_token);
       Cookies.set('refresh_token', new_refresh_token);
       setIsAuth(true);
     } catch (error) {
       logout();
     }
-  }, [logout]);
+  };
 
   useEffect(() => {
     const authCookie = Cookies.get('access_token');
@@ -139,31 +122,105 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     } else {
       refreshToken();
     }
-    setIsLoading(false);
+    setIsAuthLoading(false);
   }, [logout, refreshToken]);
 
-  useEffect(() => {
-    if (getUserId()) {
-      localStorage.setItem(`profileSteps_${getUserId()}`, JSON.stringify(profileSteps));
-    }
-  }, [profileSteps, getUserId]);
 
-  const value: UserContextProps = {
+
+
+
+  //ProfileSteps Context
+  const initialStateSteps: IStep[] = [
+    {
+      'step': 'user', 'title': 'step.title.user', 'completed': false, 'current': true, 'step_data': {
+        'name': '',
+        'city': '',
+        'birthdate': ''
+      }
+    },
+    {
+      'step': 'pets', 'title': 'step.title.pets', 'completed': false, 'current': false, 'step_data': {
+        'name': '',
+        'breed': '',
+        'birthdate': '',
+        'weight': ''
+      }
+    },
+    { 'step': 'profile', 'title': 'step.title.profile', 'completed': false, 'current': false }
+  ];
+
+  const initiateProfileSteps = () => {
+    const steps = localStorage.getItem(`profileSteps_${userId}`);
+    return steps ? JSON.parse(steps) : initialStateSteps;
+  }
+
+  const [profileSteps, setProfileSteps] = useState<IStep[]>(() => initiateProfileSteps());
+
+  const [currentStepTitle, setCurrentStepTitle] = useState<Steps>('user');
+
+  const completeStep = (step: Steps) => {
+    setProfileSteps((prevState) => {
+      const updatedSteps = prevState.map((s) =>
+        s.step === step ? { ...s, completed: true } : s
+      );
+      console.log(updatedSteps);
+      localStorage.setItem(`profileSteps_${userId}`, JSON.stringify(updatedSteps));
+      return updatedSteps;
+    });
+  };
+
+  const toggleStep = (step: Steps) => {
+    setProfileSteps((prevState) => {
+      const updatedSteps = prevState.map((s) =>
+        s.step === step ? { ...s, current: true } : { ...s, current: false }
+      );
+      localStorage.setItem(`profileSteps_${userId}`, JSON.stringify(updatedSteps));
+      return updatedSteps;
+    });
+  };
+
+
+  const updateStepData = (newStepData: UserInfoValues | PetInfoValues, step: Steps) => {
+    const updatedProfileSteps = profileSteps.map(s => s.step === step ? { ...s, step_data: newStepData } : s);
+    setProfileSteps(updatedProfileSteps);
+    localStorage.setItem(`profileSteps_${userId}`, JSON.stringify(updatedProfileSteps));
+  };
+
+  //Обновление currentStep
+  useEffect(() => {
+    const currentStep = profileSteps.find(step => step.current)?.step ?? 'user';
+    if (currentStep !== currentStepTitle) {
+      setCurrentStepTitle(currentStep);
+    }
+  }, [profileSteps, currentStepTitle]);
+
+  //Инициализация profileSteps при подключении нового профиля
+  useEffect(() => {
+    if (userId) {
+      const newProfileSteps = initiateProfileSteps();
+      setProfileSteps(newProfileSteps);
+    }
+  }, [userId]);
+
+
+  const value: IUserContext = {
+    userId,
     isAuth,
     setIsAuth,
-    isLoading,
+    isAuthLoading,
     logout,
     login,
     refreshToken,
-    currentStep,
+
+    currentStepTitle,
     toggleStep,
-    getUserId,
     profileSteps,
-    completeStep
-  }
+    setProfileSteps,
+    completeStep,
+    updateStepData
+  };
 
-  if (isLoading) return null;
-
+  if (isAuthLoading) return null;
 
   return (
     <UserContext.Provider value={value}>

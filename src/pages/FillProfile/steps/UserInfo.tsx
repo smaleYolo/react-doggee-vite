@@ -7,21 +7,11 @@ import { Button } from '@common/buttons';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from '@features/intl';
 import { formatDate, useDate } from '@features/calendar';
-import { useUser } from '@utils/contexts';
+import { IMessageResponse, IStep, Steps, UserInfoValues, useUser } from '@utils/contexts';
 import { useForm, useMutation } from '@utils/hooks';
 import { api } from '@utils/api';
 import { validateField } from '@helpers/*';
 import { toast } from 'react-toastify';
-
-interface UpdateUserInfoResponse {
-  message: string;
-}
-
-export interface UpdateUserInfoValues {
-  name: string;
-  city: string;
-  birthdate: string;
-}
 
 
 interface UpdateUserInfoPayload {
@@ -34,26 +24,39 @@ interface UpdateUserInfoPayload {
 
 export const UserInfo = () => {
   const { translateMessage } = useIntl();
-  const { isCalendar, setIsCalendar, selectedDay, parseDateString, setSelectedDay } = useDate();
-  const { currentStep, toggleStep, getUserId, completeStep, profileSteps } = useUser();
+  const { isCalendar, setIsCalendar, parseDateString, setSelectedDay } = useDate();
+  const { currentStepTitle, toggleStep, userId, completeStep, profileSteps, updateStepData } = useUser();
 
+  const [userData] = useState<UserInfoValues>(() => {
+    const profileData: IStep[] = JSON.parse(localStorage.getItem(`profileSteps_${userId}`) || '[]').filter((d: IStep) => d.step === 'user');
 
-  const { mutation: updateUserInfoMutation } = useMutation<UpdateUserInfoResponse, UpdateUserInfoValues>({
-    request: (userInfo: UpdateUserInfoValues) => {
-      const updatedUserInfo = {
-        ...userInfo,
+    if (profileData.length > 0 && profileData[0].step_data) {
+      return profileData[0].step_data as UserInfoValues
+    } else {
+      return {
+        name: '',
+        city: '',
+        birthdate: '',
+      }
+    }
+  })
+
+  const { mutation: updateUserInfoMutation } = useMutation<IMessageResponse, UserInfoValues>({
+    request: (userInfo: UserInfoValues) => {
+      const updatedUserInfo: UpdateUserInfoPayload = {
+        name: userInfo.name,
+        city: userInfo.city,
         birthdate: new Date(userInfo.birthdate.split('.').reverse().join('-'))
       };
-      return api.put<UpdateUserInfoResponse, UpdateUserInfoPayload>(`/users/${getUserId()}/profile`, updatedUserInfo);
+      return api.put<IMessageResponse, UpdateUserInfoPayload>(`/users/${userId}/profile`, updatedUserInfo);
     }
   });
 
-  //TODO: Перенести информацию о пройденных шагах и данных о них на бекенд, вместо localStorage?
-  const { values, setFieldValue, errors, handleSubmit, isSubmitting, resetForm } = useForm<UpdateUserInfoValues>({
+  const { values, setFieldValue, errors, handleSubmit, isSubmitting, resetForm } = useForm<UserInfoValues>({
     initialValues: {
-      name: localStorage.getItem(`name_${getUserId()}`) || '',
-      city: localStorage.getItem(`city_${getUserId()}`) || '',
-      birthdate: localStorage.getItem(`birthdate_${getUserId()}`) || ''
+      name: userData.name,
+      city: userData.city,
+      birthdate: userData.birthdate
     },
     validateSchema: {
       name: validateField,
@@ -64,28 +67,16 @@ export const UserInfo = () => {
       try {
         const data = await updateUserInfoMutation(values);
         toast.success(translateMessage('validations.success', { msg: data.message }));
-        completeStep(currentStep);
+        updateStepData(values, currentStepTitle as Steps);
+
+        completeStep(currentStepTitle as Steps);
         toggleStep('pets');
+
       } catch (error) {
         toast.error(translateMessage('login.failed'));
       }
     }
   });
-
-  useEffect(() => {
-    if (selectedDay) {
-      const formattedDate = formatDate(selectedDay.date, 'DD.MM.YYYY');
-      if (values.birthdate !== formattedDate) {
-        setFieldValue('birthdate', formattedDate);
-        localStorage.setItem(`birthdate_${getUserId()}`, formattedDate);
-      }
-    }
-  }, [selectedDay]);
-
-  useEffect(() => {
-    localStorage.setItem(`name_${getUserId()}`, values.name);
-    localStorage.setItem(`city_${getUserId()}`, values.city);
-  }, [values.name, values.city]);
 
   const handleBirthdateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -93,7 +84,6 @@ export const UserInfo = () => {
       const date = parseDateString(newValue);
       setSelectedDay(date);
       setFieldValue('birthdate', newValue);
-      localStorage.setItem(`birthdate_${getUserId()}`, newValue);
     } else {
       setFieldValue('birthdate', newValue);  // Обновление значения в любом случае, чтобы пользователь видел введенные данные
     }
@@ -148,7 +138,7 @@ export const UserInfo = () => {
 
         <Button disabled={isSubmitting} type="submit">
           {
-            profileSteps.find(profStep => profStep.step === currentStep)?.completed
+            profileSteps.find(profStep => profStep.step === currentStepTitle)?.completed
               ? translateMessage('button.update')
               : translateMessage('button.next')
           }

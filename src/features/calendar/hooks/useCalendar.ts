@@ -3,14 +3,14 @@ import { createDate, createMonth, getMonthesNames, getMonthNumberOfDays, getWeek
 import { useUser } from '@utils/contexts';
 
 export const useCalendar = (locale: string) => {
-  const {getUserId} = useUser()
+  const {userId} = useUser()
 
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
   const [currentDate, setCurrentDate] = useState(new Date());
 
   // Инициализация selectedDay из куки или null
   const initializeSelectedDay = (): ReturnType<typeof createDate> | null => {
-    const cookieDate = localStorage.getItem(`birthdate_${getUserId()}`);
+    const cookieDate = localStorage.getItem(`birthdate_${userId}`);
 
     if (cookieDate) {
       const [day, month, year] = cookieDate.split('.').map(Number);

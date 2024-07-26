@@ -1,7 +1,6 @@
 .container {
     display: flex;
     flex-direction: column;
-
     padding: 30px 0 25px 0;
 }
 
@@ -18,12 +17,33 @@
     justify-content: center;
 }
 
+.petsList {
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    padding-right: 10px;
+}
+
+.petsList::-webkit-scrollbar {
+    width: 8px;
+}
+
+.petsList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.petsList::-webkit-scrollbar-thumb {
+    background-color: var(--color-placeholder); /* Adjust to your desired color */
+    border-radius: 10px;
+    border: 3px solid transparent;
+
+}
+
 .petList_item {
     display: flex;
     flex-direction: row;
     gap: 15px;
     padding-bottom: 10px;
-
     font-size: 12px;
     font-weight: var(--font-weight600);
     color: var(--color-text);
@@ -34,11 +54,9 @@
     justify-content: space-between;
     min-width: 230px;
     width: 100%;
-
     border-radius: 5px;
     background: var(--background-color-field);
     padding: 9px 10px;
-
     gap: 10px;
     transition: all 0.3s ease-in-out;
 }
@@ -46,7 +64,6 @@
 .pet_item:hover {
     background: var(--background-color-field-focused);
 }
-
 
 .cross {
     cursor: pointer;
@@ -60,7 +77,6 @@
 .add_pet {
     position: relative;
     width: 100%;
-
     font-size: 12px;
     font-weight: var(--font-weight600);
     color: var(--color-text);
@@ -78,7 +94,6 @@
     display: flex;
     justify-content: center;
     gap: 5px;
-
     padding-top: 15px;
     transition: all 0.3s ease-in-out;
 }
@@ -87,4 +102,3 @@
     opacity: 0.7;
     scale: 1.04;
 }
-
