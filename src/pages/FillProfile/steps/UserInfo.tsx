@@ -1,4 +1,4 @@
-import styles from '../FillProfile.module.css'
+import styles from '../FillProfile.module.css';
 import { Input } from '@common/fields';
 import { DateInput } from '@inputs/Inputs/DateInput';
 import { CalendarSvg } from '@utils/svg';
@@ -6,40 +6,39 @@ import { Calendar } from '@common/Calendar/Calendar.tsx';
 import { Button } from '@common/buttons';
 import React, { useEffect, useState } from 'react';
 import { useIntl } from '@features/intl';
-import { formatDate, useDate } from '@features/calendar';
-import { IMessageResponse, IStep, Steps, UserInfoValues, useUser } from '@utils/contexts';
+import {
+  IMessageResponse,
+  IStep,
+  Steps,
+  UpdateUserInfoPayload, useCalendar,
+  useDate,
+  UserInfoValues,
+  useUser
+} from '@utils/contexts';
 import { useForm, useMutation } from '@utils/hooks';
 import { api } from '@utils/api';
-import { validateField } from '@helpers/*';
+import { formatDate, validateField } from '@helpers/*';
 import { toast } from 'react-toastify';
-
-
-interface UpdateUserInfoPayload {
-  name: string;
-  city: string;
-  birthdate: Date;
-}
-
-
 
 export const UserInfo = () => {
   const { translateMessage } = useIntl();
-  const { isCalendar, setIsCalendar, parseDateString, setSelectedDay } = useDate();
+  const { isCalendar, setIsCalendar } = useCalendar();
+  const { parseDateString, selectedDate, toggleSelectedDate } = useDate();
   const { currentStepTitle, toggleStep, userId, completeStep, profileSteps, updateStepData } = useUser();
 
   const [userData] = useState<UserInfoValues>(() => {
     const profileData: IStep[] = JSON.parse(localStorage.getItem(`profileSteps_${userId}`) || '[]').filter((d: IStep) => d.step === 'user');
 
     if (profileData.length > 0 && profileData[0].step_data) {
-      return profileData[0].step_data as UserInfoValues
+      return profileData[0].step_data as UserInfoValues;
     } else {
       return {
         name: '',
         city: '',
         birthdate: '',
-      }
+      };
     }
-  })
+  });
 
   const { mutation: updateUserInfoMutation } = useMutation<IMessageResponse, UserInfoValues>({
     request: (userInfo: UserInfoValues) => {
@@ -71,23 +70,44 @@ export const UserInfo = () => {
 
         completeStep(currentStepTitle as Steps);
         toggleStep('pets');
-
       } catch (error) {
         toast.error(translateMessage('login.failed'));
       }
     }
   });
 
+  const [rawBirthdate, setRawBirthdate] = useState(values.birthdate);
+  const [isBirthdateTouched, setIsBirthdateTouched] = useState(false);
+
   const handleBirthdateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
-    if (/^\d{2}\.\d{2}\.\d{4}$/.test(newValue)) {  // Проверка на формат ДД.ММ.ГГГГ
+    setRawBirthdate(newValue);
+
+    if (!isBirthdateTouched) {
+      setIsBirthdateTouched(true);
+    }
+
+    if (/^\d{2}\.\d{2}\.\d{4}$/.test(newValue)) {
       const date = parseDateString(newValue);
-      setSelectedDay(date);
+      toggleSelectedDate(date, 'user_birthdate');
+
       setFieldValue('birthdate', newValue);
+
     } else {
-      setFieldValue('birthdate', newValue);  // Обновление значения в любом случае, чтобы пользователь видел введенные данные
+      toggleSelectedDate(null, 'user_birthdate');
+      setFieldValue('birthdate', '');
     }
   };
+
+  useEffect(() => {
+    if (selectedDate.user_birthdate) {
+      const formattedDate = formatDate(selectedDate.user_birthdate.date, 'DD.MM.YYYY');
+      if (values.birthdate !== formattedDate) {
+        setFieldValue('birthdate', formattedDate);
+        setRawBirthdate(formattedDate);
+      }
+    }
+  }, [selectedDate, setFieldValue, values.birthdate]);
 
 
   return (
@@ -120,8 +140,8 @@ export const UserInfo = () => {
             label={translateMessage('field.input.birthday.label')}
             type="text"
             helperText={translateMessage(errors?.birthdate || 'errors?.birthdate') || ''}
-            isError={!!errors?.birthdate || false}
-            value={values.birthdate}
+            isError={!!errors?.birthdate || (isBirthdateTouched && !rawBirthdate.length) || false}
+            value={rawBirthdate}
             components={{
               indicator: () => (
                 <div onClick={() => setIsCalendar(!isCalendar)}>
@@ -130,11 +150,10 @@ export const UserInfo = () => {
               )
             }}
             onChange={handleBirthdateChange}
-            // onClick={() => setIsCalendar(!isCalendar)}
           />
         </div>
 
-        {isCalendar && <Calendar />}
+        {isCalendar && <Calendar type="user" setFieldValue={setFieldValue} setRawBirthdate={setRawBirthdate} />}
 
         <Button disabled={isSubmitting} type="submit">
           {

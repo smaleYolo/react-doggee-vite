@@ -1,6 +1,7 @@
 
 // Проверяет, является ли дата сегодняшним днем
-import { checkDateIsEqual } from '@features/calendar';
+
+import { checkDateIsEqual } from '@utils/helpers';
 
 export const checkIsToday = (date: Date) => {
   const today = new Date();

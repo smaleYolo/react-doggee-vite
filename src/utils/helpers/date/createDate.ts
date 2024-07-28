@@ -1,4 +1,4 @@
-import { getWeekNumber } from '@features/calendar';
+import { getWeekNumber } from '@utils/helpers';
 
 interface CreateDateParams {
   locale?: string;

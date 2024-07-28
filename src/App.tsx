@@ -7,11 +7,11 @@ import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
 import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
 import { TestPage } from '@pages/Test/TestPage/TestPage';
 import { ROUTES } from '@utils/constants';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { FillProfile } from '@pages/FillProfile/FillProfile.tsx';
-import { useUser } from '@utils/contexts';
+import { useDate, useUser } from '@utils/contexts';
 import { TestFooter } from '@common/TestComp/TestFooter/TestFooter.tsx';
 
 
@@ -45,6 +45,9 @@ const MainRoutes = () => (
 
 const App = () => {
   const { isAuth } = useUser();
+
+
+
 
   return (
     <BrowserRouter>

@@ -1,6 +1,7 @@
 // Форматирует дату в указанный формат
 
-import { createDate } from '@features/calendar';
+
+import { createDate } from '@utils/helpers';
 
 export const formatDate = (date: Date, format: string) => {
   const d = createDate({ date });

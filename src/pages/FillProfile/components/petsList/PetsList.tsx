@@ -3,9 +3,8 @@ import styles from './PetsList.module.css';
 import { CheckMarkSvg, CrossSvg, PlusSvg, WarningSvg } from '@utils/svg';
 import { useMutation, useQuery } from '@utils/hooks';
 import { api } from '@utils/api';
-import { useUser } from '@utils/contexts';
+import { useCalendar, useDate, useUser } from '@utils/contexts';
 import { IDog } from '@utils/models';
-import { useCalendar, useDate } from '@features/calendar';
 import { useIntl } from '@features/intl';
 
 export const PetsList = () => {
@@ -13,7 +12,7 @@ export const PetsList = () => {
 
   const {translateMessage} = useIntl()
   const { userId } = useUser();
-  const { getFullYears } = useDate();
+  const { getFullYears } = useCalendar();
 
   const [dogs, setDogs] = useState<IDog[]>([]);
 

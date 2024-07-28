@@ -1,4 +1,4 @@
-import { createDate } from '@features/calendar';
+import { createDate } from '@utils/helpers';
 
 export const getWeekDaysNames = (firstWeekDay: number = 1, locale: string = 'default') => {
   const weekDaysNames: {

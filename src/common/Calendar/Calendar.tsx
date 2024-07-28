@@ -1,10 +1,29 @@
-import { checkIsToday, useDate } from '@features/calendar';
 import React, { useEffect, useRef } from 'react';
 
 import styles from './Calendar.module.css';
+import { PetInfoValues, useCalendar, useDate, UserInfoValues, useUser } from '@utils/contexts';
+import { checkIsToday, createDate, formatDate } from '@helpers/*';
 
-export const Calendar: React.FC = () => {
+interface CalendarProps<T extends 'user' | 'dog'> {
+  type: T;
+  setFieldValue: (
+    field: T extends 'user' ? keyof UserInfoValues : keyof PetInfoValues,
+    value: T extends 'user' ? UserInfoValues[keyof UserInfoValues] : PetInfoValues[keyof PetInfoValues]
+  ) => void;
+  setRawBirthdate: (date: string) => void;
+}
+
+export const Calendar = <T extends 'user' | 'dog'>({ type, setFieldValue, setRawBirthdate }: CalendarProps<T>) => {
   const {
+    selectedDate,
+    setSelectedDate,
+    selectedMonth,
+    setSelectedMonth,
+    toggleSelectedDate
+  } = useDate();
+
+  const {
+    today,
     isCalendar,
     handleMonth,
     monthName,
@@ -12,19 +31,17 @@ export const Calendar: React.FC = () => {
     year,
     days,
     currentDate,
-    selectedDay,
-    setSelectedDay,
     setIsCalendar,
     calendarType,
     setCalendarType,
     setCurrentDate,
     monthNames,
-    selectedMonth,
-    setSelectedMonth,
     years,
     handleDecade,
     handleYear
-  } = useDate();
+  } = useCalendar();
+
+  console.log('selectedDate', selectedDate.user_birthdate);
 
   const handleYearClick = (year: string) => {
     setCurrentDate(new Date(parseInt(year, 10), currentDate.getMonth(), currentDate.getDate()));
@@ -43,10 +60,44 @@ export const Calendar: React.FC = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      setSelectedDay(null)
+      setIsCalendar(false);
     };
-  }, []);
+  }, [setIsCalendar]);
 
+  useEffect(() => {
+    const selectedDay = type === 'user' ? selectedDate.user_birthdate : selectedDate.dog_birthdate;
+    if (selectedDay) {
+      const formattedDate = formatDate(selectedDay.date, 'DD.MM.YYYY');
+      setCurrentDate(new Date(selectedDay.year, selectedDay.monthIndex, selectedDay.dayNumber));
+      setFieldValue('birthdate', formattedDate);
+      setRawBirthdate(formattedDate);
+    } else {
+      setCurrentDate(new Date());
+    }
+
+  }, [selectedDate, type, setFieldValue, setRawBirthdate]);
+
+  const handleDayClick = (day: ReturnType<typeof createDate>) => {
+    const formattedDate = formatDate(day.date, 'DD.MM.YYYY');
+
+    setSelectedDate((prev) => ({
+      ...prev,
+      [type === 'user' ? 'user_birthdate' : 'dog_birthdate']: day
+    }));
+
+    setFieldValue('birthdate', formattedDate);
+    setRawBirthdate(formattedDate);
+    setIsCalendar(false);
+  };
+
+  const isSelected = (day: ReturnType<typeof createDate>) => {
+    const selectedDay = type === 'user' ? selectedDate.user_birthdate : selectedDate.dog_birthdate;
+    return (
+      day.dayNumber === selectedDay?.dayNumber &&
+      day.monthIndex === selectedDay?.monthIndex &&
+      day.year === selectedDay?.year
+    );
+  };
 
   return (
     <div
@@ -92,12 +143,9 @@ export const Calendar: React.FC = () => {
                     ${styles.day}
                     ${day.monthIndex !== currentDate.getMonth() ? styles.otherMonthDay : ''}
                     ${checkIsToday(day.date) ? styles.today : ''}
-                    ${day.dayNumber === selectedDay?.dayNumber && day.monthIndex === selectedDay?.monthIndex && day.year === selectedDay?.year ? styles.selected : ''}
+                    ${isSelected(day) ? styles.selected : ''}
                   `}
-                  onClick={() => {
-                    setSelectedDay(day);
-                    setIsCalendar(false);
-                  }}
+                  onClick={() => handleDayClick(day)}
                 >
                   {day.dayNumber}
                 </span>
@@ -133,7 +181,7 @@ export const Calendar: React.FC = () => {
                   className={`
                     ${styles.month}
                     ${(month.monthShort === selectedMonth?.monthShort && selectedMonth?.year === currentDate.getFullYear()) ? styles.selected : ''}
-                    ${(month.year === new Date().getFullYear()) && month.monthIndex === new Date().getMonth() ? styles.today : ''}
+                    ${(month.year === today.getFullYear()) && month.monthIndex === today.getMonth() ? styles.today : ''}
                   `}
                   onClick={() => {
                     setSelectedMonth({ ...month, year: currentDate.getFullYear() });
@@ -174,12 +222,13 @@ export const Calendar: React.FC = () => {
                   key={i}
                   className={`
                     ${styles.year}
-                    ${year === String(currentDate.getFullYear()) ? styles.today : ''}
+                    ${year === String(today.getFullYear()) ? styles.today : ''}
+                    ${year === String(currentDate.getFullYear()) ? styles.selected : ''}
                   `}
                   onClick={() => {
                     i === 0 && handleDecade('prev');
                     i === 11 && handleDecade('next');
-                    i !== 0 && i !== 11 && handleYearClick(year)
+                    i !== 0 && i !== 11 && handleYearClick(year);
                   }}
                 >
                   {year}

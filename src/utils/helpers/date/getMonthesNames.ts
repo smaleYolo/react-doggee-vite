@@ -1,6 +1,7 @@
 
 // Получает названия месяцев
-import { createDate } from '@features/calendar';
+
+import { createDate } from '@utils/helpers';
 
 export const getMonthesNames = (locale: string = 'default') => {
   const monthesNames: {

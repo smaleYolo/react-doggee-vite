@@ -16,7 +16,6 @@ export const TestFooter: React.FC = () => {
 
   const handleClearDataClick = () => {
     clearAllCookiesAndLocalStorage();
-    console.log('Все куки и локальный сторидж очищены');
   };
 
 

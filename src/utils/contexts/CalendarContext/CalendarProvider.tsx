@@ -1,55 +1,43 @@
-import { useState, useEffect } from 'react';
-import { createDate, createMonth, getMonthesNames, getMonthNumberOfDays, getWeekDaysNames } from '@features/calendar';
-import { useUser } from '@utils/contexts';
+import { ReactNode, useEffect, useState } from 'react';
+import { CalendarContext } from '@utils/contexts';
+import { useIntl } from '@features/intl';
+import { createDate, createMonth, getMonthesNames, getMonthNumberOfDays, getWeekDaysNames } from '@helpers/*';
 
-export const useCalendar = (locale: string) => {
-  const {userId} = useUser()
 
+export interface ICalendarProps {
+  today: Date;
+  currentDate: Date;
+  days: ReturnType<typeof createDate>[];
+  weekDays: { day: string; dayShort: string }[];
+  monthName: string;
+  year: number;
+  setCurrentDate: (date: Date) => void;
+  handleMonth: (direction: 'prev' | 'next') => void;
+  isCalendar: boolean;
+  setIsCalendar: (isCalendar: boolean) => void;
+  monthNames: { monthShort: string; monthIndex: number; year: number }[] | null;
+  calendarType: 'basic' | 'months' | 'years';
+  setCalendarType: (type: 'basic' | 'months' | 'years') => void;
+  years: string[];
+  handleDecade: (direction: 'prev' | 'next') => void;
+  handleYear: (direction: 'prev' | 'next') => void;
+  getFullYears: (birthdate: string | Date) => number;
+}
+
+export const CalendarProvider = ({ children }: { children: ReactNode; }) => {
+  const { locale } = useIntl();
+
+  const [today] = useState(() => {
+    return new Date();
+  })
   const [isCalendar, setIsCalendar] = useState<boolean>(false);
-  const [currentDate, setCurrentDate] = useState(new Date());
-
-  // Инициализация selectedDay из куки или null
-  const initializeSelectedDay = (): ReturnType<typeof createDate> | null => {
-    const cookieDate = localStorage.getItem(`birthdate_${userId}`);
-
-    if (cookieDate) {
-      const [day, month, year] = cookieDate.split('.').map(Number);
-      return createDate({ date: new Date(year, month - 1, day) });
-    }
-    return null;
-  };
-
-  const [selectedDay, setSelectedDay] = useState<ReturnType<typeof createDate> | null>(initializeSelectedDay);
-
-
-  const [selectedMonth, setSelectedMonth] = useState<{ monthShort: string; monthIndex: number; year: number } | null>(null);
+  const [currentDate, setCurrentDate] = useState(() => new Date());
+  const [calendarType, setCalendarType] = useState<'basic' | 'months' | 'years'>('basic');
   const [days, setDays] = useState<ReturnType<typeof createDate>[]>([]);
   const [weekDays, setWeekDays] = useState<{ day: string; dayShort: string }[]>([]);
   const [monthNames, setMonthNames] = useState<{ monthShort: string; monthIndex: number; year: number }[] | null>(null);
   const [years, setYears] = useState<string[]>([]);
   const [yearRange, setYearRange] = useState<{ start: number; end: number }>({ start: 2019, end: 2030 });
-  const [calendarType, setCalendarType] = useState<'basic' | 'months' | 'years'>('basic');
-
-  const { monthName, year } = createMonth({ date: currentDate, locale });
-
-  useEffect(() => {
-    const monthsObj = getMonthesNames(locale);
-    const monthsNames = monthsObj.map((month) => ({
-      monthShort: month.monthShort,
-      monthIndex: month.monthIndex,
-      year: currentDate.getFullYear(),
-    }));
-    setMonthNames(monthsNames);
-    generateYears(yearRange.start, yearRange.end);
-    updateDays(currentDate);
-    setWeekDays(getWeekDaysNames(2, locale));
-  }, [currentDate, locale, yearRange]);
-
-  useEffect(() => {
-    if (selectedDay && isCalendar) {
-      setCurrentDate(selectedDay.date);
-    }
-  }, [isCalendar, selectedDay]);
 
   const generateYears = (startYear: number, endYear: number) => {
     const yearsArray = [];
@@ -58,12 +46,6 @@ export const useCalendar = (locale: string) => {
     }
     setYears(yearsArray);
   };
-
-  const parseDateString = (dateString: string) => {
-    const [day, month, year] = dateString.split('.').map(Number);
-    return createDate({ date: new Date(year, month - 1, day) });
-  };
-
   const updateDays = (date: Date) => {
     const monthData = createMonth({ date, locale });
     const previousMonth = new Date(date.getFullYear(), date.getMonth() - 1, 1);
@@ -73,7 +55,10 @@ export const useCalendar = (locale: string) => {
     const firstDayIndex = (monthData.getDay(1).dayNumberInWeek + 5) % 7;
 
     const previousMonthDays = Array.from({ length: firstDayIndex }, (_, i) =>
-      createDate({ date: new Date(previousMonth.getFullYear(), previousMonth.getMonth(), daysInPreviousMonth - i), locale })
+      createDate({
+        date: new Date(previousMonth.getFullYear(), previousMonth.getMonth(), daysInPreviousMonth - i),
+        locale
+      })
     ).reverse();
 
     const lastDayIndex = (monthData.getDay(monthData.createMonthDays().length).dayNumberInWeek + 5) % 7;
@@ -83,7 +68,6 @@ export const useCalendar = (locale: string) => {
 
     setDays([...previousMonthDays, ...monthData.createMonthDays(), ...nextMonthDays]);
   };
-
   const handleMonth = (direction: 'prev' | 'next') => {
     setCurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
@@ -91,7 +75,6 @@ export const useCalendar = (locale: string) => {
       return newDate;
     });
   };
-
   const handleYear = (direction: 'prev' | 'next') => {
     setCurrentDate((prevDate) => {
       const newDate = new Date(prevDate);
@@ -99,7 +82,6 @@ export const useCalendar = (locale: string) => {
       return newDate;
     });
   };
-
   const handleDecade = (direction: 'prev' | 'next') => {
     setYearRange((prevRange) => {
       const newStart = direction === 'next' ? prevRange.start + 10 : prevRange.start - 10;
@@ -108,36 +90,53 @@ export const useCalendar = (locale: string) => {
       return { start: newStart, end: newEnd };
     });
   };
-
   const getFullYears = (birthdate: string | Date) => {
     const birthdateObj = new Date(birthdate); // Преобразование строки в объект Date
     const today = new Date();
     const diffInMilliSeconds = today.getTime() - birthdateObj.getTime();
     const diffInYears = diffInMilliSeconds / 1000 / 60 / 60 / 24 / 365.25;
     return Math.abs(Math.round(diffInYears));
-  }
+  };
 
-  return {
+  const { monthName, year } = createMonth({ date: currentDate, locale });
+
+  useEffect(() => {
+    const monthsObj = getMonthesNames(locale);
+    const monthsNames = monthsObj.map((month) => ({
+      monthShort: month.monthShort,
+      monthIndex: month.monthIndex,
+      year: currentDate.getFullYear()
+    }));
+    setMonthNames(monthsNames);
+    generateYears(yearRange.start, yearRange.end);
+    updateDays(currentDate);
+    setWeekDays(getWeekDaysNames(2, locale));
+  }, [currentDate, locale, yearRange]);
+
+  const value: ICalendarProps = {
+    today,
     currentDate,
-    selectedDay,
     days,
     weekDays,
     monthName,
     year,
     setCurrentDate,
-    setSelectedDay,
     handleMonth,
     isCalendar,
     setIsCalendar,
     monthNames,
     calendarType,
     setCalendarType,
-    selectedMonth,
-    setSelectedMonth,
     years,
     handleDecade,
     handleYear,
-    parseDateString,
-    getFullYears
+    getFullYears,
   };
+
+
+  return (
+    <CalendarContext.Provider value={value}>
+      {children}
+    </CalendarContext.Provider>
+  );
 };

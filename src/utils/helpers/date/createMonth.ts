@@ -1,4 +1,4 @@
-import { createDate, getMonthNumberOfDays } from '@features/calendar';
+import { createDate, getMonthNumberOfDays } from '@utils/helpers';
 
 interface CreateMonthParams {
   date?: Date;
