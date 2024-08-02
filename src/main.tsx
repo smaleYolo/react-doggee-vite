@@ -1,6 +1,6 @@
 import { IntlProvider } from '@features/intl';
 import { ThemeProvider } from '@features/theming/context/ThemeProvider';
-import { CalendarProvider, DateProvider, UserProvider } from '@utils/contexts';
+import { CalendarProvider, DateProvider, StepsProvider, AuthProvider, DogsProvider } from '@utils/contexts';
 import ReactDOM from 'react-dom/client';
 
 import App from './App';
@@ -14,13 +14,17 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <ThemeProvider>
     <IntlProvider>
-      <UserProvider>
-        <CalendarProvider>
-          <DateProvider>
-            <App />
-          </DateProvider>
-        </CalendarProvider>
-      </UserProvider>
+      <AuthProvider>
+        <DogsProvider>
+        <StepsProvider>
+          <CalendarProvider>
+            <DateProvider>
+              <App />
+            </DateProvider>
+          </CalendarProvider>
+        </StepsProvider>
+        </DogsProvider>
+      </AuthProvider>
     </IntlProvider>
   </ThemeProvider>
 );

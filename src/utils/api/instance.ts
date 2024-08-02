@@ -2,7 +2,8 @@ import Cookies from 'js-cookie';
 import { IRefreshResponse } from '@utils/contexts';
 
 type BaseUrl = string;
-const baseUrl: BaseUrl = 'http://localhost:3001';
+// const baseUrl: BaseUrl = 'http://localhost:3001';
+const baseUrl: BaseUrl = 'https://backend-doggee.vercel.app';
 
 export class API {
   readonly baseUrl: BaseUrl;

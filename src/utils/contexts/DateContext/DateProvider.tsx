@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
-import { DateContext, useCalendar, useUser } from '@utils/contexts';
+import { DateContext, useCalendar, useSteps, useAuth } from '@utils/contexts';
 import { createDate } from '@helpers/*';
 
 export interface IUseCalendar {
@@ -31,7 +31,8 @@ export type ISelectedMonth = {
 
 export const DateProvider = ({ children }: { children: ReactNode; }) => {
   const { isCalendar } = useCalendar();
-  const { profileSteps, userId } = useUser();
+  const { userId } = useAuth();
+  const { profileSteps } = useSteps()
 
   const parseDateString = (dateString: string) => {
     if (!dateString) {

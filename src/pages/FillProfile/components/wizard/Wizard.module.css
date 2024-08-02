@@ -46,6 +46,17 @@
     transform: translateY(-50%);
 }
 
+.step_completed::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: 50px;
+    height: 2px;
+    background-color: var(--color-additional);
+    transform: translateY(-50%);
+}
+
 /* Удаляем линию у последнего шага */
 .step:last-child::after {
     content: none;
@@ -69,19 +80,19 @@
 }
 
 .step_circle:hover, .step_circle_current {
-    background-color: var(--color-additional);
+    background-color: var(--color-additional7);
     font-weight: var(--font-weight800);
 }
 
 
 .step_circle_completed  {
     font-weight: var(--font-weight800);
-    background-color: var(--color-completed7);
+    background-color: red;
+    transition: all 0.3s ease-in-out;
 }
 
 .step_circle_completed:hover {
-    background-color: var(--color-completed);
-    font-weight: var(--font-weight800);
+    scale: 1.05;
 }
 
 

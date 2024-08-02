@@ -1,6 +1,6 @@
 import darkTheme from '@static/theme/dark/dark.module.css';
 import Cookies from 'js-cookie';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { ThemeContext, type ThemeContextProps, type ThemesType } from "..";
 import { getTheme } from '../helpers/getTheme';
@@ -15,9 +15,9 @@ export interface ThemeProviderProps {
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [currentTheme, setCurrentTheme] = useState<ThemesType>(() => getTheme());
 
-  const toggleTheme = useCallback(() => {
+  const toggleTheme = () => {
     setCurrentTheme(prev => prev === 'light' ? 'dark' : 'light');
-  }, []);
+  }
 
   useEffect(() => {
     const savedTheme = Cookies.get('theme');

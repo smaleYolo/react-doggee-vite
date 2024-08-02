@@ -12,7 +12,7 @@ import { useForm, useMutation } from '@utils/hooks';
 import React from 'react';
 
 import styles from './LoginPage.module.css';
-import { useUser } from '@contexts/UserContext';
+import { useAuth } from '@contexts/AuthContext';
 
 export interface LoginFormValues {
   username: string;
@@ -29,7 +29,7 @@ export interface LoginResponse {
 export const LoginPage = () => {
   const navigate = useNavigate();
 
-  const { login } = useUser();
+  const { login } = useAuth();
   const { translateMessage } = useIntl();
 
   const { mutation: authMutation } = useMutation<LoginResponse, LoginFormValues>({
@@ -50,6 +50,7 @@ export const LoginPage = () => {
     onSubmit: async (values) => {
       try {
         const data = await authMutation(values);
+        console.log(data);
         login(data.access_token, data.refresh_token, data.userId, values.isNotMyDevice);
         navigate(ROUTES.MAIN);
       } catch (error) {

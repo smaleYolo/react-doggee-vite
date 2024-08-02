@@ -3,13 +3,13 @@ import styles from './FormInfo.module.css';
 import { PenSvg } from '@utils/svg';
 import { useIntl } from '@features/intl';
 import { IUser } from '@utils/models';
-import { useCalendar, useDate, useUser } from '@utils/contexts';
+import { useCalendar, useDate, useSteps, useAuth } from '@utils/contexts';
 import { formatDate } from '@helpers/*';
 
 export const FormInfo = ({ name, city, birthdate, dogs }: IUser) => {
   const { translateMessage } = useIntl();
   const { getFullYears } = useCalendar();
-  const { toggleStep } = useUser()
+  const { toggleStep } = useSteps()
 
   return (
     <>

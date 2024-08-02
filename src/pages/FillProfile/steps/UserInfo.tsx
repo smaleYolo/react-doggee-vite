@@ -12,8 +12,8 @@ import {
   Steps,
   UpdateUserInfoPayload, useCalendar,
   useDate,
-  UserInfoValues,
-  useUser
+  UserInfoValues, useSteps,
+  useAuth
 } from '@utils/contexts';
 import { useForm, useMutation } from '@utils/hooks';
 import { api } from '@utils/api';
@@ -24,7 +24,8 @@ export const UserInfo = () => {
   const { translateMessage } = useIntl();
   const { isCalendar, setIsCalendar } = useCalendar();
   const { parseDateString, selectedDate, toggleSelectedDate } = useDate();
-  const { currentStepTitle, toggleStep, userId, completeStep, profileSteps, updateStepData } = useUser();
+  const { currentStepTitle, toggleStep, completeStep, profileSteps, updateStepData } = useSteps();
+  const { userId } = useAuth();
 
   const [userData] = useState<UserInfoValues>(() => {
     const profileData: IStep[] = JSON.parse(localStorage.getItem(`profileSteps_${userId}`) || '[]').filter((d: IStep) => d.step === 'user');
@@ -51,7 +52,7 @@ export const UserInfo = () => {
     }
   });
 
-  const { values, setFieldValue, errors, handleSubmit, isSubmitting, resetForm } = useForm<UserInfoValues>({
+  const { values, setFieldValue, errors, handleSubmit, isSubmitting, canSubmit } = useForm<UserInfoValues>({
     initialValues: {
       name: userData.name,
       city: userData.city,
@@ -110,6 +111,7 @@ export const UserInfo = () => {
   }, [selectedDate, setFieldValue, values.birthdate]);
 
 
+
   return (
     <>
       <form className={styles.form_container} onSubmit={handleSubmit}>
@@ -120,7 +122,9 @@ export const UserInfo = () => {
             isError={!!errors?.name || false}
             type="text"
             value={values.name}
-            onChange={(e) => setFieldValue('name', e.target.value)}
+            onChange={(e) => {
+              setFieldValue('name', e.target.value)
+            }}
           />
         </div>
 
@@ -131,7 +135,9 @@ export const UserInfo = () => {
             helperText={translateMessage(errors?.city || 'errors?.city') || ''}
             isError={!!errors?.city || false}
             value={values.city}
-            onChange={(e) => setFieldValue('city', e.target.value)}
+            onChange={(e) => {
+              setFieldValue('city', e.target.value)
+            }}
           />
         </div>
 
@@ -149,13 +155,15 @@ export const UserInfo = () => {
                 </div>
               )
             }}
-            onChange={handleBirthdateChange}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              handleBirthdateChange(e)
+            }}
           />
         </div>
 
         {isCalendar && <Calendar type="user" setFieldValue={setFieldValue} setRawBirthdate={setRawBirthdate} />}
 
-        <Button disabled={isSubmitting} type="submit">
+        <Button disabled={isSubmitting || canSubmit} type="submit">
           {
             profileSteps.find(profStep => profStep.step === currentStepTitle)?.completed
               ? translateMessage('button.update')

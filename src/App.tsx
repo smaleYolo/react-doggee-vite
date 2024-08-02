@@ -11,7 +11,7 @@ import React, { useEffect } from 'react';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { FillProfile } from '@pages/FillProfile/FillProfile.tsx';
-import { useDate, useUser } from '@utils/contexts';
+import { useDate, useAuth } from '@utils/contexts';
 import { TestFooter } from '@common/TestComp/TestFooter/TestFooter.tsx';
 
 
@@ -44,7 +44,7 @@ const MainRoutes = () => (
 );
 
 const App = () => {
-  const { isAuth } = useUser();
+  const { isAuth } = useAuth();
 
 
 

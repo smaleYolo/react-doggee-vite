@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './Wizard.module.css';
-import { useUser } from '@utils/contexts';
+import { useSteps, useAuth } from '@utils/contexts';
 import { useIntl } from '@features/intl';
 
 export const Wizard = () => {
   const { translateMessage } = useIntl()
-  const { toggleStep, currentStepTitle, profileSteps } = useUser();
+  const { toggleStep, currentStepTitle, profileSteps } = useSteps();
 
 
   return (

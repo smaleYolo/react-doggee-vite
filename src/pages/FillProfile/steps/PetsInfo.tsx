@@ -8,11 +8,22 @@ import styles from '../FillProfile.module.css';
 
 import { useIntl } from '@features/intl';
 import { CalendarSvg } from '@utils/svg';
-import { PetInfoValues, IStep, Steps, UserInfoValues, useUser, useDate, useCalendar } from '@utils/contexts';
+import {
+  PetInfoValues,
+  IStep,
+  Steps,
+  UserInfoValues,
+  useAuth,
+  useDate,
+  useCalendar,
+  useSteps,
+  useDogs
+} from '@utils/contexts';
 import { useForm, useMutation } from '@utils/hooks';
 import { formatDate, validateField } from '@helpers/*';
 import { api } from '@utils/api';
 import { toast } from 'react-toastify';
+
 
 interface CreatePetResponse {
   message: string;
@@ -25,7 +36,9 @@ interface CreatePetPayload extends Omit<PetInfoValues, 'birthdate' | 'weight'> {
 
 export const PetsInfo = () => {
   const { translateMessage } = useIntl();
-  const { toggleStep, userId, completeStep, currentStepTitle, updateStepData } = useUser();
+  const { userId } = useAuth();
+  const { toggleStep, completeStep, currentStepTitle, updateStepData } = useSteps();
+  const { selectedDog } = useDogs();
   const { isCalendar, setIsCalendar } = useCalendar();
   const { parseDateString, selectedDate, toggleSelectedDate } = useDate();
 
@@ -65,7 +78,18 @@ export const PetsInfo = () => {
     }
   });
 
-  const { values, setFieldValue, errors, handleSubmit, resetForm } = useForm<PetInfoValues>({
+  const { mutation: updateDogMutation } = useMutation<CreatePetResponse, PetInfoValues>({
+    request: (petInfo: PetInfoValues) => {
+      const updatedPetInfo = {
+        ...petInfo,
+        birthdate: new Date(petInfo.birthdate.split('.').reverse().join('-')),
+        weight: Number(petInfo.weight),
+      };
+      return api.put<CreatePetResponse, CreatePetPayload>(`/users/${userId}/dogs/${selectedDog!.id}`, updatedPetInfo);
+    }
+  });
+
+  const { values, setFieldValue, errors, handleSubmit, isSubmitting, canSubmit, resetForm } = useForm<PetInfoValues>({
     initialValues: {
       name: petData.name,
       breed: petData.breed,
@@ -80,12 +104,16 @@ export const PetsInfo = () => {
     },
     onSubmit: async (values) => {
       try {
-        const data = await addPetInfoMutation(values);
+        const data = selectedDog ? await updateDogMutation(values) : await addPetInfoMutation(values);
+
         toast.success(translateMessage('validations.success', { msg: data.message }));
+
         updateStepData({ name: '', weight: '', breed: '', birthdate: '' }, currentStepTitle as Steps);
         toggleSelectedDate(null, 'dog_birthdate');
 
         completeStep(currentStepTitle as Steps);
+
+        completeStep('profile');
         toggleStep('profile');
       } catch (error) {
         toast.error(translateMessage('error', { error: (error as Error).message }));
@@ -124,6 +152,26 @@ export const PetsInfo = () => {
       }
     }
   }, [selectedDate, setFieldValue, values.birthdate]);
+
+  useEffect(() => {
+    if (selectedDog){
+      const selectedDogBD = formatDate(new Date(selectedDog.birthdate), 'DD.MM.YYYY')
+      const date = parseDateString(selectedDogBD);
+
+      setFieldValue('name', selectedDog.name);
+      setFieldValue('breed', selectedDog.breed);
+
+      setRawBirthdate(selectedDogBD);
+      toggleSelectedDate(date, 'dog_birthdate');
+      setFieldValue('birthdate', selectedDogBD);
+
+      setFieldValue('weight', String(selectedDog.weight));
+    } else {
+      resetForm()
+      toggleSelectedDate(null, 'dog_birthdate');
+      setRawBirthdate('')
+    }
+  }, [selectedDog]);
 
   return (
     <>
@@ -201,10 +249,10 @@ export const PetsInfo = () => {
 
         {isCalendar && <Calendar type="dog" setFieldValue={setFieldValue} setRawBirthdate={setRawBirthdate} />} {/* Добавлено prop type */}
 
-        <Button type="submit">
+        <Button type="submit" disabled={isSubmitting || canSubmit}>
           {
             isStepCompleted ? (
-              translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')
+              selectedDog ? translateMessage("button.update.pets") : translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')
             ) : (
               translateMessage('button.next')
             )

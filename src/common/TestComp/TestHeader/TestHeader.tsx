@@ -3,10 +3,10 @@ import { useTheme } from '@features/theming';
 import React from 'react';
 
 import styles from './TestHeader.module.css'
-import { useUser } from '@utils/contexts';
+import { useAuth } from '@utils/contexts';
 
 export const TestHeader: React.FC = () => {
-  const { isAuth, logout } = useUser();
+  const { isAuth, logout } = useAuth();
   const { setLanguage, translateMessage } = useIntl();
   const { theme, toggleTheme } = useTheme();
 

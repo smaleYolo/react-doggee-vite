@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 import styles from './Calendar.module.css';
-import { PetInfoValues, useCalendar, useDate, UserInfoValues, useUser } from '@utils/contexts';
+import { PetInfoValues, useCalendar, useDate, UserInfoValues, useAuth } from '@utils/contexts';
 import { checkIsToday, createDate, formatDate } from '@helpers/*';
 
 interface CalendarProps<T extends 'user' | 'dog'> {
@@ -41,7 +41,6 @@ export const Calendar = <T extends 'user' | 'dog'>({ type, setFieldValue, setRaw
     handleYear
   } = useCalendar();
 
-  console.log('selectedDate', selectedDate.user_birthdate);
 
   const handleYearClick = (year: string) => {
     setCurrentDate(new Date(parseInt(year, 10), currentDate.getMonth(), currentDate.getDate()));

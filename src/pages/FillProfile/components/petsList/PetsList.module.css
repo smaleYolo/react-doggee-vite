@@ -1,3 +1,6 @@
+
+
+
 .container {
     display: flex;
     flex-direction: column;
@@ -36,7 +39,6 @@
     background-color: var(--color-placeholder); /* Adjust to your desired color */
     border-radius: 10px;
     border: 3px solid transparent;
-
 }
 
 .petList_item {
@@ -50,6 +52,7 @@
 }
 
 .pet_item {
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     min-width: 230px;
@@ -62,6 +65,22 @@
 }
 
 .pet_item:hover {
+    background: var(--background-color-field-focused);
+}
+
+.checkMark {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.petList_item:hover .checkMark {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.selected {
+    font-weight: 800;
     background: var(--background-color-field-focused);
 }
 

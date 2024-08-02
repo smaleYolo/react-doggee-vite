@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import styles from './RegisterPage.module.css';
-import { useUser } from '@contexts/UserContext';
+import { useAuth } from '@contexts/AuthContext';
 import { Wizard } from '@pages/FillProfile/components/wizard/Wizard.tsx';
 
 interface RegisterResponse extends LoginResponse {
@@ -27,7 +27,7 @@ export interface RegisterFormValues {
 export const RegisterPage = () => {
   const navigate = useNavigate();
   const { translateMessage } = useIntl();
-  const { login } = useUser()
+  const { login } = useAuth()
 
   const { mutation: registerMutation } = useMutation<RegisterResponse, RegisterFormValues>({
     request: (userData: RegisterFormValues) => api.post<RegisterResponse, RegisterFormValues>('/auth/register', userData)

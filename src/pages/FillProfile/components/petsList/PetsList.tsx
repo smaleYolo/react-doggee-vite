@@ -1,41 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import styles from './PetsList.module.css';
-import { CheckMarkSvg, CrossSvg, PlusSvg, WarningSvg } from '@utils/svg';
+import { CheckMarkSvg, CrossSvg, PlusSvg } from '@utils/svg';
 import { useMutation, useQuery } from '@utils/hooks';
 import { api } from '@utils/api';
-import { useCalendar, useDate, useUser } from '@utils/contexts';
+import { useCalendar, useAuth, useSteps, useDogs } from '@utils/contexts';
 import { IDog } from '@utils/models';
 import { useIntl } from '@features/intl';
 
-export const PetsList = () => {
-  const showCheckMark = true;
+interface IGetDogs {
+  message: string;
+  dogs: IDog[];
+}
 
-  const {translateMessage} = useIntl()
-  const { userId } = useUser();
+export const PetsList: React.FC = () => {
+  const { translateMessage } = useIntl();
+  const { userId } = useAuth();
+  const { selectedDog, toggleSelectedDog, dogs, setDogs, deleteDogHandler } = useDogs();
   const { getFullYears } = useCalendar();
+  const { unCompleteStep, completeStep } = useSteps();
 
-  const [dogs, setDogs] = useState<IDog[]>([]);
-
-  const deleteDogHandler = async (id: number) => {
-    await DeleteUserDogMutation(id);
-    setDogs(dogs.filter(dog => dog.id !== id));
-  };
-
-  const { data: userDogs, isLoading, isError } = useQuery<IDog[], IDog[]>({
+  const { data: userDogs, isLoading } = useQuery<IGetDogs, IGetDogs>({
     request: () => api.get(`/users/${userId}/dogs`),
-    initialValue: [],
-    dependencies: []
+    initialValue: { message: '', dogs: [] },
+    dependencies: [userId]
   });
 
   useEffect(() => {
-    if (userDogs) {
-      setDogs(userDogs);
+    if (userDogs && userDogs.dogs) {
+      setDogs(userDogs.dogs);
     }
-  }, [userDogs]);
+  }, [userDogs, setDogs]);
 
+  useEffect(() => {
+    if (!dogs.length) {
+      unCompleteStep('pets');
+    } else {
+      completeStep('pets');
+    }
+  }, [dogs, completeStep, unCompleteStep]);
+
+  console.log(userDogs);
 
   const { mutation: DeleteUserDogMutation } = useMutation({
-    request: (DogId) => api.delete(`/users/${userId}/dogs/${DogId}`)
+    request: (dogId) => api.delete(`/users/${userId}/dogs/${dogId}`)
   });
 
 
@@ -53,13 +60,17 @@ export const PetsList = () => {
             dogs.length ? (
               dogs.map(dog => (
                 <div key={dog.id} className={styles.petList_item}>
-                  {showCheckMark ? <CheckMarkSvg width={'22'} /> : <WarningSvg width={'22'} />}
-                  <div className={styles.pet_item}>
-                    <span>{`${dog.name} - ${dog.breed}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}</span>
+                  {dog === selectedDog ? <CheckMarkSvg width={'22'} className={styles.checkMark} /> : null}
+                  <div className={`${styles.pet_item} ${dog === selectedDog ? styles.selected : ''}`}>
+                    <div
+                      onClick={() => toggleSelectedDog(dog)}
+                    >
+                      {`${dog.name} - ${dog.breed}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}
+                    </div>
                     <CrossSvg
                       width={13}
                       className={styles.cross}
-                      onClick={() => deleteDogHandler(dog.id)}
+                      onClick={() => deleteDogHandler(dog.id, DeleteUserDogMutation)}
                     />
                   </div>
                 </div>

@@ -3,7 +3,7 @@ import styles from '@pages/RegisterPage/RegisterPage.module.css';
 import { Wizard } from '@pages/FillProfile/components/wizard/Wizard.tsx';
 import { UserInfo } from '@pages/FillProfile/steps/UserInfo.tsx';
 import { useIntl } from '@features/intl';
-import { useUser } from '@utils/contexts';
+import { useSteps, useAuth } from '@utils/contexts';
 import { PetsInfo } from '@pages/FillProfile/steps/PetsInfo.tsx';
 import { PetsList } from '@pages/FillProfile/components/petsList/PetsList.tsx';
 import { Profile } from '@pages/FillProfile/steps/Profile.tsx';
@@ -11,7 +11,7 @@ import { Profile } from '@pages/FillProfile/steps/Profile.tsx';
 
 export const FillProfile = () => {
   const { translateMessage } = useIntl();
-  const { toggleStep, currentStepTitle } = useUser();
+  const { toggleStep, currentStepTitle } = useSteps();
 
   return (
     <div className={styles.page}>

@@ -20,6 +20,9 @@ export const useForm = <Values>({
   const [errors, setErrors] = useState<{ [Key in keyof Values]?: string } | null>(null); // { username: 'error_message' } | null
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  //TODO: Добавить проверку на пустые поля values
+  const [canSubmit, setCanSubmit] = useState(false);
+
   const validateField = <T extends keyof Values>(field: T, value: Values[T]) => {
     if (validateSchema && validateSchema[field]) {
       return validateSchema[field]?.(value);
@@ -31,10 +34,12 @@ export const useForm = <Values>({
     setErrors({ ...errors, [field]: error });
   };
 
+
   const setFieldValue = useCallback(<T extends keyof Values>(field: T, value: Values[T]) => {
     setValues((prevValues) => {
-      if (prevValues[field] !== value) {  // Проверка, изменилось ли значение
+      if (prevValues[field] !== value) {
         const newValues = { ...prevValues, [field]: value };
+        setCanSubmit(true);
         if (validateOnChange) {
           const error = validateField(field, value);
           setFieldError(field, error);
@@ -81,7 +86,8 @@ export const useForm = <Values>({
   const resetForm = useCallback(() => {
     setValues(initialValues);
     setErrors(null);
+    setCanSubmit(false); // Сброс canSubmit при сбросе формы
   }, [initialValues]);
 
-  return { values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldError, validate, resetForm };
+  return { values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldError, validate, resetForm, canSubmit: !canSubmit };
 };

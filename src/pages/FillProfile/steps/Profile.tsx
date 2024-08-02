@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from '../FillProfile.module.css';
 import { useIntl } from '@features/intl';
-import { useUser } from '@utils/contexts';
+import { useSteps, useAuth } from '@utils/contexts';
 import { Button } from '@common/buttons';
 import { useQuery } from '@utils/hooks';
 import { api } from '@utils/api';
@@ -12,7 +12,8 @@ import { IUser } from '@utils/models';
 
 export const Profile = () => {
   const {translateMessage} = useIntl()
-  const {toggleStep, userId} = useUser()
+  const { userId} = useAuth()
+  const {toggleStep} = useSteps()
 
   const {data , isError, isLoading} = useQuery<IUser | null, IUser>({
     request: () => api.get<IUser>(`/users/${userId}/profile`),
@@ -34,9 +35,9 @@ export const Profile = () => {
       {isLoading && <h3>Loading...</h3>}
       {data && <FormInfo {...data} />}
 
-      <Button >
-        {translateMessage('button.done')}
-      </Button>
+      {/*<Button >*/}
+      {/*  {translateMessage('button.done')}*/}
+      {/*</Button>*/}
 
 
     </>
