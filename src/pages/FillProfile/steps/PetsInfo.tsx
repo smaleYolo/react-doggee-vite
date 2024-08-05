@@ -37,35 +37,11 @@ interface CreatePetPayload extends Omit<PetInfoValues, 'birthdate' | 'weight'> {
 export const PetsInfo = () => {
   const { translateMessage } = useIntl();
   const { userId } = useAuth();
-  const { toggleStep, completeStep, currentStepTitle, updateStepData } = useSteps();
+  const { toggleStep, completeStep, currentStepTitle, updateStepData, profileSteps } = useSteps();
   const { selectedDog } = useDogs();
   const { isCalendar, setIsCalendar } = useCalendar();
   const { parseDateString, selectedDate, toggleSelectedDate } = useDate();
 
-
-  const [petData] = useState<PetInfoValues>(() => {
-    const petData: IStep[] = JSON.parse(localStorage.getItem(`profileSteps_${userId}`) || '[]').filter((d: IStep) => d.step === 'pets');
-
-    if (petData.length > 0 && petData[0].step_data) {
-      return petData[0].step_data as PetInfoValues;
-    } else {
-      return {
-        name: '',
-        breed: '',
-        birthdate: '',
-        weight: ''
-      };
-    }
-  });
-  const [isStepCompleted] = useState<boolean>(() => {
-    const petData: IStep[] = JSON.parse(localStorage.getItem(`profileSteps_${userId}`) || '[]').filter((d: IStep) => d.step === 'pets');
-
-    if (petData.length > 0 && petData[0].step_data) {
-      return petData[0].completed;
-    } else {
-      return false;
-    }
-  });
 
   const { mutation: addPetInfoMutation } = useMutation<CreatePetResponse, PetInfoValues>({
     request: (petInfo: PetInfoValues) => {
@@ -91,10 +67,10 @@ export const PetsInfo = () => {
 
   const { values, setFieldValue, errors, handleSubmit, isSubmitting, canSubmit, resetForm } = useForm<PetInfoValues>({
     initialValues: {
-      name: petData.name,
-      breed: petData.breed,
-      birthdate: petData.birthdate,
-      weight: petData.weight
+      name: '',
+      breed: '',
+      birthdate: '',
+      weight: ''
     },
     validateSchema: {
       name: validateField,
@@ -251,11 +227,12 @@ export const PetsInfo = () => {
 
         <Button type="submit" disabled={isSubmitting || canSubmit}>
           {
-            isStepCompleted ? (
-              selectedDog ? translateMessage("button.update.pets") : translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')
-            ) : (
-              translateMessage('button.next')
-            )
+            profileSteps.find(profStep => profStep.step === currentStepTitle)?.completed
+              ? (
+                selectedDog ? translateMessage("button.update.pets") : translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')
+              ) : (
+                translateMessage('button.next')
+              )
           }
         </Button>
       </form>

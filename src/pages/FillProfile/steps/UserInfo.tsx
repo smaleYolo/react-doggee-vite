@@ -28,10 +28,10 @@ export const UserInfo = () => {
   const { userId } = useAuth();
 
   const [userData] = useState<UserInfoValues>(() => {
-    const profileData: IStep[] = JSON.parse(localStorage.getItem(`profileSteps_${userId}`) || '[]').filter((d: IStep) => d.step === 'user');
+    const localProfileData: IStep[] = JSON.parse(localStorage.getItem(`profileSteps_${userId}`) || '[]').filter((d: IStep) => d.step === 'user');
 
-    if (profileData.length > 0 && profileData[0].step_data) {
-      return profileData[0].step_data as UserInfoValues;
+    if (localProfileData.length > 0 && localProfileData[0].step_data) {
+      return localProfileData[0].step_data as UserInfoValues;
     } else {
       return {
         name: '',

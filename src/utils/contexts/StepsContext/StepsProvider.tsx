@@ -1,7 +1,6 @@
 import React, {  ReactNode, useEffect, useState } from 'react';
 import { PetInfoValues, StepsContext, UserInfoValues, useAuth, useDogs } from '@utils/contexts';
 
-
 export type Steps = 'user' | 'pets' | 'profile';
 
 export interface IStep {
@@ -23,8 +22,10 @@ export interface IStepsContext {
 }
 
 export const StepsProvider = ({ children }: { children: ReactNode }) => {
-  const { userId, logout } = useAuth();
+  const { userId } = useAuth();
   const { dogs, setSelectedDog } = useDogs();
+
+
 
   const initialStateSteps: IStep[] = [
     {
@@ -57,18 +58,10 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
   const [currentStepTitle, setCurrentStepTitle] = useState<Steps>('user');
 
   const initiateProfileSteps = () => {
-    const steps = localStorage.getItem(`profileSteps_${userId}`);
+    const localSteps = localStorage.getItem(`profileSteps_${userId}`);
 
-    return steps ? JSON.parse(steps) : initialStateSteps;
+    return localSteps ? JSON.parse(localSteps) : initialStateSteps;
   }
-
-
-  useEffect(() => {
-    if (userId) {
-      const newProfileSteps = initiateProfileSteps();
-      setProfileSteps(newProfileSteps);
-    }
-  }, [userId]);
 
   const completeStep = (step: Steps) => {
     setProfileSteps((prevState) => {
@@ -107,6 +100,14 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
     if (userId) localStorage.setItem(`profileSteps_${userId}`, JSON.stringify(updatedProfileSteps));
   };
 
+  //При смене userId делаем инициализацию новых данных о шагах
+  useEffect( () => {
+    if (userId) {
+      const newProfileSteps = initiateProfileSteps();
+      setProfileSteps(newProfileSteps);
+    }
+  }, [userId]);
+
   //Обновление currentStep
   useEffect(() => {
     const currentStep = profileSteps.find((step) => step.current)?.step ?? 'user';
@@ -117,6 +118,7 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [profileSteps, currentStepTitle]);
 
+  //Отмечаем шаг "profile" как выполненный, если выполнены два других
   useEffect(() => {
     if (dogs && !dogs.length) {
       unCompleteStep('pets')
@@ -129,16 +131,6 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  // useEffect(() => {
-  //   setProfileSteps((prevState) => {
-  //     const updatedSteps = prevState.map((s) =>
-  //       s.step === 'user' ? { ...s, step_data: { name: '', city: '', birthdate: '' } } : s
-  //       s.step === 'pets' ? { ...s, step_data: { name: '', breed: '', birthdate: '', weight: '' } } : s
-  //     );
-  //     return updatedSteps;
-  //   });
-  // }, [logout]);
-
 
   const value: IStepsContext = {
     currentStepTitle,
@@ -147,7 +139,7 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
     setProfileSteps,
     completeStep,
     unCompleteStep,
-    updateStepData
+    updateStepData,
   };
 
 
