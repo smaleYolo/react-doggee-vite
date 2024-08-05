@@ -66,7 +66,7 @@ export const UserInfo = () => {
     onSubmit: async (values) => {
       try {
         const data = await updateUserInfoMutation(values);
-        toast.success(translateMessage('validations.success', { msg: data.message }));
+        toast.success(translateMessage(data.message));
         updateStepData(values, currentStepTitle as Steps);
 
         completeStep(currentStepTitle as Steps);

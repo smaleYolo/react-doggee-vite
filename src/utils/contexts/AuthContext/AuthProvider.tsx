@@ -1,9 +1,8 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { api } from '@utils/api';
-import { AuthContext } from '@utils/contexts';
+import { AuthContext, useCalendar, useDate, useDogs, useSteps } from '@utils/contexts';
 import { IUser } from '@utils/models';
-
 
 export interface UserInfoValues {
   name: string;
@@ -53,13 +52,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     Cookies.remove('refresh_token');
     Cookies.remove('userId');
     Cookies.remove('NotUserDevice');
+
     setIsAuth(false);
     setUserId(undefined);
-  }
+  };
 
   const login = (access_token: string, refresh_token: string, userId: number, isNotUserDevice?: boolean) => {
     //TODO: Костыль для обновления selectedDate и календаря в целом
-    window.location.href = '/'
+    // window.location.href = '/'
     Cookies.set('access_token', access_token);
     Cookies.set('refresh_token', refresh_token);
     Cookies.set('userId', String(userId));
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       logout();
     }
-  }
+  };
 
   useEffect(() => {
     const authCookie = Cookies.get('access_token');
@@ -113,7 +113,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsAuthLoading(false);
   }, [logout, refreshToken]);
 
-
   const value: IAuthContext = {
     userId,
     isAuth,
@@ -125,7 +124,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   if (isAuthLoading) return null;
-
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -87,7 +87,7 @@
 
 .step_circle_completed  {
     font-weight: var(--font-weight800);
-    background-color: red;
+    background-color: var(--color-additional);
     transition: all 0.3s ease-in-out;
 }
 

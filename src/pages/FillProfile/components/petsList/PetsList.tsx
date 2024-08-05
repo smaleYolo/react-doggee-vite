@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styles from './PetsList.module.css';
 import { CheckMarkSvg, CrossSvg, PlusSvg } from '@utils/svg';
 import { useMutation, useQuery } from '@utils/hooks';
@@ -7,42 +7,46 @@ import { useCalendar, useAuth, useSteps, useDogs } from '@utils/contexts';
 import { IDog } from '@utils/models';
 import { useIntl } from '@features/intl';
 
-interface IGetDogs {
+export interface IGetUserGogsList {
   message: string;
   dogs: IDog[];
 }
 
-export const PetsList: React.FC = () => {
-  const { translateMessage } = useIntl();
-  const { userId } = useAuth();
-  const { selectedDog, toggleSelectedDog, dogs, setDogs, deleteDogHandler } = useDogs();
-  const { getFullYears } = useCalendar();
-  const { unCompleteStep, completeStep } = useSteps();
 
-  const { data: userDogs, isLoading } = useQuery<IGetDogs, IGetDogs>({
+export const PetsList = () => {
+  const {translateMessage} = useIntl()
+  const { userId } = useAuth();
+  const { selectedDog, toggleSelectedDog, setSelectedDog, dogs, setDogs, deleteDogHandler } = useDogs()
+  const { getFullYears } = useCalendar();
+  const { unCompleteStep, completeStep} = useSteps()
+
+  const { data: userDogs, isLoading } = useQuery<IGetUserGogsList, IGetUserGogsList>({
     request: () => api.get(`/users/${userId}/dogs`),
     initialValue: { message: '', dogs: [] },
-    dependencies: [userId]
+    dependencies: []
   });
 
-  useEffect(() => {
-    if (userDogs && userDogs.dogs) {
-      setDogs(userDogs.dogs);
-    }
-  }, [userDogs, setDogs]);
 
   useEffect(() => {
-    if (!dogs.length) {
+    if (userDogs && userDogs.dogs.length > 0) {
+      setDogs(userDogs.dogs);
+    }
+  }, [userDogs]);
+
+  useEffect(() => {
+    if(!dogs.length) {
       unCompleteStep('pets');
     } else {
-      completeStep('pets');
+      completeStep('pets')
     }
-  }, [dogs, completeStep, unCompleteStep]);
+  }, [dogs]);
+
 
   console.log(userDogs);
 
+
   const { mutation: DeleteUserDogMutation } = useMutation({
-    request: (dogId) => api.delete(`/users/${userId}/dogs/${dogId}`)
+    request: (DogId) => api.delete(`/users/${userId}/dogs/${DogId}`)
   });
 
 
@@ -70,7 +74,12 @@ export const PetsList: React.FC = () => {
                     <CrossSvg
                       width={13}
                       className={styles.cross}
-                      onClick={() => deleteDogHandler(dog.id, DeleteUserDogMutation)}
+                      onClick={() => {
+                        deleteDogHandler(dog.id, DeleteUserDogMutation)
+                        if (selectedDog) {
+                          setSelectedDog(undefined)
+                        }
+                      }}
                     />
                   </div>
                 </div>

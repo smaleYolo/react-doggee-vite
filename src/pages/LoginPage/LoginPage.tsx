@@ -21,6 +21,7 @@ export interface LoginFormValues {
 }
 
 export interface LoginResponse {
+  message: string;
   access_token: string;
   refresh_token: string;
   userId: number;
@@ -50,9 +51,9 @@ export const LoginPage = () => {
     onSubmit: async (values) => {
       try {
         const data = await authMutation(values);
-        console.log(data);
         login(data.access_token, data.refresh_token, data.userId, values.isNotMyDevice);
         navigate(ROUTES.MAIN);
+        toast.success(translateMessage(data.message))
       } catch (error) {
         toast.error(translateMessage('login.failed'));
       }

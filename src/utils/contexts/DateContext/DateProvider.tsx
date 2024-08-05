@@ -30,8 +30,7 @@ export type ISelectedMonth = {
 } | null
 
 export const DateProvider = ({ children }: { children: ReactNode; }) => {
-  const { isCalendar } = useCalendar();
-  const { userId } = useAuth();
+  const { userId, logout } = useAuth();
   const { profileSteps } = useSteps()
 
   const parseDateString = (dateString: string) => {
@@ -63,6 +62,12 @@ export const DateProvider = ({ children }: { children: ReactNode; }) => {
       setSelectedDate(() => initiateSelectedDate());
     }
   }, [userId, profileSteps]);
+
+
+  useEffect(() => {
+    setSelectedDate({ user_birthdate: null, dog_birthdate: null });
+    setSelectedMonth(null);
+  }, [logout]);
 
   const value: IUseCalendar = {
     selectedDate,

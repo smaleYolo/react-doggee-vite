@@ -106,7 +106,7 @@ export const PetsInfo = () => {
       try {
         const data = selectedDog ? await updateDogMutation(values) : await addPetInfoMutation(values);
 
-        toast.success(translateMessage('validations.success', { msg: data.message }));
+        toast.success(translateMessage(data.message));
 
         updateStepData({ name: '', weight: '', breed: '', birthdate: '' }, currentStepTitle as Steps);
         toggleSelectedDate(null, 'dog_birthdate');

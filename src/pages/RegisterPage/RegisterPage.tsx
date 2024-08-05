@@ -12,11 +12,8 @@ import { toast } from 'react-toastify';
 
 import styles from './RegisterPage.module.css';
 import { useAuth } from '@contexts/AuthContext';
-import { Wizard } from '@pages/FillProfile/components/wizard/Wizard.tsx';
 
-interface RegisterResponse extends LoginResponse {
-  message: string;
-}
+interface RegisterResponse extends LoginResponse {}
 
 export interface RegisterFormValues {
   username: string;
@@ -50,8 +47,7 @@ export const RegisterPage = () => {
         try {
           const data = await registerMutation(values);
           login(data.access_token, data.refresh_token, data.userId);
-          toast.success(translateMessage(data?.message || 'Registration successful!'));
-
+          toast.success(translateMessage(data.message));
           resetForm();
           navigate(ROUTES.MAIN);
 

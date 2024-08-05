@@ -23,7 +23,7 @@ export interface IStepsContext {
 }
 
 export const StepsProvider = ({ children }: { children: ReactNode }) => {
-  const { userId } = useAuth();
+  const { userId, logout } = useAuth();
   const { dogs, setSelectedDog } = useDogs();
 
   const initialStateSteps: IStep[] = [
@@ -126,6 +126,18 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
       completeStep('profile')
     }
   }, [dogs]);
+
+
+
+  // useEffect(() => {
+  //   setProfileSteps((prevState) => {
+  //     const updatedSteps = prevState.map((s) =>
+  //       s.step === 'user' ? { ...s, step_data: { name: '', city: '', birthdate: '' } } : s
+  //       s.step === 'pets' ? { ...s, step_data: { name: '', breed: '', birthdate: '', weight: '' } } : s
+  //     );
+  //     return updatedSteps;
+  //   });
+  // }, [logout]);
 
 
   const value: IStepsContext = {

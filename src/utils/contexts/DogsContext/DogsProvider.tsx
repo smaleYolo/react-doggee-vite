@@ -1,6 +1,6 @@
-import React, { Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import React, { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
 import { IDog } from '@utils/models';
-import { DogsContext } from '@utils/contexts';
+import { DogsContext, useAuth } from '@utils/contexts';
 
 
 export interface IDogsContext {
@@ -14,8 +14,11 @@ export interface IDogsContext {
 
 
 export const DogsProvider = ({ children }: { children: ReactNode }) => {
+  const {logout} = useAuth()
+
   const [dogs, setDogs] = useState<IDog[]>([]);
   const [selectedDog, setSelectedDog] = useState<IDog | undefined>(undefined);
+
 
   const toggleSelectedDog = (dog: IDog) => {
     const currentDog = selectedDog?.id === dog.id;
@@ -31,6 +34,15 @@ export const DogsProvider = ({ children }: { children: ReactNode }) => {
     await fn(id);
     setDogs(dogs.filter(dog => dog.id !== id));
   };
+
+
+
+
+
+  useEffect(() => {
+    setDogs([]);
+    setSelectedDog(undefined);
+  }, [logout]);
 
 
   const value: IDogsContext = {

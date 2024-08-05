@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { CalendarContext } from '@utils/contexts';
+import { CalendarContext, useAuth } from '@utils/contexts';
 import { useIntl } from '@features/intl';
 import { createDate, createMonth, getMonthesNames, getMonthNumberOfDays, getWeekDaysNames } from '@helpers/*';
 
@@ -26,6 +26,7 @@ export interface ICalendarProps {
 
 export const CalendarProvider = ({ children }: { children: ReactNode; }) => {
   const { locale } = useIntl();
+  const { logout } = useAuth();
 
   const [today] = useState(() => {
     return new Date();
@@ -113,6 +114,16 @@ export const CalendarProvider = ({ children }: { children: ReactNode; }) => {
     setWeekDays(getWeekDaysNames(2, locale));
   }, [currentDate, locale, yearRange]);
 
+
+  useEffect(() => {
+    setCurrentDate(new Date());
+    setCalendarType('basic');
+    setDays([]);
+    setWeekDays([]);
+    setMonthNames(null);
+    setYears([]);
+  }, [logout]);
+
   const value: ICalendarProps = {
     today,
     currentDate,
@@ -130,7 +141,7 @@ export const CalendarProvider = ({ children }: { children: ReactNode; }) => {
     years,
     handleDecade,
     handleYear,
-    getFullYears,
+    getFullYears
   };
 
 

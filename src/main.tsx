@@ -9,20 +9,19 @@ import './static/css/fonts.css';
 import './static/css/global.css';
 import './index.css';
 
-
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <ThemeProvider>
     <IntlProvider>
       <AuthProvider>
         <DogsProvider>
-        <StepsProvider>
-          <CalendarProvider>
-            <DateProvider>
-              <App />
-            </DateProvider>
-          </CalendarProvider>
-        </StepsProvider>
+          <StepsProvider>
+            <CalendarProvider>
+              <DateProvider>
+                <App />
+              </DateProvider>
+            </CalendarProvider>
+          </StepsProvider>
         </DogsProvider>
       </AuthProvider>
     </IntlProvider>
