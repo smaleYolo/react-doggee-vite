@@ -1,10 +1,11 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { TestHeader } from '@common/TestComp/TestHeader/TestHeader';
-import { ThemeToggle } from '@common/themeToggle/ThemeToggle';
 import { LoginPage } from '@pages/LoginPage/LoginPage';
 import { NotFoundPage } from '@pages/NotFoundPage/NotFoundPage';
 import { RegisterPage } from '@pages/RegisterPage/RegisterPage';
+import { ThemeToggle } from '@common/ThemeToggle/ThemeToggle.tsx';
+import { LanguageToggle } from '@common/LanguageToggle/LanguageToggle.tsx';
 import { TestPage } from '@pages/Test/TestPage/TestPage';
 import { ROUTES } from '@utils/constants';
 import React, { useEffect } from 'react';
@@ -13,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FillProfile } from '@pages/FillProfile/FillProfile.tsx';
 import { useDate, useAuth } from '@utils/contexts';
 import { TestFooter } from '@common/TestComp/TestFooter/TestFooter.tsx';
+import { Exit } from '@common/Exit/Exit.tsx';
 
 
 const AuthRoutes = () => (
@@ -53,6 +55,8 @@ const App = () => {
     <BrowserRouter>
       <TestHeader />
       <ThemeToggle />
+      <Exit/>
+      <LanguageToggle/>
       {isAuth ? <MainRoutes /> : <AuthRoutes />}
       <TestFooter/>
       <ToastContainer />

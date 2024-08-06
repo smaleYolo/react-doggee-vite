@@ -1,0 +1,11 @@
+.container {
+    background-color: transparent;
+    position: absolute;
+    top: 270px;
+    right: 40px;
+    cursor: pointer;
+}
+
+.logoutButton {
+
+}
