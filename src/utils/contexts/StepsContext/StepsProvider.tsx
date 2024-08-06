@@ -118,19 +118,6 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [profileSteps, currentStepTitle]);
 
-  //Отмечаем шаг "profile" как выполненный, если выполнены два других
-  useEffect(() => {
-    if (dogs && !dogs.length) {
-      unCompleteStep('pets')
-      unCompleteStep('profile')
-    } else {
-      completeStep('pets')
-      completeStep('profile')
-    }
-  }, [dogs]);
-
-
-
 
   const value: IStepsContext = {
     currentStepTitle,
