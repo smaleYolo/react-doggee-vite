@@ -23,7 +23,7 @@
   "button.update": "Обновить данные!",
   "button.update.pets": "Обновить данные питомца!",
   "button.next": "Далее",
-  "button.goNextStep": "Перейти к следующему шагу",
+  "button.goNextStep": "Перейти к прошлому шагу",
 
   "step.title.user": "Данные",
   "step.title.pets": "Питомцы",

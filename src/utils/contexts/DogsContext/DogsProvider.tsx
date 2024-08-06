@@ -3,9 +3,11 @@ import { IDog } from '@utils/models';
 import { DogsContext, PetInfoValues, useAuth, useSteps } from '@utils/contexts';
 import { api } from '@utils/api';
 import { useMutation, useQueryLazy } from '@utils/hooks';
+import { toast } from 'react-toastify';
+import { useIntl } from '@features/intl';
 
 
-interface GetBreedsResponse {
+export interface GetBreedsResponse {
   message: string,
   data: IDog['breed'][]
 }
@@ -15,11 +17,11 @@ export interface IGetUserDogsList {
   dogs: IDog[];
 }
 
-interface CreatePetResponse {
+export interface CreatePetResponse {
   message: string;
 }
 
-interface CreatePetPayload extends Omit<PetInfoValues, 'birthdate' | 'weight'> {
+export interface CreatePetPayload extends Omit<PetInfoValues, 'birthdate' | 'weight'> {
   birthdate: Date;
   weight?: number;
 }
@@ -27,8 +29,6 @@ interface CreatePetPayload extends Omit<PetInfoValues, 'birthdate' | 'weight'> {
 
 export interface IDogsContext {
   dogs: IDog[],
-  initUserDogs: () => void;
-  isDogsLoading: boolean,
   breedsList: IDog['breed'][],
   setDogs: Dispatch<SetStateAction<IDog[]>>,
   deleteDogHandler: (id: IDog['id']) => void;
@@ -41,6 +41,8 @@ export interface IDogsContext {
 
 export const DogsProvider = ({ children }: { children: ReactNode }) => {
   const {userId, logout} = useAuth()
+  const {translateMessage} = useIntl()
+
 
   const [dogs, setDogs] = useState<IDog[]>([]);
   const [selectedDog, setSelectedDog] = useState<IDog | undefined>(undefined);
@@ -76,19 +78,7 @@ export const DogsProvider = ({ children }: { children: ReactNode }) => {
     request: () => api.get('/breeds')
   })
 
-  const { query: getUserDogsQuery, isLoading: isDogsLoading} = useQueryLazy<IGetUserDogsList>({
-    request: () => api.get(`/users/${userId}/dogs`)
-  });
-
-  const initUserDogs = async () => {
-    const response = await getUserDogsQuery()
-
-    if(response && response.dogs) {
-      setDogs(response.dogs);
-    }
-  }
-
-  const initBreedsList = async () => {
+  const initDogsBreeds = async () => {
     const response = await getBreedsQuery()
 
     if(response && response.data) {
@@ -121,16 +111,10 @@ export const DogsProvider = ({ children }: { children: ReactNode }) => {
 
 
   useEffect(() => {
-    if (userId){
-      initBreedsList()
-    }
-  }, []);
-
-  useEffect(() => {
     if (userId) {
-      initUserDogs()
+      initDogsBreeds()
     }
-  },[])
+  },[userId])
 
 
   useEffect(() => {
@@ -141,8 +125,6 @@ export const DogsProvider = ({ children }: { children: ReactNode }) => {
 
   const value: IDogsContext = {
     dogs,
-    initUserDogs,
-    isDogsLoading,
     breedsList,
     deleteDogHandler,
     createDogHandler,

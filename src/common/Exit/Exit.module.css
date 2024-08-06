@@ -1,11 +1,22 @@
 .container {
     background-color: transparent;
     position: absolute;
-    top: 270px;
+    top: 100px;
     right: 40px;
     cursor: pointer;
 }
 
-.logoutButton {
+.btn {
+    font-size: 1.25rem;
+    color: var(--color-text);
+    text-decoration: none;
+    border: 2px solid var(--color-accent);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: var(--transition);
+}
 
+.btn:hover {
+    background-color: var(--color-accent);
+    color: var(--background-color-field);
 }

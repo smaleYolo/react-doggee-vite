@@ -18,18 +18,25 @@ export const LanguageToggle = () => {
     <div
       className={styles.container}
     >
-      <img
-        alt="dark"
-        className={`${styles.img} ${locale === 'ru' ? styles.show : styles.hide}`}
-        src={RuSvg}
+      <div
         onClick={() => setLanguage('en')}
-      />
-      <img
-        alt="light"
-        className={`${styles.img} ${locale === 'en' ? styles.show : styles.hide}`}
-        src={EnSvg}
-        onClick={() => setLanguage('ru')}
-      />
+      >
+        <img
+          alt="dark"
+          className={`${styles.img} ${locale === 'ru' ? styles.show : styles.hide}`}
+          src={RuSvg}
+        />
+      </div>
+
+      <div
+        onClick={() => setLanguage('ru')}>
+        <img
+          alt="light"
+          className={`${styles.img} ${locale === 'en' ? styles.show : styles.hide}`}
+          src={EnSvg}
+
+        />
+      </div>
     </div>
   );
 };

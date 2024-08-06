@@ -1,30 +1,32 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import styles from './PetsList.module.css';
 import { CheckMarkSvg, CrossSvg, PlusSvg } from '@utils/svg';
-import { useMutation, useQuery } from '@utils/hooks';
+import { useMutation, useQuery, useQueryLazy } from '@utils/hooks';
 import { api } from '@utils/api';
-import { useCalendar, useAuth, useSteps, useDogs } from '@utils/contexts';
+import { useCalendar, useAuth, useSteps, useDogs, IGetUserDogsList } from '@utils/contexts';
 import { IDog } from '@utils/models';
 import { useIntl } from '@features/intl';
 
-export interface IGetUserGogsList {
-  message: string;
-  dogs: IDog[];
-}
 
 
 export const PetsList = () => {
   const {translateMessage} = useIntl()
   const {userId} = useAuth()
-  const { initUserDogs,selectedDog, toggleSelectedDog, setSelectedDog, dogs, isDogsLoading, setDogs, deleteDogHandler } = useDogs()
+  const { selectedDog, toggleSelectedDog, setSelectedDog, setDogs, dogs, deleteDogHandler } = useDogs()
   const { getFullYears } = useCalendar();
+
+  const { data: userDogs, isLoading: isDogsLoading} = useQuery<IGetUserDogsList, IGetUserDogsList>({
+    request: () => api.get(`/users/${userId}/dogs`),
+    initialValue: {message: '', dogs: []}
+  });
 
 
   useEffect(() => {
-    if (userId) {
-      initUserDogs()
+    if (userDogs && userDogs.dogs.length > 0){
+      setDogs(userDogs.dogs)
     }
-  }, []);
+  }, [userDogs]);
+
 
   return (
     <div className={styles.container}>

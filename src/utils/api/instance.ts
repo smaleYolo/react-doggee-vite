@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie';
 import { IRefreshResponse } from '@utils/contexts';
+import { toast } from 'react-toastify';
 
 type BaseUrl = string;
 const baseUrl: BaseUrl = 'http://localhost:3001';
@@ -60,6 +61,11 @@ export class API {
         } catch (err) {
           throw new Error('Failed to refresh token and retry request');
         }
+      } else {
+        Cookies.remove('access_token');
+        Cookies.remove('userId');
+        toast.info('Session expired, please login again!');
+        window.location.replace('/');
       }
     }
 
