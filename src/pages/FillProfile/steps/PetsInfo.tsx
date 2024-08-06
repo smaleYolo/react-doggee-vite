@@ -26,45 +26,16 @@ import { toast } from 'react-toastify';
 import { IDog } from '@utils/models';
 
 
-interface CreatePetResponse {
-  message: string;
-}
-
-interface CreatePetPayload extends Omit<PetInfoValues, 'birthdate' | 'weight'> {
-  birthdate: Date;
-  weight?: number;
-}
-
 
 export const PetsInfo = () => {
   const { translateMessage } = useIntl();
   const { userId } = useAuth();
   const { toggleStep, completeStep, currentStepTitle, updateStepData, profileSteps } = useSteps();
-  const { selectedDog, breedsList } = useDogs();
+  const { selectedDog, breedsList, updateDogHandler, createDogHandler } = useDogs();
   const { isCalendar, setIsCalendar } = useCalendar();
   const { parseDateString, selectedDate, toggleSelectedDate } = useDate();
 
-  const { mutation: addPetInfoMutation } = useMutation<CreatePetResponse, PetInfoValues>({
-    request: (petInfo: PetInfoValues) => {
-      const updatedPetInfo = {
-        ...petInfo,
-        birthdate: new Date(petInfo.birthdate.split('.').reverse().join('-')),
-        weight: Number(petInfo.weight)
-      };
-      return api.post<CreatePetResponse, CreatePetPayload>(`/users/${userId}/dogs`, updatedPetInfo);
-    }
-  });
 
-  const { mutation: updateDogMutation } = useMutation<CreatePetResponse, PetInfoValues>({
-    request: (petInfo: PetInfoValues) => {
-      const updatedPetInfo = {
-        ...petInfo,
-        birthdate: new Date(petInfo.birthdate.split('.').reverse().join('-')),
-        weight: Number(petInfo.weight)
-      };
-      return api.put<CreatePetResponse, CreatePetPayload>(`/users/${userId}/dogs/${selectedDog!.id}`, updatedPetInfo);
-    }
-  });
 
   const { values, setFieldValue, errors, handleSubmit, isSubmitting, canSubmit, resetForm } = useForm<PetInfoValues>({
     initialValues: {
@@ -81,7 +52,7 @@ export const PetsInfo = () => {
     },
     onSubmit: async (values) => {
       try {
-        const data = selectedDog ? await updateDogMutation(values) : await addPetInfoMutation(values);
+        const data = selectedDog ? await updateDogHandler(values) : await createDogHandler(values);
 
         toast.success(translateMessage(data.message));
 

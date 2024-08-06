@@ -15,38 +15,16 @@ export interface IGetUserGogsList {
 
 export const PetsList = () => {
   const {translateMessage} = useIntl()
-  const { userId } = useAuth();
-  const { selectedDog, toggleSelectedDog, setSelectedDog, dogs, setDogs, deleteDogHandler } = useDogs()
+  const {userId} = useAuth()
+  const { initUserDogs,selectedDog, toggleSelectedDog, setSelectedDog, dogs, isDogsLoading, setDogs, deleteDogHandler } = useDogs()
   const { getFullYears } = useCalendar();
-  const { unCompleteStep, completeStep} = useSteps()
-
-  const { data: userDogs, isLoading } = useQuery<IGetUserGogsList, IGetUserGogsList>({
-    request: () => api.get(`/users/${userId}/dogs`),
-    initialValue: { message: '', dogs: [] },
-    dependencies: []
-  });
 
 
   useEffect(() => {
-    if (userDogs && userDogs.dogs.length > 0) {
-      setDogs(userDogs.dogs);
+    if (userId) {
+      initUserDogs()
     }
-  }, [userDogs]);
-
-  useEffect(() => {
-    if(!dogs.length) {
-      unCompleteStep('pets');
-    } else {
-      completeStep('pets')
-    }
-  }, [dogs]);
-
-
-  const { mutation: DeleteUserDogMutation } = useMutation({
-    request: (DogId) => api.delete(`/users/${userId}/dogs/${DogId}`)
-  });
-
-
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -56,7 +34,7 @@ export const PetsList = () => {
 
       <div className={styles.content}>
         <div className={styles.petsList}>
-          {isLoading ? (
+          {isDogsLoading ? (
             <h1>Loading...</h1>
           ) : (
             dogs.length ? (
@@ -73,7 +51,7 @@ export const PetsList = () => {
                       width={13}
                       className={styles.cross}
                       onClick={() => {
-                        deleteDogHandler(dog.id, DeleteUserDogMutation)
+                        deleteDogHandler(dog.id)
                         if (selectedDog) {
                           setSelectedDog(undefined)
                         }
