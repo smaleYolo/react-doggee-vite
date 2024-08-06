@@ -55,7 +55,7 @@ export const FormInfo = ({ name, city, birthdate, dogs }: IUser) => {
               <div className={styles.form_content} key={dog.id}>
                 <div className={styles.form_content_field}>
                   <span>{dog.name}</span>
-                  <p>{`${dog.name} - ${dog.breed}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}</p>
+                  <p>{`${dog.name} - ${translateMessage(dog.breed)}, ${getFullYears(dog?.birthdate)} ${translateMessage("y.o")}, ${dog.weight} ${translateMessage("kg")}`}</p>
                 </div>
               </div>
             ))}

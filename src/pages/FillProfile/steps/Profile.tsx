@@ -35,10 +35,6 @@ export const Profile = () => {
       {isLoading && <h3>Loading...</h3>}
       {data && <FormInfo {...data} />}
 
-      {/*<Button >*/}
-      {/*  {translateMessage('button.done')}*/}
-      {/*</Button>*/}
-
 
     </>
   );

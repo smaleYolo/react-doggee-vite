@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Input, WeightInput } from '@common/fields';
+import React, { useEffect, useRef, useState } from 'react';
+import { Input, Select, WeightInput } from '@common/fields';
 import { DateInput } from '@inputs/Inputs/DateInput';
 import { Calendar } from '@common/Calendar/Calendar.tsx';
 import { Button } from '@common/buttons';
@@ -7,7 +7,7 @@ import { Button } from '@common/buttons';
 import styles from '../FillProfile.module.css';
 
 import { useIntl } from '@features/intl';
-import { CalendarSvg } from '@utils/svg';
+import { ArrowSvg, CalendarSvg, StepArrow } from '@utils/svg';
 import {
   PetInfoValues,
   IStep,
@@ -19,10 +19,11 @@ import {
   useSteps,
   useDogs
 } from '@utils/contexts';
-import { useForm, useMutation } from '@utils/hooks';
+import { useForm, useMutation, useQuery } from '@utils/hooks';
 import { formatDate, validateField } from '@helpers/*';
 import { api } from '@utils/api';
 import { toast } from 'react-toastify';
+import { IDog } from '@utils/models';
 
 
 interface CreatePetResponse {
@@ -34,21 +35,21 @@ interface CreatePetPayload extends Omit<PetInfoValues, 'birthdate' | 'weight'> {
   weight?: number;
 }
 
+
 export const PetsInfo = () => {
   const { translateMessage } = useIntl();
   const { userId } = useAuth();
   const { toggleStep, completeStep, currentStepTitle, updateStepData, profileSteps } = useSteps();
-  const { selectedDog } = useDogs();
+  const { selectedDog, breedsList } = useDogs();
   const { isCalendar, setIsCalendar } = useCalendar();
   const { parseDateString, selectedDate, toggleSelectedDate } = useDate();
-
 
   const { mutation: addPetInfoMutation } = useMutation<CreatePetResponse, PetInfoValues>({
     request: (petInfo: PetInfoValues) => {
       const updatedPetInfo = {
         ...petInfo,
         birthdate: new Date(petInfo.birthdate.split('.').reverse().join('-')),
-        weight: Number(petInfo.weight),
+        weight: Number(petInfo.weight)
       };
       return api.post<CreatePetResponse, CreatePetPayload>(`/users/${userId}/dogs`, updatedPetInfo);
     }
@@ -59,7 +60,7 @@ export const PetsInfo = () => {
       const updatedPetInfo = {
         ...petInfo,
         birthdate: new Date(petInfo.birthdate.split('.').reverse().join('-')),
-        weight: Number(petInfo.weight),
+        weight: Number(petInfo.weight)
       };
       return api.put<CreatePetResponse, CreatePetPayload>(`/users/${userId}/dogs/${selectedDog!.id}`, updatedPetInfo);
     }
@@ -130,8 +131,8 @@ export const PetsInfo = () => {
   }, [selectedDate, setFieldValue, values.birthdate]);
 
   useEffect(() => {
-    if (selectedDog){
-      const selectedDogBD = formatDate(new Date(selectedDog.birthdate), 'DD.MM.YYYY')
+    if (selectedDog) {
+      const selectedDogBD = formatDate(new Date(selectedDog.birthdate), 'DD.MM.YYYY');
       const date = parseDateString(selectedDogBD);
 
       setFieldValue('name', selectedDog.name);
@@ -143,9 +144,9 @@ export const PetsInfo = () => {
 
       setFieldValue('weight', String(selectedDog.weight));
     } else {
-      resetForm()
+      resetForm();
       toggleSelectedDate(null, 'dog_birthdate');
-      setRawBirthdate('')
+      setRawBirthdate('');
     }
   }, [selectedDog]);
 
@@ -175,13 +176,22 @@ export const PetsInfo = () => {
         </div>
 
         <div className={styles.input_container}>
-          <Input
+          <Select
             label={translateMessage('field.input.breed.label')}
-            type="text"
+            isError={!!errors?.breed}
             helperText={translateMessage(errors?.breed || 'errors?.breed') || ''}
-            isError={!!errors?.breed || false}
             value={values.breed}
             onChange={(e) => setFieldValue('breed', e.target.value)}
+            options={[' ',...breedsList]}
+            components={{
+              indicator: () => (
+                <span
+                  className={styles.indicator_arrow}
+                >
+                  <ArrowSvg/>
+                </span>
+              )
+            }}
           />
         </div>
 
@@ -214,7 +224,7 @@ export const PetsInfo = () => {
             components={{
               indicator: () => (
                 <span
-                  className={styles.kg_indicator}
+                  className={styles.indicator}
                 >
                   kg
                 </span>
@@ -223,13 +233,14 @@ export const PetsInfo = () => {
           />
         </div>
 
-        {isCalendar && <Calendar type="dog" setFieldValue={setFieldValue} setRawBirthdate={setRawBirthdate} />} {/* Добавлено prop type */}
+        {isCalendar && <Calendar type="dog" setFieldValue={setFieldValue}
+                                 setRawBirthdate={setRawBirthdate} />} {/* Добавлено prop type */}
 
         <Button type="submit" disabled={isSubmitting || canSubmit}>
           {
             profileSteps.find(profStep => profStep.step === currentStepTitle)?.completed
               ? (
-                selectedDog ? translateMessage("button.update.pets") : translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')
+                selectedDog ? translateMessage('button.update.pets') : translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')
               ) : (
                 translateMessage('button.next')
               )

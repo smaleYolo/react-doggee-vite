@@ -42,12 +42,10 @@ export const PetsList = () => {
   }, [dogs]);
 
 
-  console.log(userDogs);
-
-
   const { mutation: DeleteUserDogMutation } = useMutation({
     request: (DogId) => api.delete(`/users/${userId}/dogs/${DogId}`)
   });
+
 
 
   return (
@@ -69,7 +67,7 @@ export const PetsList = () => {
                     <div
                       onClick={() => toggleSelectedDog(dog)}
                     >
-                      {`${dog.name} - ${dog.breed}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}
+                      {`${dog.name} - ${translateMessage(dog.breed)}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}
                     </div>
                     <CrossSvg
                       width={13}

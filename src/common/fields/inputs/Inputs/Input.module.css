@@ -1,7 +1,6 @@
 .input_container {
     position: relative;
     z-index: 1;
-
     display: flex;
     flex-direction: column;
     margin-bottom: 13px;
@@ -20,10 +19,11 @@
     font-family: var(--font-family-nunito);
     font-size: 14px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .input:hover {
-    background: var(--background-color-field); /* добавим hover-переменную */
+    background: var(--background-color-field);
 }
 
 .input::placeholder {
@@ -81,7 +81,6 @@
     top: 15px;
     right: 10px;
     opacity: 0.8;
-
     cursor: pointer;
 }
 
@@ -94,3 +93,22 @@
 .input:disabled + .label {
     color: rgba(0, 0, 0, 0.3);
 }
+
+.select {
+    -webkit-appearance: none;
+}
+.indicator_arrow {
+    position: absolute;
+    top: 17px;
+    right: 10px;
+    pointer-events: none; /* Чтобы стрелочка не перекрывала события клика */
+    rotate: 180deg;
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+
+
+
+
+

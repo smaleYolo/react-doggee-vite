@@ -131,7 +131,7 @@ section {
 
 /*Pets Info*/
 
-.kg_indicator {
+.indicator {
     cursor: auto;
     color: var(--color-placeholder);
 }

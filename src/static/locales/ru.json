@@ -29,6 +29,9 @@
   "step.title.pets": "Питомцы",
   "step.title.profile": "Гаф!",
 
+  "y.o": "лет",
+  "kg": "кг",
+
   "page.login.createNewAccount": "Создать новый аккаунт",
   "page.registration.skipAndFillInLater": "Пропустить и заполнить позже",
   "page.registration.step.fillLoginDataStep.title": "Заполните данные для входа",

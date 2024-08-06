@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from '@pages/RegisterPage/RegisterPage.module.css';
 import { Wizard } from '@pages/FillProfile/components/wizard/Wizard.tsx';
 import { UserInfo } from '@pages/FillProfile/steps/UserInfo.tsx';
@@ -11,7 +11,7 @@ import { Profile } from '@pages/FillProfile/steps/Profile.tsx';
 
 export const FillProfile = () => {
   const { translateMessage } = useIntl();
-  const { toggleStep, currentStepTitle } = useSteps();
+  const { toggleStep, currentStepTitle } = useSteps()
 
   return (
     <div className={styles.page}>
@@ -29,7 +29,7 @@ export const FillProfile = () => {
           )}
 
           {currentStepTitle === 'pets' && (
-            <PetsInfo />
+            <PetsInfo/>
           )}
 
           {currentStepTitle === 'profile' && (

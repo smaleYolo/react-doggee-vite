@@ -43,6 +43,7 @@ export const Input: React.FC<InputProps> = ({
         {label}
       </label>
       <input
+        ref={props.ref}
         className={`${styles.input} ${isError ? styles.error : ''}`}
         id={id}
         type={type}
