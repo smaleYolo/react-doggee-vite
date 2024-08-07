@@ -84,6 +84,8 @@
   "intlTest.dynamicMessage": "Wait {seconds} seconds and take the {item}",
   "intlTest.ball": "ball",
 
+  "success.userLogout": "The user successfully logged out of the system",
+
 
 
 

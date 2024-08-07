@@ -3,6 +3,8 @@ import Cookies from 'js-cookie';
 import { api } from '@utils/api';
 import { AuthContext } from '@utils/contexts';
 import { IUser } from '@utils/models';
+import { toast } from 'react-toastify';
+import { useIntl } from '@features/intl';
 
 export interface UserInfoValues {
   name: string;
@@ -42,6 +44,7 @@ export interface IAuthContext {
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const {translateMessage} = useIntl()
   const [userId, setUserId] = useState<string | undefined>(() => Cookies.get('userId'));
   const [isAuth, setIsAuth] = useState(false);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
@@ -52,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     Cookies.remove('access_token');
     Cookies.remove('refresh_token');
     Cookies.remove('userId');
+    toast.info(translateMessage('success.userLogout'))
   };
 
   const login = (access_token: string, refresh_token: string, userId: number, isNotUserDevice?: boolean) => {

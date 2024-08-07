@@ -1,9 +1,12 @@
-import { InputProps } from '@common/fields';
 import React from 'react';
+import { InputProps } from '@common/fields';
 
 import styles from './Checkbox.module.css';
 
-type CheckboxProps = InputProps
+
+interface CheckboxProps extends InputProps {
+
+}
 
 export const Checkbox = ({ onChange, isChecked, label, disabled }: CheckboxProps) => {
   return (

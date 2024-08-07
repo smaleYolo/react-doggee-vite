@@ -28,6 +28,13 @@ export class API {
 
     if (response.status === 401) {
       const refreshToken = Cookies.get('refresh_token');
+      const accessToken = Cookies.get('access_token');
+
+      //Для обработки сценария авторизации с неверным паролем
+      if (!accessToken) {
+        throw null
+      }
+
       if (refreshToken) {
         try {
           const refreshResponse = await fetch(`${this.baseUrl}/auth/refresh-token`, {

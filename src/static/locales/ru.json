@@ -82,6 +82,8 @@
   "intlTest.dynamicMessage": "Подождите {seconds} секунд и возьмите {item}",
   "intlTest.ball": "мяч",
 
+  "success.userLogout": "Пользователь успешно вышел из системы",
+
 
 
   "backend.success.userCreated": "Пользователь успешно создан",

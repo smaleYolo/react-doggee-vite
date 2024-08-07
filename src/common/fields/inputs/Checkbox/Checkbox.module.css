@@ -12,10 +12,10 @@
     font-weight: 400;
     line-height: 16px;
     text-align: left;
-
     transition: var(--transition);
 }
 
+/* Скрываем реальный чекбокс */
 .real_checkbox {
     display: none;
 }
@@ -28,8 +28,10 @@
     box-sizing: border-box;
     background-color: var(--color-accent7);
     border-radius: 5px;
+    transition: var(--transition);
 }
 
+/* Изменение фона при наведении */
 .checkbox_container:hover .custom_checkbox {
     background-color: var(--color-accent);
 }
@@ -46,10 +48,16 @@
     top: 26%;
     left: 17%;
     opacity: 0;
-
     transition: var(--transition);
 }
 
+/* Изменение стилей кастомного чекбокса при чекнутом состоянии */
+.real_checkbox:checked ~ .custom_checkbox {
+    background-color: var(--color-accent);
+    opacity: 1;
+}
+
+/* Отображение галочки при чекнутом состоянии */
 .real_checkbox:checked ~ .custom_checkbox::before {
     opacity: 1;
 }

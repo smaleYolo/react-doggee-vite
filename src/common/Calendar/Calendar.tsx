@@ -1,8 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 
-import styles from './Calendar.module.css';
-import { PetInfoValues, useCalendar, useDate, UserInfoValues, useAuth } from '@utils/contexts';
+import { PetInfoValues, useCalendar, useDate, UserInfoValues } from '@utils/contexts';
 import { checkIsToday, createDate, formatDate } from '@helpers/*';
+
+import styles from './Calendar.module.css';
+
+
 
 interface CalendarProps<T extends 'user' | 'dog'> {
   type: T;
@@ -19,7 +22,6 @@ export const Calendar = <T extends 'user' | 'dog'>({ type, setFieldValue, setRaw
     setSelectedDate,
     selectedMonth,
     setSelectedMonth,
-    toggleSelectedDate
   } = useDate();
 
   const {
@@ -47,6 +49,49 @@ export const Calendar = <T extends 'user' | 'dog'>({ type, setFieldValue, setRaw
     setCalendarType('months');
   };
 
+  const handleDayClick = (day: ReturnType<typeof createDate>) => {
+    const formattedDate = formatDate(day.date, 'DD.MM.YYYY');
+
+    setSelectedDate((prev) => ({
+      ...prev,
+      [type === 'user' ? 'user_birthdate' : 'dog_birthdate']: day
+    }));
+
+    setFieldValue('birthdate', formattedDate);
+    setRawBirthdate(formattedDate);
+    setIsCalendar(false);
+  };
+
+  // Проверка, является ли день выбранным
+  const isSelected = (day: ReturnType<typeof createDate>) => {
+    const selectedDay = type === 'user' ? selectedDate.user_birthdate : selectedDate.dog_birthdate;
+    return (
+      day.dayNumber === selectedDay?.dayNumber &&
+      day.monthIndex === selectedDay?.monthIndex &&
+      day.year === selectedDay?.year
+    );
+  };
+
+  useEffect(() => {
+    // Определяем выбранный день в зависимости от типа открытого календаря (user или dog)
+    const selectedDay = type === 'user' ? selectedDate.user_birthdate : selectedDate.dog_birthdate;
+
+    // Если выбранный день есть, форматируем и устанавливаем текущую дату для календаря
+    if (selectedDay) {
+      const formattedDate = formatDate(selectedDay.date, 'DD.MM.YYYY');
+      setCurrentDate(new Date(selectedDay.year, selectedDay.monthIndex, selectedDay.dayNumber));
+
+      // Устанавливаем значение поля 'birthdate' и rawBirthdate
+      setFieldValue('birthdate', formattedDate);
+      setRawBirthdate(formattedDate);
+    } else {
+      // Если выбранный день не существует, устанавливаем текущую дату на сегодня
+      setCurrentDate(new Date());
+    }
+  }, [selectedDate, type, setFieldValue, setRawBirthdate]);
+
+
+
   const calendarRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -63,40 +108,6 @@ export const Calendar = <T extends 'user' | 'dog'>({ type, setFieldValue, setRaw
     };
   }, [setIsCalendar]);
 
-  useEffect(() => {
-    const selectedDay = type === 'user' ? selectedDate.user_birthdate : selectedDate.dog_birthdate;
-    if (selectedDay) {
-      const formattedDate = formatDate(selectedDay.date, 'DD.MM.YYYY');
-      setCurrentDate(new Date(selectedDay.year, selectedDay.monthIndex, selectedDay.dayNumber));
-      setFieldValue('birthdate', formattedDate);
-      setRawBirthdate(formattedDate);
-    } else {
-      setCurrentDate(new Date());
-    }
-
-  }, [selectedDate, type, setFieldValue, setRawBirthdate]);
-
-  const handleDayClick = (day: ReturnType<typeof createDate>) => {
-    const formattedDate = formatDate(day.date, 'DD.MM.YYYY');
-
-    setSelectedDate((prev) => ({
-      ...prev,
-      [type === 'user' ? 'user_birthdate' : 'dog_birthdate']: day
-    }));
-
-    setFieldValue('birthdate', formattedDate);
-    setRawBirthdate(formattedDate);
-    setIsCalendar(false);
-  };
-
-  const isSelected = (day: ReturnType<typeof createDate>) => {
-    const selectedDay = type === 'user' ? selectedDate.user_birthdate : selectedDate.dog_birthdate;
-    return (
-      day.dayNumber === selectedDay?.dayNumber &&
-      day.monthIndex === selectedDay?.monthIndex &&
-      day.year === selectedDay?.year
-    );
-  };
 
   return (
     <div
