@@ -1,11 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import { Input, Select, WeightInput } from '@common/fields';
 import { DateInput } from '@inputs/Inputs/DateInput';
 import { Calendar } from '@common/Calendar/Calendar.tsx';
 import { Button } from '@common/buttons';
-
 import styles from '../FillProfile.module.css';
-
 import { useIntl } from '@features/intl';
 import { ArrowSvg, CalendarSvg, StepArrow } from '@utils/svg';
 import {
@@ -25,8 +23,6 @@ import { api } from '@utils/api';
 import { toast } from 'react-toastify';
 import { IDog } from '@utils/models';
 
-
-
 export const PetsInfo = () => {
   const { translateMessage } = useIntl();
   const { userId } = useAuth();
@@ -34,8 +30,6 @@ export const PetsInfo = () => {
   const { selectedDog, breedsList, updateDogHandler, createDogHandler } = useDogs();
   const { isCalendar, setIsCalendar } = useCalendar();
   const { parseDateString, selectedDate, toggleSelectedDate } = useDate();
-
-
 
   const { values, setFieldValue, errors, handleSubmit, isSubmitting, canSubmit, resetForm } = useForm<PetInfoValues>({
     initialValues: {
@@ -69,9 +63,9 @@ export const PetsInfo = () => {
     }
   });
 
+
   const [rawBirthdate, setRawBirthdate] = useState(values.birthdate);
   const [isBirthdateTouched, setIsBirthdateTouched] = useState(false);
-
 
   const handleBirthdateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -90,7 +84,6 @@ export const PetsInfo = () => {
       setFieldValue('birthdate', '');
     }
   };
-
 
   useEffect(() => {
     if (selectedDate.dog_birthdate) {
@@ -123,18 +116,11 @@ export const PetsInfo = () => {
 
   return (
     <>
-      <div className={styles.step_text}
-           onClick={() => toggleStep('user')}
-      >
-        <span>
-          {translateMessage('button.goNextStep')}
-        </span>
+      <div className={styles.step_text} onClick={() => toggleStep('user')}>
+        <span>{translateMessage('button.goNextStep')}</span>
       </div>
 
-      <form
-        className={styles.form_container}
-        onSubmit={handleSubmit}
-      >
+      <form className={styles.form_container} onSubmit={handleSubmit}>
         <div className={styles.input_container}>
           <Input
             label={translateMessage('field.input.dogName.label')}
@@ -153,13 +139,11 @@ export const PetsInfo = () => {
             helperText={translateMessage(errors?.breed || 'errors?.breed') || ''}
             value={values.breed}
             onChange={(e) => setFieldValue('breed', e.target.value)}
-            options={[' ',...breedsList]}
+            options={[' ', ...breedsList]}
             components={{
               indicator: () => (
-                <span
-                  className={styles.indicator_arrow}
-                >
-                  <ArrowSvg/>
+                <span className={styles.indicator_arrow}>
+                  <ArrowSvg />
                 </span>
               )
             }}
@@ -194,9 +178,7 @@ export const PetsInfo = () => {
             onChange={(e) => setFieldValue('weight', e.target.value)}
             components={{
               indicator: () => (
-                <span
-                  className={styles.indicator}
-                >
+                <span className={styles.indicator}>
                   kg
                 </span>
               )
@@ -204,18 +186,20 @@ export const PetsInfo = () => {
           />
         </div>
 
-        {isCalendar && <Calendar type="dog" setFieldValue={setFieldValue}
-                                 setRawBirthdate={setRawBirthdate} />} {/* Добавлено prop type */}
+        {isCalendar && (
+          <Calendar
+            type="dog"
+            setFieldValue={setFieldValue}
+            setRawBirthdate={setRawBirthdate}
+          />
+        )}
 
         <Button type="submit" disabled={isSubmitting || canSubmit}>
-          {
-            profileSteps.find(profStep => profStep.step === currentStepTitle)?.completed
-              ? (
-                selectedDog ? translateMessage('button.update.pets') : translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')
-              ) : (
-                translateMessage('button.next')
-              )
-          }
+          {profileSteps.find((profStep) => profStep.step === currentStepTitle)?.completed
+            ? selectedDog
+              ? translateMessage('button.update.pets')
+              : translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')
+            : translateMessage('button.next')}
         </Button>
       </form>
     </>

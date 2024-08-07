@@ -12,7 +12,6 @@ import { Profile } from '@pages/FillProfile/steps/Profile.tsx';
 export const FillProfile = () => {
   const { translateMessage } = useIntl();
   const { toggleStep, currentStepTitle } = useSteps()
-
   return (
     <div className={styles.page}>
       <div className={styles.container}>

@@ -48,7 +48,7 @@ export const DogsProvider = ({ children }: { children: ReactNode }) => {
   const [selectedDog, setSelectedDog] = useState<IDog | undefined>(undefined);
   const [breedsList, setBreedsList] = useState<IDog['breed'][]>([])
 
-  const { mutation: DeleteUserDogMutation } = useMutation({
+  const { mutation: DeleteUserDogMutation } = useMutation<{message: string}, IDog['id']>({
     request: (DogId) => api.delete(`/users/${userId}/dogs/${DogId}`)
   });
 
@@ -97,8 +97,18 @@ export const DogsProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const deleteDogHandler = async (id: number) => {
-    await DeleteUserDogMutation(id);
-    setDogs(dogs.filter(dog => dog.id !== id));
+    try {
+      const data = await DeleteUserDogMutation(id);
+      setDogs(dogs.filter(dog => dog.id !== id));
+      setSelectedDog(undefined)
+
+      toast.success(translateMessage(data.message))
+
+      return data
+    } catch (error) {
+      toast.error((error as Error).message)
+      console.warn(error);
+    }
   };
 
   const createDogHandler = async (petInfo: PetInfoValues) => {

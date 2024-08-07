@@ -64,6 +64,10 @@
     transition: var(--transition);
 }
 
+.pet_item_info {
+    max-width: 90%;
+}
+
 .pet_item:hover {
     background: var(--background-color-field-focused);
     transition: var(--transition);
@@ -101,7 +105,6 @@
     font-size: 12px;
     font-weight: var(--font-weight600);
     color: var(--color-text);
-    cursor: pointer;
     transition: var(--transition);
 }
 
@@ -125,10 +128,10 @@
     font-weight: var(--font-weight800);
 }
 
-.add_pet_block:active {
-    opacity: 0.85;
-    scale: 1.04;
-}
+/*.add_pet_block:active {*/
+/*    opacity: 0.85;*/
+/*    scale: 1.04;*/
+/*}*/
 
 
 .add_pet_text {

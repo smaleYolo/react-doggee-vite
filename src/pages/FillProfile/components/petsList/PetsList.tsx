@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './PetsList.module.css';
 import { CheckMarkSvg, CrossSvg, PlusSvg } from '@utils/svg';
 import { useMutation, useQuery, useQueryLazy } from '@utils/hooks';
@@ -7,7 +7,6 @@ import { useCalendar, useAuth, useSteps, useDogs, IGetUserDogsList } from '@util
 import { IDog } from '@utils/models';
 import { useIntl } from '@features/intl';
 import { FieldLoader, FormLoader } from '@common/Loaders';
-
 
 
 export const PetsList = () => {
@@ -29,6 +28,7 @@ export const PetsList = () => {
   }, [userDogs]);
 
 
+
   return (
     <div className={styles.container}>
       {dogs && dogs.length ? (
@@ -48,12 +48,10 @@ export const PetsList = () => {
               dogs.map(dog => (
                 <div key={dog.id} className={styles.petList_item}>
                   {dog === selectedDog ? <CheckMarkSvg width={'22'} className={styles.checkMark} /> : null}
-                  <div className={`${styles.pet_item} ${dog === selectedDog ? styles.selected : ''}`}>
-                    <div
-                      onClick={() => toggleSelectedDog(dog)}
-                    >
-                      {`${dog.name} - ${translateMessage(dog.breed)}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}
-                    </div>
+                  <div onClick={() => toggleSelectedDog(dog)} className={`${styles.pet_item} ${dog === selectedDog ? styles.selected : ''}`}>
+                      <div className={styles.pet_item_info}>
+                        {`${dog.name} - ${translateMessage(dog.breed)}, ${getFullYears(dog?.birthdate)} y.o., ${dog.weight} kg`}
+                      </div>
                     <CrossSvg
                       width={13}
                       className={styles.cross}
@@ -78,20 +76,20 @@ export const PetsList = () => {
           )}
         </div>
 
-        <div
-          className={styles.add_pet}
-        >
-          <div className={styles.add_pet_text}>
-            {
-              dogs.length ? (
-                <div className={styles.add_pet_block}>
-                  <PlusSvg className={styles.plusIcon} />
-                  <h2>{translateMessage("page.registration.step.addYourPetsStep.addAnotherPet")}</h2>
-                </div>
-              ) : null
-            }
-          </div>
-        </div>
+        {/*<div*/}
+        {/*  className={styles.add_pet}*/}
+        {/*>*/}
+        {/*  <div className={styles.add_pet_text}>*/}
+        {/*    {*/}
+        {/*      dogs.length ? (*/}
+        {/*        <div className={styles.add_pet_block}>*/}
+        {/*          <PlusSvg className={styles.plusIcon} />*/}
+        {/*          <h2>{translateMessage("page.registration.step.addYourPetsStep.addAnotherPet")}</h2>*/}
+        {/*        </div>*/}
+        {/*      ) : null*/}
+        {/*    }*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
     </div>
   );
