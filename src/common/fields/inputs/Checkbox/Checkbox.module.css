@@ -12,6 +12,8 @@
     font-weight: 400;
     line-height: 16px;
     text-align: left;
+
+    transition: var(--transition);
 }
 
 .real_checkbox {
@@ -26,7 +28,6 @@
     box-sizing: border-box;
     background-color: var(--color-accent7);
     border-radius: 5px;
-    transition: background-color 0.2s;
 }
 
 .checkbox_container:hover .custom_checkbox {
@@ -45,7 +46,8 @@
     top: 26%;
     left: 17%;
     opacity: 0;
-    transition: opacity 0.25s ease-in-out;
+
+    transition: var(--transition);
 }
 
 .real_checkbox:checked ~ .custom_checkbox::before {

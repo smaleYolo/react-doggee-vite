@@ -19,4 +19,6 @@
 .btn:hover {
     background-color: var(--color-accent);
     color: var(--background-color-field);
+
+    transition: var(--transition);
 }

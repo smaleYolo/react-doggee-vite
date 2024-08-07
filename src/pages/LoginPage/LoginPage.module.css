@@ -5,6 +5,8 @@
     align-items: center;
     flex-direction: column;
     background-color: var(--background-color);
+
+    transition: var(--transition);
 }
 
 .container {
@@ -34,9 +36,11 @@
     text-align: center;
     color: var(--color-white);
     background-image: var(--images-dogge-background);
-    background-size: cover; /* Изменено здесь */
-    background-repeat: no-repeat; /* Изменено здесь */
-    background-position: center; /* Добавлено для центрирования */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    transition: var(--transition);
 }
 
 .form_container {
@@ -73,7 +77,8 @@
     left: 0;
     transform: scaleX(0);
     transform-origin: bottom right;
-    transition: transform 0.3s ease;
+
+    transition: var(--transition);
 }
 
 .sign_up_container:hover::after {

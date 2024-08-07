@@ -4,6 +4,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    transition: var(--transition);
 }
 
 .container {
@@ -64,6 +66,8 @@ section {
     background-image: var(--images-dogge-background);
     background-repeat: no-repeat;
     background-position: top;
+
+    transition: var(--transition);
 }
 
 .section_right_content {
@@ -76,6 +80,8 @@ section {
     flex-direction: column;
     justify-content: center;
     gap: 10px;
+
+    transition: var(--transition);
 }
 
 .rules_container_main_item {
@@ -93,6 +99,8 @@ section {
     height: 60%;
 
     background-color: var(--background-password-rules-block);
+
+    transition: var(--transition);
 }
 
 
@@ -118,7 +126,8 @@ section {
     left: 0;
     transform: scaleX(0);
     transform-origin: bottom right;
-    transition: transform 0.3s ease;
+
+    transition: var(--transition);
 }
 
 .section_right_sign_in:hover::after {
@@ -131,6 +140,5 @@ section {
     font-size: 14px;
     font-weight: var(--font-weight800);
     padding: 40px 30px;
-
 }
 

@@ -1,6 +1,6 @@
 import darkTheme from '@static/theme/dark/dark.module.css';
 import Cookies from 'js-cookie';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { ThemeContext, type ThemeContextProps, type ThemesType } from "..";
 import { getTheme } from '../helpers/getTheme';
@@ -28,10 +28,10 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   }, [currentTheme]);
 
 
-  const value: ThemeContextProps = useMemo(() => ({
+  const value: ThemeContextProps = {
     theme: currentTheme,
     toggleTheme,
-  }), [currentTheme, toggleTheme]);
+  }
 
 
   return (

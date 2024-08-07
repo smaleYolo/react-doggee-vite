@@ -3,6 +3,8 @@
     border-radius: 5px;
     padding: 15px;
     margin-bottom: 15px;
+
+    transition: var(--transition);
 }
 
 .container:last-child {
@@ -23,6 +25,8 @@
 .form_content {
     gap: 10px;
     color: var(--color-text);
+
+    transition: var(--transition);
 }
 
 .form_content_field {
@@ -33,6 +37,8 @@
     gap: 10px;
     border-bottom: 1px solid var(--background-color-field-focused);
     font-size: 14px;
+
+    transition: var(--transition);
 }
 
 .form_content_field > span {
@@ -62,7 +68,7 @@
 .scrollContainer {
     max-height: 200px;
     overflow-y: auto;
-    padding-right: 10px; /* Отступ для скроллбара */
+    padding-right: 10px;
 }
 
 .scrollContainer::-webkit-scrollbar {
@@ -71,11 +77,13 @@
 
 .scrollContainer::-webkit-scrollbar-track {
     background: transparent;
-    padding: 2px; /* Отступ для скроллбара от контента */
+    padding: 2px;
 }
 
 .scrollContainer::-webkit-scrollbar-thumb {
-    background-color: var(--color-placeholder); /* Задайте нужный цвет */
+    background-color: var(--color-placeholder);
     border-radius: 10px;
-    border: 2px solid transparent; /* Отступ от контента */
+    border: 2px solid transparent;
+
+    transition: var(--transition);
 }

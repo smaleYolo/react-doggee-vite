@@ -13,13 +13,14 @@
     overflow: hidden;
     opacity: 0;
     visibility: hidden;
+
+    transition: var(--transition);
 }
 
 .container.visible {
     opacity: 1;
     visibility: visible;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-
+    transition: var(--transition);
 }
 
 .header {
@@ -32,6 +33,8 @@
     background-color: var(--color-neutral-100);
     border-radius: 5px 5px 0 0;
     box-shadow: var(--shadow-container);
+
+    transition: var(--transition);
 }
 
 .header_title {
@@ -69,6 +72,8 @@
     align-items: center;
     margin: auto 0;
     background-color: var(--color-neutral-200);
+
+    transition: var(--transition);
 }
 
 .daysOfTheWeek, .days {
@@ -98,7 +103,8 @@
     width: 24px;
     height: 24px;
     cursor: grab;
-    transition: all 0.2s ease-in-out;
+
+    transition: var(--transition);
 }
 
 .day:hover, .month:hover, .year:hover {
@@ -110,15 +116,21 @@
 .days {
     font-size: 11px;
     color: var(--color-text);
+
+    transition: var(--transition);
 }
 
 .otherMonthDay {
     color: var(--color-neutral-450);
+
+    transition: var(--transition);
 }
 
 .day.today {
     font-weight: var(--font-weight800);
     background-color: var(--color-neutral-100);
+
+    transition: var(--transition);
 }
 
 .day.selected {
@@ -144,12 +156,15 @@
     width: 56.67px;
     height: 33.75px;
     cursor: grab;
-    transition: all 0.2s ease-in-out;
+
+    transition: var(--transition);
 }
 
 .month.today, .year.today {
     font-weight: var(--font-weight800);
     background-color: var(--color-neutral-100);
+
+    transition: var(--transition);
 }
 
 .month.selected, .year.selected {
@@ -159,4 +174,6 @@
 
 .year:last-child, .year:first-child {
     color: var(--color-neutral-450);
+
+    transition: var(--transition);
 }

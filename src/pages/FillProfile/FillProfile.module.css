@@ -4,6 +4,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    transition: var(--transition);
 }
 
 .container {
@@ -76,6 +78,8 @@ section {
     flex-direction: column;
     justify-content: center;
     gap: 10px;
+
+    transition: var(--transition);
 }
 
 .rules_container_main_item {
@@ -134,6 +138,8 @@ section {
 .indicator {
     cursor: auto;
     color: var(--color-placeholder);
+
+    transition: var(--transition);
 }
 
 .step_text {
@@ -146,7 +152,7 @@ section {
     font-weight: var(--font-weight800);
     font-size: 12px;
     position: relative; /* Добавляем для правильного позиционирования псевдоэлемента */
-    transition: all 0.3s ease-in-out; /* Анимация для цвета и масштаба */
+    transition: var(--transition);
     cursor: pointer;
 }
 
@@ -157,7 +163,7 @@ section {
     background-size: cover;
     width: 5px; /* Устанавливаем ширину стрелки */
     height: 10px; /* Устанавливаем высоту стрелки */
-    transition: transform 0.3s ease-in-out; /* Добавляем анимацию для трансформации */
+    transition: var(--transition);
 }
 
 .step_text:hover {

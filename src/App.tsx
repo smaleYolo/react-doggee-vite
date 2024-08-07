@@ -11,7 +11,6 @@ import React, { useEffect } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { FillProfile } from '@pages/FillProfile/FillProfile.tsx';
 import { useDate, useAuth } from '@utils/contexts';
-import { TestFooter } from '@common/TestComp/TestFooter/TestFooter.tsx';
 import { Exit } from '@common/Exit/Exit.tsx';
 
 
@@ -49,7 +48,6 @@ const App = () => {
       <Exit/>
       <LanguageToggle/>
       {isAuth ? <MainRoutes /> : <AuthRoutes />}
-      <TestFooter/>
       <ToastContainer />
     </BrowserRouter>
   );
