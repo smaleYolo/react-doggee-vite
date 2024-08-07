@@ -9,16 +9,14 @@ import { formatDate } from '@helpers/*';
 export const FormInfo = ({ name, city, birthdate, dogs }: IUser) => {
   const { translateMessage } = useIntl();
   const { getFullYears } = useCalendar();
-  const { toggleStep } = useSteps()
+  const { toggleStep } = useSteps();
 
   return (
     <>
-      {name && (
+      {name && city && birthdate ? (
         <div className={styles.container}>
           <div className={styles.form_header}>
-            <h2>
-              {translateMessage('page.registration.step.checkDataStep.card.profile')}
-            </h2>
+            <h2>{translateMessage('page.registration.step.checkDataStep.card.profile')}</h2>
             <PenSvg className={styles.penSvg} onClick={() => toggleStep('user')} />
           </div>
 
@@ -39,14 +37,21 @@ export const FormInfo = ({ name, city, birthdate, dogs }: IUser) => {
             </div>
           </div>
         </div>
+      ) : (
+        <div className={styles.placeholderContainer}>
+          <p
+            className={styles.placeholderText}
+            onClick={() => toggleStep('user')}
+          >
+            {translateMessage('no.user.data')}
+          </p>
+        </div>
       )}
 
       {dogs && dogs.length ? (
         <div className={styles.container}>
           <div className={styles.form_header}>
-            <h2>
-              {translateMessage('page.registration.step.checkDataStep.card.pets')}
-            </h2>
+            <h2>{translateMessage('page.registration.step.checkDataStep.card.pets')}</h2>
             <PenSvg className={styles.penSvg} onClick={() => toggleStep('pets')} />
           </div>
 
@@ -61,7 +66,16 @@ export const FormInfo = ({ name, city, birthdate, dogs }: IUser) => {
             ))}
           </div>
         </div>
-      ) : null}
+      ) : (
+        <div className={styles.placeholderContainer}>
+          <p
+            className={styles.placeholderText}
+            onClick={() => toggleStep('pets')}
+          >
+            {translateMessage('no.dogs.data')}
+          </p>
+        </div>
+      )}
     </>
   );
 };

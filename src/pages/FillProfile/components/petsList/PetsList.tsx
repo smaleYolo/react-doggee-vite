@@ -6,6 +6,7 @@ import { api } from '@utils/api';
 import { useCalendar, useAuth, useSteps, useDogs, IGetUserDogsList } from '@utils/contexts';
 import { IDog } from '@utils/models';
 import { useIntl } from '@features/intl';
+import { FieldLoader, FormLoader } from '@common/Loaders';
 
 
 
@@ -30,14 +31,18 @@ export const PetsList = () => {
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.header}>
-        {translateMessage('step.title.pets')}
-      </h3>
+      {dogs && dogs.length ? (
+        <h3 className={styles.header}>
+          {translateMessage('step.title.pets')}
+        </h3>
+      ) : null}
 
       <div className={styles.content}>
         <div className={styles.petsList}>
           {isDogsLoading ? (
-            <h1>Loading...</h1>
+            <div style={{ display: 'flex', justifyContent: 'center', margin: 15}}>
+              <FieldLoader/>
+            </div>
           ) : (
             dogs.length ? (
               dogs.map(dog => (
@@ -63,8 +68,12 @@ export const PetsList = () => {
                 </div>
               ))
             ) : (
-              //TODO: Нормальная визуализация
-              <h2>Добавьте собачек...</h2>
+              <div className={styles.emptyState}>
+                <div className={styles.emptyState_header}>
+                  <PlusSvg className={styles.emptyState_plusIcon} /> <h2>{translateMessage('no.dogsList.title')}</h2>
+                </div>
+                <p>{translateMessage("no.dogsList.data")}</p>
+              </div>
             )
           )}
         </div>
@@ -75,14 +84,11 @@ export const PetsList = () => {
           <div className={styles.add_pet_text}>
             {
               dogs.length ? (
-                <>
-                  <PlusSvg className={styles.plus} />
-                  <span>{translateMessage('page.registration.step.addYourPetsStep.addAnotherPet')}</span>
-                </>
-              ) : (
-                //TODO: Нормальная визуализация
-                <h3>{translateMessage("page.registration.step.addYourPetsStep.title")}</h3>
-              )
+                <div className={styles.add_pet_block}>
+                  <PlusSvg className={styles.plusIcon} />
+                  <h2>{translateMessage("page.registration.step.addYourPetsStep.addAnotherPet")}</h2>
+                </div>
+              ) : null
             }
           </div>
         </div>

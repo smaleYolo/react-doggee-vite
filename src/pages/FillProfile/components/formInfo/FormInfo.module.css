@@ -53,7 +53,7 @@
 
 .penSvg {
     cursor: pointer;
-    transition: all .2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .penSvg:hover {
@@ -86,4 +86,31 @@
     border: 2px solid transparent;
 
     transition: var(--transition);
+}
+
+/* Стили для заглушки */
+.placeholderContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--background-color-field);
+    border-radius: 5px;
+    margin-bottom: 15px;
+
+    transition: var(--transition);
+}
+
+.placeholderText {
+    color: var(--color-text);
+    font-family: var(--font-family-nunito);
+    font-size: 16px;
+    font-weight: var(--font-weight600);
+
+    transition: var(--transition);
+}
+
+.placeholderText:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }

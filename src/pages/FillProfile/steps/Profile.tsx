@@ -2,11 +2,11 @@ import React from 'react';
 import styles from '../FillProfile.module.css';
 import { useIntl } from '@features/intl';
 import { useSteps, useAuth } from '@utils/contexts';
-import { Button } from '@common/buttons';
 import { useQuery } from '@utils/hooks';
 import { api } from '@utils/api';
-import { FormInfo } from '@pages/FillProfile/components/formInfo/FormInfo.tsx';
 import { IUser } from '@utils/models';
+import { FormLoader } from '@common/Loaders';
+import { FormInfo } from '@pages/FillProfile';
 
 
 
@@ -31,11 +31,8 @@ export const Profile = () => {
         </span>
       </div>
 
-      {/*TODO: Loader*/}
-      {isLoading && <h3>Loading...</h3>}
+      {isLoading && <FormLoader/>}
       {data && <FormInfo {...data} />}
-
-
     </>
   );
 };

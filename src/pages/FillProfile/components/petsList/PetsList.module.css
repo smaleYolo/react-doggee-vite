@@ -8,7 +8,6 @@
     font-size: 16px;
     font-weight: var(--font-weight600);
     color: var(--color-text);
-
     transition: var(--transition);
 }
 
@@ -35,10 +34,9 @@
 }
 
 .petsList::-webkit-scrollbar-thumb {
-    background-color: var(--color-placeholder); /* Adjust to your desired color */
+    background-color: var(--color-placeholder);
     border-radius: 10px;
     border: 3px solid transparent;
-
     transition: var(--transition);
 }
 
@@ -50,7 +48,6 @@
     font-size: 12px;
     font-weight: var(--font-weight600);
     color: var(--color-text);
-
     transition: var(--transition);
 }
 
@@ -64,13 +61,11 @@
     background: var(--background-color-field);
     padding: 9px 10px;
     gap: 10px;
-
     transition: var(--transition);
 }
 
 .pet_item:hover {
     background: var(--background-color-field-focused);
-
     transition: var(--transition);
 }
 
@@ -88,7 +83,6 @@
 .selected {
     font-weight: 800;
     background: var(--background-color-field-focused);
-
     transition: var(--transition);
 }
 
@@ -108,29 +102,86 @@
     font-weight: var(--font-weight600);
     color: var(--color-text);
     cursor: pointer;
+    transition: var(--transition);
+}
+
+.add_pet_block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 5px;
+    padding: 10px;
+    background: var(--background-color-field);
+    border-radius: 5px;
+    color: var(--color-text);
 
     transition: var(--transition);
 }
 
-.add_pet::before {
-    content: "";
-    position: absolute;
-    width: 100%;
-    border: 1px solid var(--background-color-field-focused);
-
-    transition: var(--transition);
+.add_pet_block h2 {
+    margin: 5px 0;
+    font-size: 12px;
+    font-weight: var(--font-weight800);
 }
+
+.add_pet_block:active {
+    opacity: 0.85;
+    scale: 1.04;
+}
+
 
 .add_pet_text {
     display: flex;
     justify-content: center;
     gap: 5px;
-    padding-top: 15px;
+    padding-top: 5px;
+    transition: var(--transition);
+}
+
+
+/* Стили для пустого состояния */
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    background: var(--background-color-field);
+    border-radius: 5px;
+    color: var(--color-text);
 
     transition: var(--transition);
 }
 
-.add_pet_text:hover {
-    opacity: 0.7;
-    scale: 1.04;
+.emptyState_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    gap: 10px
 }
+
+
+.emptyState h2 {
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: var(--font-weight800);
+}
+
+.emptyState p {
+    font-size: 14px;
+    color: var(--color-accent-disabled);
+}
+
+.emptyState_plusIcon {
+    width: 20px;
+    height: 20px;
+}
+
+
+
+
+
+

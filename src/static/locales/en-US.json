@@ -30,8 +30,14 @@
   "step.title.pets": "Your pets",
   "step.title.profile": "Woof!",
 
+
   "y.o": "y.o.",
   "kg": "kg",
+  "no.user.data": "Add ur profile info!",
+  "no.dogs.data": "Add info about ur pets! Woof!",
+
+  "no.dogsList.title": "Add dogs...",
+  "no.dogsList.data": "You don't have any registered dogs yet. Please add your pets.",
 
   "page.login.createNewAccount": "Create new account",
   "page.registration.skipAndFillInLater": "Skip and fill in later",
