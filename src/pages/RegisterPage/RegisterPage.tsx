@@ -1,3 +1,6 @@
+import React from 'react';
+import styles from './RegisterPage.module.css';
+
 import { useIntl } from '@features/intl';
 import { validatePassword, validateUsername } from '@helpers/*';
 import { LoginResponse } from '@pages/LoginPage/LoginPage';
@@ -6,11 +9,8 @@ import { api } from '@utils/api';
 import { ROUTES } from '@utils/constants';
 import { useForm, useMutation } from '@utils/hooks';
 import usePasswordRules from '@utils/hooks/passwordRules/usePasswordRules.ts';
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
-import styles from './RegisterPage.module.css';
 import { useAuth } from '@contexts/AuthContext';
 
 interface RegisterResponse extends LoginResponse {}
@@ -75,7 +75,6 @@ export const RegisterPage = () => {
               {translateMessage('page.registration.step.fillLoginDataStep.title')}
             </h1>
 
-            {/* TODO: Убрать фантомный блок, заменить на стиль. FillProfile конфликт по стилям.*/}
             <div style={{marginBottom: 92}}/>
           </div>
 

@@ -1,5 +1,4 @@
-
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
 interface useFormProps<Values> {
   initialValues: Values;
@@ -19,8 +18,6 @@ export const useForm = <Values>({
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState<{ [Key in keyof Values]?: string } | null>(null); // { username: 'error_message' } | null
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  //TODO: Добавить проверку на пустые поля values
   const [canSubmit, setCanSubmit] = useState(false);
 
   const validateField = <T extends keyof Values>(field: T, value: Values[T]) => {
@@ -35,7 +32,7 @@ export const useForm = <Values>({
   };
 
 
-  const setFieldValue = useCallback(<T extends keyof Values>(field: T, value: Values[T]) => {
+  const setFieldValue = <T extends keyof Values>(field: T, value: Values[T]) => {
     setValues((prevValues) => {
       if (prevValues[field] !== value) {
         const newValues = { ...prevValues, [field]: value };
@@ -48,7 +45,7 @@ export const useForm = <Values>({
       }
       return prevValues;
     });
-  }, [validateOnChange]);
+  }
 
   const validate = () => {
     const validateErrors: typeof errors = {};
@@ -83,11 +80,11 @@ export const useForm = <Values>({
     }
   };
 
-  const resetForm = useCallback(() => {
+  const resetForm = () => {
     setValues(initialValues);
     setErrors(null);
     setCanSubmit(false); // Сброс canSubmit при сбросе формы
-  }, [initialValues]);
+  }
 
   return { values, errors, handleSubmit, isSubmitting, setFieldValue, setFieldError, validate, resetForm, canSubmit: !canSubmit };
 };

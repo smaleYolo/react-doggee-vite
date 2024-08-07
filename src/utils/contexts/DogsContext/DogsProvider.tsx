@@ -1,37 +1,22 @@
 import React, { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
 import { IDog } from '@utils/models';
-import { DogsContext, PetInfoValues, useAuth, useSteps } from '@utils/contexts';
+import {
+  CreatePetPayload,
+  CreatePetResponse,
+  DogsContext,
+  GetBreedsResponse,
+  PetInfoValues,
+  useAuth
+} from '@utils/contexts';
 import { api } from '@utils/api';
 import { useMutation, useQueryLazy } from '@utils/hooks';
-import { toast } from 'react-toastify';
-import { useIntl } from '@features/intl';
 
-
-export interface GetBreedsResponse {
-  message: string,
-  data: IDog['breed'][]
-}
-
-export interface IGetUserDogsList {
-  message: string;
-  dogs: IDog[];
-}
-
-export interface CreatePetResponse {
-  message: string;
-}
-
-export interface CreatePetPayload extends Omit<PetInfoValues, 'birthdate' | 'weight'> {
-  birthdate: Date;
-  weight?: number;
-}
 
 
 export interface IDogsContext {
   dogs: IDog[],
   breedsList: IDog['breed'][],
   setDogs: Dispatch<SetStateAction<IDog[]>>,
-  deleteDogHandler: (id: IDog['id']) => void;
   createDogHandler: (body: PetInfoValues) => Promise<CreatePetResponse>
   updateDogHandler: (body: PetInfoValues) => Promise<CreatePetResponse>
   selectedDog: IDog | undefined;
@@ -41,16 +26,11 @@ export interface IDogsContext {
 
 export const DogsProvider = ({ children }: { children: ReactNode }) => {
   const {userId, logout} = useAuth()
-  const {translateMessage} = useIntl()
 
 
   const [dogs, setDogs] = useState<IDog[]>([]);
   const [selectedDog, setSelectedDog] = useState<IDog | undefined>(undefined);
   const [breedsList, setBreedsList] = useState<IDog['breed'][]>([])
-
-  const { mutation: DeleteUserDogMutation } = useMutation<{message: string}, IDog['id']>({
-    request: (DogId) => api.delete(`/users/${userId}/dogs/${DogId}`)
-  });
 
   const { mutation: addPetInfoMutation } = useMutation<CreatePetResponse, PetInfoValues>({
     request: (petInfo: PetInfoValues) => {
@@ -96,20 +76,6 @@ export const DogsProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const deleteDogHandler = async (id: number) => {
-    try {
-      const data = await DeleteUserDogMutation(id);
-      setDogs(dogs.filter(dog => dog.id !== id));
-      setSelectedDog(undefined)
-
-      toast.success(translateMessage(data.message))
-
-      return data
-    } catch (error) {
-      toast.error((error as Error).message)
-      console.warn(error);
-    }
-  };
 
   const createDogHandler = async (petInfo: PetInfoValues) => {
     return await addPetInfoMutation(petInfo)
@@ -136,7 +102,6 @@ export const DogsProvider = ({ children }: { children: ReactNode }) => {
   const value: IDogsContext = {
     dogs,
     breedsList,
-    deleteDogHandler,
     createDogHandler,
     updateDogHandler,
     setDogs,

@@ -1,5 +1,6 @@
 import React from 'react';
 import type { InputProps } from '@common/fields';
+
 import { Input } from '@common/fields';
 
 interface WeightInputProps extends InputProps {}
@@ -9,13 +10,14 @@ export const WeightInput: React.FC<WeightInputProps> = ({
                                                       helperText = '',
                                                       label = 'Weight Input',
                                                       value,
-                                                      onChange,  // Добавляем пропс onChange
+                                                      onChange,
                                                       ...props
                                                     }) => {
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value.replace(/[^\d]/g, ''); // Удаляем все символы, кроме цифр
     e.target.value = input;
-    if (onChange) onChange(e);
+    if (onChange) onChange(e); // Вызываем переданный пропс onChange, если он есть
   };
 
   return (
@@ -25,7 +27,7 @@ export const WeightInput: React.FC<WeightInputProps> = ({
       label={label}
       style={{ cursor: 'text' }}
       value={value}
-      onChange={handleInputChange}  // Используем локальный обработчик изменений
+      onChange={handleInputChange}
       {...props}
       components={props.components}
     />

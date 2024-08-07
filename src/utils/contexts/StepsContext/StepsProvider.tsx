@@ -1,15 +1,5 @@
 import React, {  ReactNode, useEffect, useState } from 'react';
-import { PetInfoValues, StepsContext, UserInfoValues, useAuth, useDogs } from '@utils/contexts';
-
-export type Steps = 'user' | 'pets' | 'profile';
-
-export interface IStep {
-  step: Steps;
-  title: string;
-  completed: boolean;
-  current: boolean;
-  step_data?: UserInfoValues | PetInfoValues;
-}
+import { PetInfoValues, StepsContext, UserInfoValues, useAuth, useDogs, Steps, IStep } from '@utils/contexts';
 
 export interface IStepsContext {
   currentStepTitle: string;
@@ -23,7 +13,7 @@ export interface IStepsContext {
 
 export const StepsProvider = ({ children }: { children: ReactNode }) => {
   const { userId } = useAuth();
-  const { dogs, setSelectedDog } = useDogs();
+  const { setSelectedDog, dogs } = useDogs();
 
   const initialStateSteps: IStep[] = [
     {
@@ -115,7 +105,6 @@ export const StepsProvider = ({ children }: { children: ReactNode }) => {
       setSelectedDog(undefined)
     }
   }, [profileSteps, currentStepTitle]);
-
 
   const value: IStepsContext = {
     currentStepTitle,

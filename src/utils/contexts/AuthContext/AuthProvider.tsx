@@ -1,38 +1,8 @@
 import React, { ReactNode, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
-import { api } from '@utils/api';
 import { AuthContext } from '@utils/contexts';
-import { IUser } from '@utils/models';
 import { toast } from 'react-toastify';
 import { useIntl } from '@features/intl';
-
-export interface UserInfoValues {
-  name: string;
-  city: string;
-  birthdate: string;
-}
-
-export interface UpdateUserInfoPayload {
-  name: IUser['name'];
-  city: IUser['city'];
-  birthdate: IUser['birthdate'];
-}
-
-export interface PetInfoValues {
-  name: string;
-  breed: string;
-  birthdate: string;
-  weight?: string;
-}
-
-export interface IRefreshResponse {
-  access_token: string;
-  refresh_token: string;
-}
-
-export interface IMessageResponse {
-  message: string;
-}
 
 export interface IAuthContext {
   userId: string | undefined;

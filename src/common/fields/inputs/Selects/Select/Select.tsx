@@ -29,7 +29,7 @@ export const Select: React.FC<SelectProps> = ({
                                               }) => {
   const id = useId();
   const { translateMessage } = useIntl();
-  const [focused, setFocused] = useState<boolean>(!!value || true);
+  const [focused, setFocused] = useState<boolean>(false);
 
   const selectRef = useRef<HTMLSelectElement>(null);
 
@@ -39,12 +39,19 @@ export const Select: React.FC<SelectProps> = ({
     onChange(event);
   };
 
+  const handleMouseDown = (event: React.MouseEvent<HTMLLabelElement>) => {
+    event.preventDefault();
+    selectRef.current?.focus();
+    selectRef.current?.click();
+  };
 
   return (
-    <div className={`${styles.input_container} ${focused && value ? styles.focused : ''}`}>
+    <div className={`${styles.input_container} ${focused || value ? styles.focused : ''}`}>
       <label
         className={styles.label}
-        htmlFor={id}>
+        htmlFor={id}
+        onMouseDown={handleMouseDown}
+      >
         {label}
       </label>
       <select
@@ -63,13 +70,11 @@ export const Select: React.FC<SelectProps> = ({
         ))}
       </select>
       {isError && helperText && <span className={styles.helper_text}>{helperText}</span>}
-      {
-        components && components.indicator && (
-          <div className={styles.indicator_arrow}>
-            <components.indicator/>
-          </div>
-        )
-      }
+      {components?.indicator && (
+        <div className={styles.indicator_arrow}>
+          <components.indicator />
+        </div>
+      )}
     </div>
   );
 };

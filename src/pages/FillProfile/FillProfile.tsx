@@ -1,12 +1,10 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styles from '@pages/RegisterPage/RegisterPage.module.css';
-import { Wizard } from '@pages/FillProfile/components/wizard/Wizard.tsx';
-import { UserInfo } from '@pages/FillProfile/steps/UserInfo.tsx';
+
 import { useIntl } from '@features/intl';
-import { useSteps, useAuth } from '@utils/contexts';
-import { PetsInfo } from '@pages/FillProfile/steps/PetsInfo.tsx';
-import { PetsList } from '@pages/FillProfile/components/petsList/PetsList.tsx';
-import { Profile } from '@pages/FillProfile/steps/Profile.tsx';
+import { useSteps } from '@utils/contexts';
+import { PetsList, Wizard } from '@pages/FillProfile/components';
+import { PetsInfo, Profile, UserInfo } from '@pages/FillProfile/steps';
 
 
 export const FillProfile = () => {
