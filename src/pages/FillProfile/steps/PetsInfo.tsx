@@ -1,31 +1,26 @@
-import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect,  useState } from 'react';
+import styles from '../FillProfile.module.css';
+
 import { Input, Select, WeightInput } from '@common/fields';
 import { DateInput } from '@inputs/Inputs/DateInput';
 import { Calendar } from '@common/Calendar/Calendar.tsx';
 import { Button } from '@common/buttons';
-import styles from '../FillProfile.module.css';
 import { useIntl } from '@features/intl';
-import { ArrowSvg, CalendarSvg, StepArrow } from '@utils/svg';
+import { ArrowSvg, CalendarSvg } from '@utils/svg';
 import {
   PetInfoValues,
-  IStep,
   Steps,
-  UserInfoValues,
-  useAuth,
   useDate,
   useCalendar,
   useSteps,
   useDogs
 } from '@utils/contexts';
-import { useForm, useMutation, useQuery } from '@utils/hooks';
+import { useForm } from '@utils/hooks';
 import { formatDate, validateField } from '@helpers/*';
-import { api } from '@utils/api';
 import { toast } from 'react-toastify';
-import { IDog } from '@utils/models';
 
 export const PetsInfo = () => {
   const { translateMessage } = useIntl();
-  const { userId } = useAuth();
   const { toggleStep, completeStep, currentStepTitle, updateStepData, profileSteps } = useSteps();
   const { selectedDog, breedsList, updateDogHandler, createDogHandler } = useDogs();
   const { isCalendar, setIsCalendar } = useCalendar();

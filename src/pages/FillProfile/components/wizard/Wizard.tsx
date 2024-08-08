@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Wizard.module.css';
-import { useSteps, useAuth } from '@utils/contexts';
+import { useSteps} from '@utils/contexts';
 import { useIntl } from '@features/intl';
 
 export const Wizard = () => {

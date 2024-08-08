@@ -1,5 +1,5 @@
 import type { ReactNode} from 'react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { IntlContextProps } from '@features/intl';
 import { IntlContext } from '@features/intl';
 import { getLocale, getMessages } from '@features/intl/helpers';
@@ -20,7 +20,7 @@ export const IntlProvider = ({ children }: IntlProviderProps) => {
     setLocale(newLocale);
   }
 
-
+  // Эффект для обновления сообщений при изменении локали
   useEffect(() => {
     setMessages(getMessages(locale));
   }, [locale]);

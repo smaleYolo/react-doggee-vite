@@ -1,9 +1,10 @@
+import styles from '@pages/RegisterPage/RegisterPage.module.css';
+import React from 'react';
+
 import { Button } from '@common/buttons';
 import { Input, PasswordInput } from '@common/fields';
 import { RegisterFormValues } from '@pages/RegisterPage/RegisterPage.tsx';
 
-import styles from '@pages/RegisterPage/RegisterPage.module.css';
-import React from 'react';
 
 interface RegisterFormProps {
   handleSubmit: (event: React.FormEvent) => void;

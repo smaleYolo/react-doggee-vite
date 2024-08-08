@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './FormInfo.module.css';
+
 import { PenSvg } from '@utils/svg';
 import { useIntl } from '@features/intl';
 import { IUser } from '@utils/models';

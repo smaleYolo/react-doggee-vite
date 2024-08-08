@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useState } from 'react';
+import React, { useId, useState } from 'react';
 
 import styles from '../Input.module.css';
 
@@ -28,12 +28,8 @@ export const Input: React.FC<InputProps> = ({
   const id = useId();
   const [focused, setFocused] = useState(false);
 
-
   const handleFocus = () => setFocused(true);
   const handleBlur = () => setFocused(false);
-
-
-
 
   return (
     <div className={`${styles.input_container} ${focused || value ? styles.focused : ''}`}>

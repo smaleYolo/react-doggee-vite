@@ -1,5 +1,5 @@
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
-import { DateContext, useCalendar, useSteps, useAuth } from '@utils/contexts';
+import { DateContext, useSteps, useAuth, ISelectedDate, ISelectedMonth } from '@utils/contexts';
 import { createDate } from '@helpers/*';
 
 export interface IUseCalendar {
@@ -18,16 +18,6 @@ export interface IUseCalendar {
   setSelectedMonth: (month: { monthShort: string; monthIndex: number; year: number } | null) => void;
 }
 
-export type ISelectedDate = {
-  user_birthdate: ReturnType<typeof createDate> | null;
-  dog_birthdate: ReturnType<typeof createDate> | null;
-}
-
-export type ISelectedMonth = {
-  monthShort: string;
-  monthIndex: number;
-  year: number;
-} | null
 
 export const DateProvider = ({ children }: { children: ReactNode; }) => {
   const { userId, logout } = useAuth();

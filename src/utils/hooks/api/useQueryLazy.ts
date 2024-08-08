@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 
 interface Options<T> {
   request: () => Promise<T>;
@@ -9,7 +9,7 @@ export const useQueryLazy = <T>({ request, dependencies = [] }: Options<T>) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState<string | null>(null);
 
-  const query = useCallback(async () => {
+  const query = async () => {
     try {
       setIsLoading(true);
       setIsError('');
@@ -20,7 +20,7 @@ export const useQueryLazy = <T>({ request, dependencies = [] }: Options<T>) => {
     } finally {
       setIsLoading(false);
     }
-  }, dependencies);
+  }
 
   return { query, isLoading, isError };
 };

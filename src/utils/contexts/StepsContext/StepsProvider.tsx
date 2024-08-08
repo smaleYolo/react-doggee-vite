@@ -23,7 +23,7 @@ export interface IStepsContext {
 
 export const StepsProvider = ({ children }: { children: ReactNode }) => {
   const { userId } = useAuth();
-  const { setSelectedDog } = useDogs();
+  const { dogs, setSelectedDog } = useDogs();
 
   const initialStateSteps: IStep[] = [
     {

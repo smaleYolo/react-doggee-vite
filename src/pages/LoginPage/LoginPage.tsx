@@ -1,3 +1,6 @@
+import React from 'react';
+import styles from './LoginPage.module.css';
+
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Button } from '@common/buttons';
@@ -9,9 +12,6 @@ import { Input } from '@inputs/Inputs/Input/Input';
 import { api } from '@utils/api';
 import { ROUTES } from '@utils/constants';
 import { useForm, useMutation } from '@utils/hooks';
-import React from 'react';
-
-import styles from './LoginPage.module.css';
 import { useAuth } from '@contexts/AuthContext';
 
 export interface LoginFormValues {

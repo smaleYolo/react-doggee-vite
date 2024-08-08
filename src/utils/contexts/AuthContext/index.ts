@@ -1,2 +1,3 @@
-export * from './AuthContext.ts'
-export * from './AuthProvider.tsx'
+export * from './AuthContext'
+export * from './AuthProvider'
+export * from './types'

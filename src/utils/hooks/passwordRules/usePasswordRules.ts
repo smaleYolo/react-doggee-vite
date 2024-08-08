@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface usePasswordRulesProps {
   password: string;
@@ -40,13 +40,13 @@ const usePasswordRules = ({passwordRepeat, password}: usePasswordRulesProps) => 
 
   const [isRulesCompleted, setIsRulesCompleted] = useState<boolean>(false)
 
-  const validatePasswordRules = useCallback((password: string, passwordRepeat?: string ) => ({
+  const validatePasswordRules = (password: string, passwordRepeat?: string ) => ({
     passwords_match: password.length > 0 && password === passwordRepeat,
     contain_number: /\d/.test(password),
     contain_uppercase: /[A-Z]/.test(password),
     contain_lowercase: /[a-z]/.test(password),
     contain_5_characters: password.length >= 5
-  }), []);
+  })
 
   useEffect(() => {
     setPasswordRuleChecker(validatePasswordRules(password, passwordRepeat));

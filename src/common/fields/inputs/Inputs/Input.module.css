@@ -19,7 +19,6 @@
     font-family: var(--font-family-nunito);
     font-size: 14px;
     cursor: pointer;
-
     transition: var(--transition);
 }
 
@@ -52,7 +51,6 @@
     color: var(--color-placeholder);
     text-transform: capitalize;
     z-index: 100;
-
     transition: var(--transition);
 }
 
@@ -62,7 +60,6 @@
     top: -17px;
     font-size: 12px;
     color: var(--color-text);
-
     transition: var(--transition);
 }
 
@@ -100,7 +97,14 @@
 
 .select {
     -webkit-appearance: none;
+    appearance: none;
+    background: var(--background-color-field-focused);
+    border: none;
+    color: var(--color-text);
+    padding: 10px;
+    font-family: var(--font-family-nunito);
 }
+
 .indicator_arrow {
     position: absolute;
     top: 17px;
@@ -108,13 +112,4 @@
     pointer-events: none;
     rotate: 180deg;
     opacity: 0.8;
-    cursor: pointer;
 }
-
-
-
-
-
-
-
-

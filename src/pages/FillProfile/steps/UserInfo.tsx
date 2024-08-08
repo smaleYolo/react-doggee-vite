@@ -1,10 +1,11 @@
+import React, { useEffect, useState } from 'react';
 import styles from '../FillProfile.module.css';
+
 import { Input } from '@common/fields';
 import { DateInput } from '@inputs/Inputs/DateInput';
 import { CalendarSvg } from '@utils/svg';
 import { Calendar } from '@common/Calendar/Calendar.tsx';
 import { Button } from '@common/buttons';
-import React, { useEffect, useState } from 'react';
 import { useIntl } from '@features/intl';
 import {
   IMessageResponse,
