@@ -3,8 +3,8 @@ import { IRefreshResponse } from '@utils/contexts';
 import { toast } from 'react-toastify';
 
 type BaseUrl = string;
-const baseUrl: BaseUrl = 'http://localhost:3001';
-// const baseUrl: BaseUrl = 'https://backend-doggee.vercel.app';
+// const baseUrl: BaseUrl = 'http://localhost:3001';
+const baseUrl: BaseUrl = 'https://backend-doggee.vercel.app';
 
 export class API {
   readonly baseUrl: BaseUrl;
