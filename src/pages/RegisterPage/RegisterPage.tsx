@@ -26,7 +26,7 @@ export const RegisterPage = () => {
   const { translateMessage } = useIntl();
   const { login } = useAuth()
 
-  const { mutation: registerMutation } = useMutation<RegisterResponse, RegisterFormValues>({
+  const { mutation: registerMutation, isError: registerError } = useMutation<RegisterResponse, RegisterFormValues>({
     request: (userData: RegisterFormValues) => api.post<RegisterResponse, RegisterFormValues>('/auth/register', userData)
   });
 
@@ -50,9 +50,8 @@ export const RegisterPage = () => {
           toast.success(translateMessage(data.message));
           resetForm();
           navigate(ROUTES.MAIN);
-
         } catch (error) {
-          toast.error(translateMessage('login.failed'));
+          toast.error(translateMessage((error as Error).message));
         }
       } else {
         toast.error(translateMessage('page.registration.step.rule.checker'));

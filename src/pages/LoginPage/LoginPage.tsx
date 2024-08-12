@@ -7,7 +7,7 @@ import { Button } from '@common/buttons';
 import { useIntl } from '@features/intl/hooks';
 import { Checkbox } from '@fields/inputs/Checkbox/Checkbox';
 import { PasswordInput } from '@fields/inputs/Inputs/PasswordInput/PasswordInput';
-import { validatePassword, validateUsername } from '@helpers/validations';
+import { validateLoginUsername, validatePassword } from '@helpers/validations';
 import { Input } from '@inputs/Inputs/Input/Input';
 import { api } from '@utils/api';
 import { ROUTES } from '@utils/constants';
@@ -44,7 +44,7 @@ export const LoginPage = () => {
       isNotMyDevice: false
     },
     validateSchema: {
-      username: validateUsername,
+      username: validateLoginUsername,
       password: validatePassword
     },
     // validateOnChange: false,
@@ -55,7 +55,7 @@ export const LoginPage = () => {
         navigate(ROUTES.MAIN);
         toast.success(translateMessage(data.message))
       } catch (error) {
-        toast.error(translateMessage('login.failed'));
+        toast.error(translateMessage((error as Error).message));
       }
     }
   });

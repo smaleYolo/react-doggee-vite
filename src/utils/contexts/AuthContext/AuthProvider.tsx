@@ -19,22 +19,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  const logout = () => {
-    setIsAuth(false);
-    setUserId(undefined);
-    Cookies.remove('access_token');
-    Cookies.remove('refresh_token');
-    Cookies.remove('userId');
-    toast.info(translateMessage('success.userLogout'))
+  const setCookie = (name: string, value: string | number): void => {
+    Cookies.set(name, String(value));
   };
 
-  const login = (access_token: string, refresh_token: string, userId: number, isNotUserDevice?: boolean) => {
-    Cookies.set('access_token', access_token);
-    Cookies.set('userId', String(userId));
+  const removeCookie = (name: string): void => {
+    Cookies.remove(name);
+  };
+
+  const logout = (): void => {
+    setIsAuth(false);
+    setUserId(undefined);
+    ['access_token', 'refresh_token', 'userId'].forEach(cookieName => removeCookie(cookieName));
+    toast.info(translateMessage('success.userLogout'));
+  };
+
+  const login = (access_token: string, refresh_token: string, userId: number, isNotUserDevice?: boolean): void => {
+    setCookie('access_token', access_token);
+    setCookie('userId', userId);
     setUserId(String(userId));
 
     if (!isNotUserDevice) {
-      Cookies.set('refresh_token', refresh_token);
+      setCookie('refresh_token', refresh_token);
     }
     setIsAuth(true);
   };

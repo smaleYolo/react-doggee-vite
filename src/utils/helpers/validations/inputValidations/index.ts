@@ -11,8 +11,14 @@ export const validateField = (value: string | number | readonly string[] | undef
 };
 
 export const validateUsername = (value: string | number | readonly string[] | undefined) => {
+  if (String(value).length < 5) return 'backend.failure.usernameMinLength';
   return validateIsEmpty(value);
 };
+
+export const validateLoginUsername = (value: string | number | readonly string[] | undefined) => {
+  return validateIsEmpty(value);
+};
+
 
 export const validatePassword = (value: string | number | readonly string[] | undefined) => {
   return validateIsEmpty(value);

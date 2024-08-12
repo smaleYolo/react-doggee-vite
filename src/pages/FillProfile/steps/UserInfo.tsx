@@ -73,7 +73,7 @@ export const UserInfo = () => {
         completeStep(currentStepTitle as Steps);
         toggleStep('pets');
       } catch (error) {
-        toast.error(translateMessage('login.failed'));
+        toast.error(translateMessage((error as Error).message));
       }
     }
   });

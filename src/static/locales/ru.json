@@ -100,7 +100,7 @@
   "backend.failure.badAuthorizationHeader": "Неправильный заголовок авторизации",
   "backend.failure.invalidAccessToken": "Неверный access_token",
   "backend.failure.invalidToken": "Токен недействителен",
-  "backend.failure.usernameMinLength": "Имя пользователя должно содержать не менее 5 символов",
+  "backend.failure.usernameMinLength": "Логин должен быть не менее 5 символов",
   "backend.failure.passwordMinLength": "Пароль должен содержать не менее 5 символов",
   "backend.failure.userAlreadyExists": "Пользователь уже существует",
   "backend.failure.invalidCredentials": "Неверные учетные данные",
